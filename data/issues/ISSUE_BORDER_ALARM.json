@@ -1,0 +1,32 @@
+{
+  "id": "ISSUE_BORDER_ALARM",
+  "title": "边警入口",
+  "stage": ["B3", "B5"],
+  "weight": 70,
+  "once": false,
+  "summary": "边墙烽火再起。增兵则无饷，固守则丢野，议和则清议骂死。",
+  "choices": [
+    {
+      "id": "reinforce",
+      "label": "抽饷增兵",
+      "deltas": { "frontier": 10, "treasury": -10, "popular": -3 },
+      "memory": "MF_A2_BORDER_REINFORCE",
+      "memory_weight": 5
+    },
+    {
+      "id": "hold",
+      "label": "坚壁清野",
+      "deltas": { "frontier": 2, "popular": -5, "treasury": -2 },
+      "memory": "MF_A2_BORDER_HOLD",
+      "memory_weight": 4
+    },
+    {
+      "id": "negotiate",
+      "label": "密遣议和试探",
+      "deltas": { "frontier": -2, "court": -8, "treasury": -4, "resolve": -4, "mandate_decay": -0.2 },
+      "flags_add": ["secret_peace_talk"],
+      "memory": "MF_A2_BORDER_PEACE",
+      "memory_weight": 8
+    }
+  ]
+}

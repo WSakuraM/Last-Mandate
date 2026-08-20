@@ -1,0 +1,34 @@
+{
+  "id": "ISSUE_DONGCHANG_AFTERMATH",
+  "title": "厂卫善后",
+  "stage": ["B1", "B2"],
+  "weight": 80,
+  "once": true,
+  "summary": "忠贤势去，东厂锦衣仍在。废之则耳目尽失，留之则天下仍恐。",
+  "choices": [
+    {
+      "id": "abolish",
+      "label": "尽废厂卫特务",
+      "deltas": { "popular": 8, "court": -4, "resolve": 3 },
+      "flags_add": ["dongchang_gone"],
+      "memory": "MF_A2_DONGCHANG_ABOLISH",
+      "memory_weight": 6
+    },
+    {
+      "id": "reform",
+      "label": "收归内廷严控",
+      "deltas": { "popular": 2, "court": 2, "resolve": 4 },
+      "flags_add": ["dongchang_tamed"],
+      "memory": "MF_A2_DONGCHANG_TAME",
+      "memory_weight": 5
+    },
+    {
+      "id": "keep",
+      "label": "留用缉盗安京",
+      "deltas": { "popular": -6, "court": 4, "treasury": 2 },
+      "flags_add": ["dongchang_kept"],
+      "memory": "MF_A2_DONGCHANG_KEEP",
+      "memory_weight": 6
+    }
+  ]
+}

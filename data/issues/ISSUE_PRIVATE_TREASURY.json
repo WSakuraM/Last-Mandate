@@ -1,0 +1,32 @@
+{
+  "id": "ISSUE_PRIVATE_TREASURY",
+  "title": "内帑救急",
+  "stage": ["B3", "B4", "B5"],
+  "weight": 55,
+  "once": false,
+  "summary": "户部告匮。有人请你动用内帑；有人说天子私库一开，再无底线。",
+  "choices": [
+    {
+      "id": "open_nei",
+      "label": "发内帑济边/赈",
+      "deltas": { "treasury": 8, "resolve": -2, "popular": 4, "mandate_decay": -0.2 },
+      "flags_add": ["nei_opened"],
+      "memory": "MF_A2_NEI_OPEN",
+      "memory_weight": 7
+    },
+    {
+      "id": "refuse_nei",
+      "label": "拒：国事归国库",
+      "deltas": { "resolve": 4, "popular": -4, "court": 2 },
+      "memory": "MF_A2_NEI_REFUSE",
+      "memory_weight": 6
+    },
+    {
+      "id": "sell_titles",
+      "label": "开捐纳筹银",
+      "deltas": { "treasury": 10, "court": -6, "popular": -5, "mandate_decay": 0.2 },
+      "memory": "MF_A2_SELL_TITLES",
+      "memory_weight": 7
+    }
+  ]
+}

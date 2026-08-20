@@ -1,0 +1,34 @@
+{
+  "id": "ISSUE_CUT_YI",
+  "title": "裁撤驿递",
+  "stage": ["B4"],
+  "weight": 100,
+  "once": true,
+  "summary": "驿银岁耗巨万。裁之可救内帑一角；驿卒失业，会否把刀磨向别处？",
+  "choices": [
+    {
+      "id": "cut",
+      "label": "大裁驿递省银",
+      "deltas": { "treasury": 10, "popular": -6, "rebel_pressure": 0.8, "mandate_decay": 0.15 },
+      "flags_add": ["yi_cut"],
+      "memory": "MF_A2_YI_CUT",
+      "memory_weight": 10
+    },
+    {
+      "id": "partial",
+      "label": "只裁冗驿，留边驿",
+      "deltas": { "treasury": 4, "popular": -2, "rebel_pressure": 0.25 },
+      "flags_add": ["yi_partial"],
+      "memory": "MF_A2_YI_PARTIAL",
+      "memory_weight": 7
+    },
+    {
+      "id": "keep",
+      "label": "不裁，另寻财源",
+      "deltas": { "treasury": -4, "popular": 3, "resolve": -2, "mandate_decay": -0.1 },
+      "flags_add": ["yi_kept"],
+      "memory": "MF_A2_YI_KEEP",
+      "memory_weight": 6
+    }
+  ]
+}

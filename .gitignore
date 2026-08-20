@@ -1,0 +1,38 @@
+# Godot 4
+.godot/
+*.translation
+export.cfg
+export_presets.cfg
+.import/
+
+# Imported / generated
+*.import
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Builds / exports
+build/
+exports/
+*.exe
+*.pck
+*.zip
+*.apk
+*.aab
+
+# Secrets / local
+.env
+.env.*
+*.pem
+credentials.json
+
+# Cursor / local agent
+.cursor/

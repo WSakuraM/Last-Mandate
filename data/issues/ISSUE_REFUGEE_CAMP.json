@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_REFUGEE_CAMP",
+  "title": "京畿流民营",
+  "stage": ["B4", "B5"],
+  "weight": 60,
+  "once": false,
+  "summary": "京师门外棚户连片。收留耗粮，驱逐失德，编伍又怕藏奸。",
+  "choices": [
+    {
+      "id": "shelter",
+      "label": "设粥厂收留",
+      "deltas": { "treasury": -8, "popular": 8, "rebel_pressure": -0.25 },
+      "memory": "MF_A2_REFUGEE_SHELTER",
+      "memory_weight": 6
+    },
+    {
+      "id": "drive",
+      "label": "驱回原籍",
+      "deltas": { "popular": -8, "treasury": 2, "rebel_pressure": 0.4, "mandate_decay": 0.2 },
+      "memory": "MF_A2_REFUGEE_DRIVE",
+      "memory_weight": 7
+    },
+    {
+      "id": "enlist",
+      "label": "精壮编入辅兵",
+      "deltas": { "frontier": 5, "popular": -2, "treasury": -4, "rebel_pressure": -0.1 },
+      "memory": "MF_A2_REFUGEE_ENLIST",
+      "memory_weight": 5
+    }
+  ]
+}

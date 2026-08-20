@@ -1,0 +1,35 @@
+{
+  "id": "ISSUE_YUAN_FATE",
+  "title": "督师生死",
+  "stage": ["B3", "B5"],
+  "weight": 75,
+  "once": true,
+  "summary": "边报不利，谤书入京。有人要你杀督师以谢；有人说杀将等于自毁长城。",
+  "requires_any_flags": ["yuan_trusted", "yuan_watched", "yuan_doubted"],
+  "choices": [
+    {
+      "id": "execute",
+      "label": "下狱论死",
+      "deltas": { "resolve": 10, "frontier": -15, "popular": -4, "court": 3, "mandate_decay": 0.5 },
+      "flags_add": ["yuan_dead"],
+      "memory": "MF_A2_YUAN_KILL",
+      "memory_weight": 10
+    },
+    {
+      "id": "demote",
+      "label": "夺职回籍",
+      "deltas": { "resolve": 5, "frontier": -8, "court": 2, "mandate_decay": 0.2 },
+      "flags_add": ["yuan_demoted"],
+      "memory": "MF_A2_YUAN_DEMOTE",
+      "memory_weight": 8
+    },
+    {
+      "id": "shield",
+      "label": "力保，责令戴罪立功",
+      "deltas": { "resolve": -2, "frontier": 4, "court": -6, "treasury": -4, "mandate_decay": -0.15 },
+      "flags_add": ["yuan_shielded"],
+      "memory": "MF_A2_YUAN_SHIELD",
+      "memory_weight": 7
+    }
+  ]
+}

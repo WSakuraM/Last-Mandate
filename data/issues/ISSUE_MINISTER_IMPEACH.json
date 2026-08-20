@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_MINISTER_IMPEACH",
+  "title": "言官交章",
+  "stage": ["B2", "B5"],
+  "weight": 50,
+  "once": false,
+  "summary": "科道交章弹劾某尚书。是依、是压、是各打五十。",
+  "choices": [
+    {
+      "id": "uphold",
+      "label": "准奏罢官",
+      "deltas": { "court": -4, "resolve": 3, "popular": 2 },
+      "memory": "MF_A2_IMPEACH_UPHOLD",
+      "memory_weight": 4
+    },
+    {
+      "id": "suppress_yanguan",
+      "label": "责言官妄言",
+      "deltas": { "court": 3, "popular": -3, "resolve": 5 },
+      "memory": "MF_A2_IMPEACH_SUPPRESS",
+      "memory_weight": 5
+    },
+    {
+      "id": "both",
+      "label": "各罚以息争",
+      "deltas": { "court": -2, "resolve": 1 },
+      "memory": "MF_A2_IMPEACH_BOTH",
+      "memory_weight": 3
+    }
+  ]
+}

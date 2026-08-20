@@ -1,0 +1,34 @@
+{
+  "id": "ISSUE_WEI_ZHONGXIAN",
+  "title": "魏忠贤案",
+  "stage": ["B1"],
+  "weight": 100,
+  "once": true,
+  "summary": "厂卫首恶伏阙。清流请诛以谢天下；或有人谏：狗去而群狼无主，朝堂将更乱。",
+  "choices": [
+    {
+      "id": "kill",
+      "label": "赐死抄家",
+      "deltas": { "popular": 10, "court": -6, "resolve": 6, "treasury": 5, "mandate_decay": -0.2 },
+      "flags_add": ["wei_dead", "purge_start"],
+      "memory": "MF_A2_WEI_KILL",
+      "memory_weight": 9
+    },
+    {
+      "id": "imprison",
+      "label": "下狱圈禁",
+      "deltas": { "popular": 4, "court": -2, "resolve": 2, "mandate_decay": -0.1 },
+      "flags_add": ["wei_jailed"],
+      "memory": "MF_A2_WEI_JAIL",
+      "memory_weight": 7
+    },
+    {
+      "id": "spare",
+      "label": "暂留以制朝臣",
+      "deltas": { "popular": -12, "court": 5, "resolve": -4, "mandate_decay": 0.3 },
+      "flags_add": ["wei_spared"],
+      "memory": "MF_A2_WEI_SPARE",
+      "memory_weight": 10
+    }
+  ]
+}

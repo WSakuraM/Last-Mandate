@@ -1,0 +1,32 @@
+{
+  "id": "ISSUE_WINTER_SURVIVE",
+  "title": "又撑过一冬",
+  "stage": ["B3", "B4", "B5"],
+  "weight": 30,
+  "once": false,
+  "summary": "没有胜利。只有雪停了，粮还够撑到开春——或许。",
+  "choices": [
+    {
+      "id": "toast_bitter",
+      "label": "默然饮冷酒",
+      "deltas": { "resolve": -1, "mandate_decay": -0.05 },
+      "memory": "MF_A2_ANOTHER_WINTER",
+      "memory_weight": 6
+    },
+    {
+      "id": "new_edict",
+      "label": "再下一道振作诏",
+      "deltas": { "resolve": 4, "court": -2, "popular": 1 },
+      "memory": "MF_A2_EMPTY_EDICT",
+      "memory_weight": 5
+    },
+    {
+      "id": "ask_seed",
+      "label": "问王承恩：谷种还在否",
+      "deltas": { "resolve": -2 },
+      "flags_add": ["asked_seed"],
+      "memory": "MF_A2_ASK_SEED",
+      "memory_weight": 7
+    }
+  ]
+}
