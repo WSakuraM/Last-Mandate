@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export var speed: float = 180.0
 
 @onready var _prompt: Label = $InteractPrompt
-@onready var _anim_pulse: ColorRect = $Body
+@onready var _anim_pulse: Node2D = $Body
 
 var _nearby: Array[Node] = []
 

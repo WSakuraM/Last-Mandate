@@ -1,5 +1,5 @@
 extends Interactable
-## 菜畦：空 → 已种 → 成熟 → 收获。
+## 菜畦：空 → 已种 → 成熟 → 收获（Kenney CC0 精灵）。
 
 enum Stage { EMPTY, PLANTED, READY }
 
@@ -8,14 +8,14 @@ enum Stage { EMPTY, PLANTED, READY }
 var stage: Stage = Stage.EMPTY
 var _timer: float = 0.0
 
-@onready var _soil: ColorRect = $Soil
-@onready var _crop: ColorRect = $Crop
+@onready var _soil: Sprite2D = $Soil
+@onready var _crop: Sprite2D = $Crop
 
 func _ready() -> void:
 	prompt_text = "播种"
-	_refresh_visual()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	_refresh_visual()
 
 func _process(delta: float) -> void:
 	if stage != Stage.PLANTED:
@@ -50,17 +50,13 @@ func interact() -> void:
 func _refresh_visual() -> void:
 	match stage:
 		Stage.EMPTY:
-			_soil.color = Color(0.45, 0.32, 0.18)
 			_crop.visible = false
+			_soil.modulate = Color(1, 1, 1, 1)
 		Stage.PLANTED:
-			_soil.color = Color(0.38, 0.28, 0.14)
 			_crop.visible = true
-			_crop.color = Color(0.55, 0.7, 0.35)
-			_crop.size = Vector2(18, 18)
-			_crop.position = Vector2(15, 20)
+			_crop.texture = preload("res://assets/tiles/crop_young.png")
+			_soil.modulate = Color(0.9, 0.85, 0.7, 1)
 		Stage.READY:
-			_soil.color = Color(0.4, 0.3, 0.16)
 			_crop.visible = true
-			_crop.color = Color(0.25, 0.55, 0.22)
-			_crop.size = Vector2(28, 28)
-			_crop.position = Vector2(10, 10)
+			_crop.texture = preload("res://assets/tiles/crop_ready.png")
+			_soil.modulate = Color(1, 1, 1, 1)

@@ -1,24 +1,20 @@
 # Godot 工程（M1）
 
-用 **Godot 4.7** 打开本目录（`game/`），运行即可。
+编辑器：`D:\GameTool\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe`  
+工程目录：本文件夹 `game/`
 
-## 怎么开
+## 打开步骤
 
-1. 启动 `Godot_v4.7.2-stable_win64.exe`
-2. Import / Scan → 选中仓库里的 `game` 文件夹
-3. 打开后按 F5（或右上角 Play）
+1. 双击上述 Godot  
+2. Import → 选择 `D:\Game\Last-Mandate\game`  
+3. F5 运行  
 
-## M1 可玩内容
+## 素材库
 
-- WASD 移动，E/空格互动  
-- 三块菜畦：播种 → 等待生长 → 收获  
-- 木牌售卖换铜钱  
-- 阿恩 / 吴伯 / 秋穗对话  
-- 秋穗轻危机三选一  
-- 条件满足后自动 **夜召** → 第一幕终画面  
+见 [`assets_library/README.md`](assets_library/README.md) 与 [`assets_library/MANIFEST.csv`](assets_library/MANIFEST.csv)。
 
-推进顺序建议：先种收卖 → 再找阿恩深谈拿谷种 → 再处理秋穗（或找秋穗触发危机）→ 夜召。
+当前画面精灵来自 **Kenney Tiny Town / Tiny Dungeon（CC0，可商用）**，作 M1 占位；正式水墨明末风需后续替换（自制/委托/付费可商用包）。
 
-## 说明
+## 玩法提示
 
-占位色块，非最终美术。剧本对白来自 `docs/story/`。
+种收卖 → 阿恩拿谷种 → 秋穗危机 → 夜召。

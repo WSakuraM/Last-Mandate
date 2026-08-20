@@ -1,0 +1,7 @@
+id,category,game_path,source,package,license,commercial_ok,attribution_required,status,notes
+kenney_tt_grass,tiles,res://assets/tiles/grass.png,Kenney.nl,Tiny Town,CC0,yes,no,placeholder,Ground grass tile
+kenney_tt_grass_alt,tiles,res://assets/tiles/grass_alt.png,Kenney.nl,Tiny Town,CC0,yes,no,placeholder,Alt grass
+kenney_tt_dirt,tiles,res://assets/tiles/dirt.png,Kenney.nl,Tiny Town,CC0,yes,no,placeholder,Soil / farm dirt
+kenney_tt_town_atlas,tiles,res://assets/tiles/town_atlas.png,Kenney.nl,Tiny Town,CC0,yes,no,placeholder,Full town atlas for later tilemaps
+kenney_td_chars,sprites,res://assets/sprites/tile_*.png,Kenney.nl,Tiny Dungeon,CC0,yes,no,placeholder,Character / NPC placeholders
+kenney_td_atlas,sprites,res://assets/sprites/dungeon_atlas.png,Kenney.nl,Tiny Dungeon,CC0,yes,no,placeholder,Dungeon atlas
