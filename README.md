@@ -4,6 +4,8 @@
 
 完整说明见 **[docs/README.md](docs/README.md)**。
 
-当前进度：**M0 规划文档已落地**（见 `docs/` 与 `data/issues/`）。
+当前进度：**M0 / 产品版本 0.0.1**（见 [`archive/`](archive/) 留痕与 [`docs/`](docs/) 工作稿）。
 
-Git 管控说明见 [docs/07_git_github.md](docs/07_git_github.md)（GitHub + Gitee 双远程）。
+- 设计留痕：[`archive/README.md`](archive/README.md)（SemVer：`0.Y.Z`）
+- Git 双远程：[`docs/07_git_github.md`](docs/07_git_github.md)
+- 每日 16:00 备份：[`scripts/daily_backup.ps1`](scripts/daily_backup.ps1)（注册：`scripts/register_daily_backup_task.ps1`）

@@ -1,0 +1,23 @@
+---
+description: 设计与计划迭代必须写入 archive 留痕（SemVer）
+alwaysApply: true
+---
+
+# 设计留痕（Archive）
+
+做本项目时，凡涉及 **UI 设计、剧本、更新日志、项目计划、技术方案、系统数值、美术音频、重大决策** 的迭代，必须留痕。
+
+## 规则
+
+1. 工作稿可改 [`docs/`](docs/)；**有意义的一版定稿**必须新增文件到 [`archive/`](archive/)，**禁止覆盖**旧版本文件。
+2. 版本号用 SemVer：`MAJOR.MINOR.PATCH`（发售前 MAJOR=0；MINOR=里程碑 0–6；PATCH=同里程碑修订）。见 `archive/README.md`。
+3. 文件命名：`{品类}_{版本}.md`，例如 `ui_0.0.2.md`、`story_0.1.0.md`。
+4. 每冻结一版：更新 `archive/index.md` 当前指针、在 `archive/CHANGELOG.md` 追加条目；必要时更新 `archive/VERSION`。
+5. 不可逆决策写 `archive/decisions/ADR-XXXX-*.md`。
+6. 用户说「提交代码」时：commit 后必须 `git push origin main` 与 `git push gitee main`（见 dual-remote-push 规则）。
+
+## 不要
+
+- 只用口头 v1/v2 而不落盘
+- 改完设计却只留在聊天记录里
+- 删除或改写已冻结的 `archive/**/_0.*.*.md` 历史文件
