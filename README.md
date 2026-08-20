@@ -9,11 +9,12 @@
 
 ## 当前进度
 
-**M0 / 产品版本 0.0.2** — 剧本细稿与设计文档；Godot 工程尚未创建。
+**M0 文档 + M1 垂直切片（可运行）** — 用 Godot 4.7 打开 [`game/`](game/) 按 F5。
 
 | 入口 | 说明 |
 |---|---|
 | [AGENTS.md](AGENTS.md) | 整体说明与约束（Agent 必读） |
+| [game/](game/) | **Godot 工程（M1 切片）** |
 | [docs/DAILY_LOG.md](docs/DAILY_LOG.md) | 每日工作日志（单文件，按日合并更新） |
 | [docs/](docs/) | 设计工作稿 |
 | [archive/](archive/) | SemVer 冻结留痕 |

@@ -1,0 +1,29 @@
+; Engine configuration file.
+; Godot 4.7 — Last Mandate M1 vertical slice
+config_version=5
+
+[application]
+config/name="末命 Last Mandate"
+config/description="悲剧定轨的明末叙事模拟。M1：信王府垂直切片。"
+run/main_scene="res://scenes/boot.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+GameState="*res://scripts/autoload/game_state.gd"
+Dialogue="*res://scripts/autoload/dialogue_bus.gd"
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[layer_names]
+2d_physics/layer_1="world"
+2d_physics/layer_2="player"
+2d_physics/layer_3="interactable"
+
+[rendering]
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.92, 0.88, 0.78, 1)
