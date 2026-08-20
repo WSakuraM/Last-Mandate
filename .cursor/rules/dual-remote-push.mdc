@@ -10,7 +10,7 @@ alwaysApply: true
 1. 按用户要求做本地 `git add` / `git commit`（作者用 Sakura / 1124114910@qq.com，可用 `git -c user.name=... -c user.email=...`，勿改全局 git config）。
 2. **必须同时推送到两个远程**，不要只推其中一个：
    - `origin` → GitHub：`https://github.com/WSakuraM/Last-Mandate.git`
-   - `gitee` → Gitee：`https://gitee.com/ChenZheng521/last-mandate.git`（若用户改了个人空间地址，以 `git remote -v` 为准）
+   - `gitee` → Gitee：`https://gitee.com/WSakuraM/last-mandate.git`
 3. 推荐推送命令：
 
 ```powershell
