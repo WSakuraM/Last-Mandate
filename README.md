@@ -14,6 +14,7 @@
 | 入口 | 说明 |
 |---|---|
 | [AGENTS.md](AGENTS.md) | 整体说明与约束（Agent 必读） |
+| [docs/DAILY_LOG.md](docs/DAILY_LOG.md) | 每日工作日志（单文件，按日合并更新） |
 | [docs/](docs/) | 设计工作稿 |
 | [archive/](archive/) | SemVer 冻结留痕 |
 | [docs/07_git_github.md](docs/07_git_github.md) | GitHub + Gitee |

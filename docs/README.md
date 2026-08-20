@@ -13,6 +13,7 @@
 | [06_memory_fragments.md](06_memory_fragments.md) | 终章回忆碎片目录 |
 | [07_git_github.md](07_git_github.md) | Git / GitHub+Gitee |
 | [08_cross_machine.md](08_cross_machine.md) | 双电脑交叉开发 |
+| [DAILY_LOG.md](DAILY_LOG.md) | **每日工作日志（单文件按日合并）** |
 | [../AGENTS.md](../AGENTS.md) | 跨 Agent 接手手册 |
 | [../data/issues/](../data/issues/) | 议题卡 JSON |
 | [../archive/](../archive/) | SemVer 留痕 |

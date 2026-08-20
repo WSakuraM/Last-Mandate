@@ -76,6 +76,7 @@ Last-Mandate/
 ├── AGENTS.md                 ← 你在这里（跨 Agent 手册）
 ├── README.md                 ← 人类短入口
 ├── docs/                     ← 工作稿（可改写）
+│   ├── DAILY_LOG.md          ← 每日工作日志（单文件按日改）
 │   ├── 01_vision.md
 │   ├── 02_story_bible.md
 │   ├── 03_systems.md
