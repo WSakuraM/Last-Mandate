@@ -39,11 +39,11 @@ git remote -v
 | 顺序 | 文件 | 目的 |
 |---|---|---|
 | 1 | **本文件 AGENTS.md** | 约束与地图 |
-| 2 | [archive/index.md](archive/index.md) | 当前生效设计版本 |
-| 3 | [archive/VERSION](archive/VERSION) | 产品版本号 |
-| 4 | [docs/01_vision.md](docs/01_vision.md) | 主题与定位 |
-| 5 | [docs/05_milestones.md](docs/05_milestones.md) | 做到哪、不做什么 |
-| 6 | 按任务再读 story / systems / ui / tech |
+| 2 | [docs/story/00_overview.md](docs/story/00_overview.md) | 剧本细稿总览（图+对白） |
+| 3 | [archive/index.md](archive/index.md) | 当前生效设计版本 |
+| 4 | [archive/VERSION](archive/VERSION) | 产品版本号 |
+| 5 | [docs/01_vision.md](docs/01_vision.md) | 主题与定位 |
+| 6 | [docs/05_milestones.md](docs/05_milestones.md) | 做到哪、不做什么 |
 
 Cursor 规则（克隆后自动可用）：
 
@@ -56,7 +56,9 @@ Cursor 规则（克隆后自动可用）：
 
 | 项 | 状态 |
 |---|---|
-| 产品版本 | **0.0.1**（M0 设计冻结） |
+| 产品版本 | **0.0.2**（剧本细稿完成；Godot 未建） |
+| 剧本入口 | [`docs/story/00_overview.md`](docs/story/00_overview.md) |
+| 美术 | **水墨勾边 2D** 已定 |
 | 引擎工程 | **尚未创建 Godot 工程**；现阶段以文档与数据为主 |
 | 预定引擎 | **Godot 4**（MIT，永久免费） |
 | 平台 / 语言 | PC Steam · 简体中文 |
