@@ -18,6 +18,7 @@ PC Steam · 简体中文 · 悲剧定轨历史叙事模拟
 | [docs/05_milestones.md](docs/05_milestones.md) | 分期与范围冻结 |
 | [docs/06_memory_fragments.md](docs/06_memory_fragments.md) | 终章回忆碎片目录 |
 | [data/issues/](data/issues/) | 第二幕议题卡 JSON v0 |
+| [docs/07_git_github.md](07_git_github.md) | Git / GitHub 管控说明 |
 
 ## 三大幕概要
 

@@ -5,3 +5,5 @@
 完整说明见 **[docs/README.md](docs/README.md)**。
 
 当前进度：**M0 规划文档已落地**（见 `docs/` 与 `data/issues/`）。
+
+Git 管控说明见 [docs/07_git_github.md](docs/07_git_github.md)。
