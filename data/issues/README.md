@@ -29,4 +29,4 @@
 | ISSUE_WINTER_SURVIVE | 又撑过一冬 | B3–B5 | no |
 | ISSUE_PRINCESS_ESCAPE | 后宫安危 | B6 | yes |
 
-数值均为 v0 草案，以 `docs/03_systems.md` 调参表为准做平衡迭代。
+数值均为 v0 草案，以 `docs/03_数值系统.md` 调参表为准做平衡迭代。

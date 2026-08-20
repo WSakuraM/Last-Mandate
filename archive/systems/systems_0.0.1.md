@@ -205,7 +205,7 @@ OR (强制剧情旗 ACT2_FORCE_FALL)
 ### 终章
 
 - 血诏：枚举句，默认「勿伤我百姓」。  
-- 回忆：见 `docs/06_memory_fragments.md`。
+- 回忆：见 `docs/06_回忆碎片.md`。
 
 ---
 
@@ -234,4 +234,4 @@ OR (强制剧情旗 ACT2_FORCE_FALL)
 - 可清空的 MandateDecay  
 - 「中兴胜利」结算画面  
 
-详见 `docs/05_milestones.md`。
+详见 `docs/05_里程碑.md`。

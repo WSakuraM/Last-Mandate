@@ -1,0 +1,17 @@
+﻿Oddblot Studios — FREE The Great Farm - Isometric Asset Pack
+Source: https://oddblotstudios.itch.io/free-the-great-farm-isometric
+Local copy: game/assets_library/vendor/oddblot/great_farm/
+Downloaded from: D:\Game\Gr8FarmPack
+
+NOTE: The download pack did not include a license/readme .txt file.
+The following terms were taken from the itch.io product page (as of vendoring):
+
+- Use for commercial and non-commercial purposes.
+- Edit to your liking and needs.
+- You CANNOT: Use to train AI or in projects made entirely by AI.
+- You CANNOT: Sell as a stand-alone product / as-is.
+
+All objects (.png's) are to scale. If you need to size down one object by 50%,
+all objects can be sized down 50% to correctly match that scale.
+
+Author: ODDBLOT (oddblotstudios.itch.io)

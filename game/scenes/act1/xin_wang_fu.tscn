@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://xinwangfu001"]
+[gd_scene load_steps=28 format=3 uid="uid://xinwangfu001"]
 
 [ext_resource type="Script" path="res://scripts/act1/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/act1/plot.gd" id="2_plot"]
@@ -11,6 +11,17 @@
 [ext_resource type="Script" path="res://scripts/act1/plot_visual.gd" id="9_pvis"]
 [ext_resource type="Script" path="res://scripts/act1/soft_actor.gd" id="10_actor"]
 [ext_resource type="Script" path="res://scripts/act1/stall_visual.gd" id="11_stall"]
+[ext_resource type="Script" path="res://scripts/act1/forage_bush.gd" id="12_bush"]
+[ext_resource type="Script" path="res://scripts/act1/bush_visual.gd" id="13_bvis"]
+[ext_resource type="Script" path="res://scripts/act1/well.gd" id="14_well"]
+[ext_resource type="Script" path="res://scripts/act1/well_visual.gd" id="15_wvis"]
+[ext_resource type="Script" path="res://scripts/act1/fish_pond.gd" id="16_pond"]
+[ext_resource type="Script" path="res://scripts/act1/pond_visual.gd" id="17_pvis2"]
+[ext_resource type="Script" path="res://scripts/act1/herb_plot.gd" id="18_herb"]
+[ext_resource type="Script" path="res://scripts/act1/kitchen.gd" id="19_kit"]
+[ext_resource type="Script" path="res://scripts/act1/kitchen_visual.gd" id="20_kvis"]
+[ext_resource type="Script" path="res://scripts/act1/guard_post.gd" id="21_guard"]
+[ext_resource type="Script" path="res://scripts/act1/guard_visual.gd" id="22_gvis"]
 
 [sub_resource type="RectangleShape2D" id="RectPlayer"]
 size = Vector2(28, 28)
@@ -20,6 +31,15 @@ size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectPlot"]
 size = Vector2(56, 48)
+
+[sub_resource type="RectangleShape2D" id="RectBush"]
+size = Vector2(48, 40)
+
+[sub_resource type="RectangleShape2D" id="RectWell"]
+size = Vector2(56, 56)
+
+[sub_resource type="RectangleShape2D" id="RectPond"]
+size = Vector2(100, 60)
 
 [node name="XinWangFu" type="Node2D"]
 script = ExtResource("7_world")
@@ -37,7 +57,31 @@ theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
 theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 24
-text = "信王府 · 菜圃"
+text = "信王府 · 内院"
+
+[node name="GateLabel" type="Label" parent="."]
+z_index = 5
+offset_left = 36.0
+offset_top = 520.0
+offset_right = 220.0
+offset_bottom = 548.0
+theme_override_colors/font_color = Color(0.3, 0.22, 0.16, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "府门方向 →"
+
+[node name="StudyLabel" type="Label" parent="."]
+z_index = 5
+offset_left = 360.0
+offset_top = 100.0
+offset_right = 520.0
+offset_bottom = 128.0
+theme_override_colors/font_color = Color(0.3, 0.22, 0.16, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "书房 · 林生"
 
 [node name="NightTint" type="ColorRect" parent="."]
 visible = false
@@ -54,6 +98,7 @@ position = Vector2(250, 250)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("2_plot")
+crop_kind = "cabbage"
 grow_seconds = 3.2
 
 [node name="Visual" type="Node2D" parent="Plots/Plot1"]
@@ -69,6 +114,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("2_plot")
 grow_seconds = 3.8
+crop_kind = "carrot"
 
 [node name="Visual" type="Node2D" parent="Plots/Plot2"]
 script = ExtResource("9_pvis")
@@ -83,6 +129,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("2_plot")
 grow_seconds = 4.2
+crop_kind = "wheat"
 
 [node name="Visual" type="Node2D" parent="Plots/Plot3"]
 script = ExtResource("9_pvis")
@@ -90,6 +137,169 @@ script = ExtResource("9_pvis")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Plots/Plot3"]
 position = Vector2(24, 24)
 shape = SubResource("RectPlot")
+
+[node name="HerbPlot" type="Area2D" parent="Plots"]
+position = Vector2(520, 250)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("18_herb")
+
+[node name="Visual" type="Node2D" parent="Plots/HerbPlot"]
+script = ExtResource("9_pvis")
+
+[node name="Name" type="Label" parent="Plots/HerbPlot"]
+offset_left = -8.0
+offset_top = -24.0
+offset_right = 56.0
+offset_bottom = -4.0
+theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 12
+text = "药圃"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plots/HerbPlot"]
+position = Vector2(24, 24)
+shape = SubResource("RectPlot")
+
+[node name="Plot4" type="Area2D" parent="Plots"]
+position = Vector2(250, 340)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("2_plot")
+crop_kind = "tomato"
+grow_seconds = 3.5
+
+[node name="Visual" type="Node2D" parent="Plots/Plot4"]
+script = ExtResource("9_pvis")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plots/Plot4"]
+position = Vector2(24, 24)
+shape = SubResource("RectPlot")
+
+[node name="Plot5" type="Area2D" parent="Plots"]
+position = Vector2(340, 340)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("2_plot")
+crop_kind = "corn"
+grow_seconds = 4.0
+
+[node name="Visual" type="Node2D" parent="Plots/Plot5"]
+script = ExtResource("9_pvis")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plots/Plot5"]
+position = Vector2(24, 24)
+shape = SubResource("RectPlot")
+
+[node name="Plot6" type="Area2D" parent="Plots"]
+position = Vector2(430, 340)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("2_plot")
+crop_kind = "potato"
+grow_seconds = 3.6
+
+[node name="Visual" type="Node2D" parent="Plots/Plot6"]
+script = ExtResource("9_pvis")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plots/Plot6"]
+position = Vector2(24, 24)
+shape = SubResource("RectPlot")
+
+[node name="Bush1" type="Area2D" parent="."]
+position = Vector2(180, 380)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("12_bush")
+
+[node name="Visual" type="Node2D" parent="Bush1"]
+script = ExtResource("13_bvis")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bush1"]
+shape = SubResource("RectBush")
+
+[node name="Bush2" type="Area2D" parent="."]
+position = Vector2(520, 200)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("12_bush")
+
+[node name="Visual" type="Node2D" parent="Bush2"]
+script = ExtResource("13_bvis")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bush2"]
+shape = SubResource("RectBush")
+
+[node name="Kitchen" type="Area2D" parent="."]
+position = Vector2(620, 460)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("19_kit")
+
+[node name="Visual" type="Node2D" parent="Kitchen"]
+script = ExtResource("20_kvis")
+
+[node name="Name" type="Label" parent="Kitchen"]
+offset_left = -28.0
+offset_top = -40.0
+offset_right = 28.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "灶口"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Kitchen"]
+shape = SubResource("RectInteract")
+
+[node name="Well" type="Area2D" parent="."]
+position = Vector2(780, 220)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("14_well")
+
+[node name="Visual" type="Node2D" parent="Well"]
+script = ExtResource("15_wvis")
+
+[node name="Name" type="Label" parent="Well"]
+offset_left = -20.0
+offset_top = -48.0
+offset_right = 20.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "井"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Well"]
+shape = SubResource("RectWell")
+
+[node name="FishPond" type="Area2D" parent="."]
+position = Vector2(1100, 240)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("16_pond")
+
+[node name="Visual" type="Node2D" parent="FishPond"]
+script = ExtResource("17_pvis2")
+
+[node name="Name" type="Label" parent="FishPond"]
+offset_left = -28.0
+offset_top = -40.0
+offset_right = 28.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "鱼塘"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishPond"]
+shape = SubResource("RectPond")
 
 [node name="SellStall" type="Area2D" parent="."]
 position = Vector2(980, 360)
@@ -114,6 +324,35 @@ horizontal_alignment = 1
 position = Vector2(35, 40)
 shape = SubResource("RectInteract")
 
+[node name="NPC_Zhou" type="Area2D" parent="."]
+position = Vector2(480, 320)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "zhou"
+
+[node name="Visual" type="Node2D" parent="NPC_Zhou"]
+script = ExtResource("10_actor")
+body_color = Color(0.48, 0.42, 0.55, 1)
+accent_color = Color(0.95, 0.9, 0.85, 1)
+hair_color = Color(0.12, 0.1, 0.12, 1)
+scale_factor = 1.12
+sprite_name = "zhou"
+look = "lady"
+
+[node name="Name" type="Label" parent="NPC_Zhou"]
+offset_left = -36.0
+offset_top = -48.0
+offset_right = 36.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "王妃"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Zhou"]
+shape = SubResource("RectInteract")
 [node name="NPC_Aen" type="Area2D" parent="."]
 position = Vector2(560, 390)
 collision_layer = 4
@@ -125,7 +364,10 @@ npc_id = "aen"
 script = ExtResource("10_actor")
 body_color = Color(0.55, 0.48, 0.42, 1)
 accent_color = Color(0.92, 0.82, 0.7, 1)
+hair_color = Color(0.15, 0.12, 0.12, 1)
 scale_factor = 1.15
+sprite_name = "aen"
+look = "aen"
 
 [node name="Name" type="Label" parent="NPC_Aen"]
 offset_left = -28.0
@@ -152,7 +394,10 @@ npc_id = "wu_bo"
 script = ExtResource("10_actor")
 body_color = Color(0.42, 0.48, 0.55, 1)
 accent_color = Color(0.88, 0.78, 0.65, 1)
+hair_color = Color(0.5, 0.48, 0.45, 1)
 scale_factor = 1.2
+sprite_name = "wu_bo"
+look = "elder"
 
 [node name="Name" type="Label" parent="NPC_WuBo"]
 offset_left = -28.0
@@ -168,6 +413,29 @@ horizontal_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_WuBo"]
 shape = SubResource("RectInteract")
 
+[node name="GuardPost" type="Area2D" parent="."]
+position = Vector2(920, 500)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("21_guard")
+
+[node name="Visual" type="Node2D" parent="GuardPost"]
+script = ExtResource("22_gvis")
+
+[node name="Name" type="Label" parent="GuardPost"]
+offset_left = -36.0
+offset_top = -40.0
+offset_right = 36.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "护卫棚"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GuardPost"]
+shape = SubResource("RectInteract")
+
 [node name="NPC_Qiushui" type="Area2D" parent="."]
 position = Vector2(700, 500)
 collision_layer = 4
@@ -180,6 +448,8 @@ script = ExtResource("10_actor")
 body_color = Color(0.62, 0.45, 0.48, 1)
 accent_color = Color(0.95, 0.85, 0.78, 1)
 scale_factor = 1.05
+sprite_name = "qiushui"
+look = "maiden"
 
 [node name="Name" type="Label" parent="NPC_Qiushui"]
 offset_left = -28.0
@@ -195,6 +465,238 @@ horizontal_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Qiushui"]
 shape = SubResource("RectInteract")
 
+[node name="NPC_Eunuch" type="Area2D" parent="."]
+position = Vector2(640, 300)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "eunuch"
+
+[node name="Visual" type="Node2D" parent="NPC_Eunuch"]
+script = ExtResource("10_actor")
+body_color = Color(0.55, 0.35, 0.4, 1)
+accent_color = Color(0.95, 0.88, 0.7, 1)
+scale_factor = 1.2
+sprite_name = "eunuch"
+look = "eunuch"
+
+[node name="Name" type="Label" parent="NPC_Eunuch"]
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "中使"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Eunuch"]
+shape = SubResource("RectInteract")
+
+[node name="NPC_Weaver" type="Area2D" parent="."]
+position = Vector2(160, 640)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "weaver"
+
+[node name="Visual" type="Node2D" parent="NPC_Weaver"]
+script = ExtResource("10_actor")
+body_color = Color(0.58, 0.48, 0.42, 1)
+accent_color = Color(0.9, 0.8, 0.72, 1)
+scale_factor = 1.05
+sprite_name = "weaver"
+look = "weaver"
+
+[node name="Name" type="Label" parent="NPC_Weaver"]
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "织坊"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Weaver"]
+shape = SubResource("RectInteract")
+
+[node name="NPC_LinSheng" type="Area2D" parent="."]
+position = Vector2(420, 160)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "lin_sheng"
+
+[node name="Visual" type="Node2D" parent="NPC_LinSheng"]
+script = ExtResource("10_actor")
+body_color = Color(0.4, 0.45, 0.55, 1)
+accent_color = Color(0.88, 0.85, 0.78, 1)
+scale_factor = 1.1
+sprite_name = "lin_sheng"
+look = "scholar"
+
+[node name="Name" type="Label" parent="NPC_LinSheng"]
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "林生"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_LinSheng"]
+shape = SubResource("RectInteract")
+
+
+[node name="NPC_Relief" type="Area2D" parent="."]
+position = Vector2(90, 620)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "relief"
+
+[node name="Visual" type="Node2D" parent="NPC_Relief"]
+script = ExtResource("10_actor")
+body_color = Color(0.48, 0.4, 0.35, 1)
+accent_color = Color(0.85, 0.75, 0.65, 1)
+scale_factor = 1.0
+sprite_name = "relief"
+look = "ragged"
+
+[node name="Name" type="Label" parent="NPC_Relief"]
+offset_left = -36.0
+offset_top = -48.0
+offset_right = 36.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "求赈"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Relief"]
+shape = SubResource("RectInteract")
+[node name="NPC_GateChild" type="Area2D" parent="."]
+position = Vector2(120, 560)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "gate_child"
+
+[node name="Visual" type="Node2D" parent="NPC_GateChild"]
+script = ExtResource("10_actor")
+body_color = Color(0.5, 0.42, 0.35, 1)
+accent_color = Color(0.9, 0.78, 0.68, 1)
+scale_factor = 0.85
+sprite_name = "gate_child"
+look = "child"
+
+[node name="Name" type="Label" parent="NPC_GateChild"]
+offset_left = -36.0
+offset_top = -48.0
+offset_right = 36.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "流民童"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_GateChild"]
+shape = SubResource("RectInteract")
+
+[node name="NPC_GateSoldier" type="Area2D" parent="."]
+position = Vector2(220, 600)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "gate_soldier"
+
+[node name="Visual" type="Node2D" parent="NPC_GateSoldier"]
+script = ExtResource("10_actor")
+body_color = Color(0.35, 0.38, 0.32, 1)
+accent_color = Color(0.7, 0.62, 0.5, 1)
+scale_factor = 1.15
+sprite_name = "gate_soldier"
+look = "soldier"
+
+[node name="Name" type="Label" parent="NPC_GateSoldier"]
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "老兵"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_GateSoldier"]
+shape = SubResource("RectInteract")
+
+[node name="NPC_Shen" type="Area2D" parent="."]
+position = Vector2(880, 520)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "shen"
+
+[node name="Visual" type="Node2D" parent="NPC_Shen"]
+script = ExtResource("10_actor")
+body_color = Color(0.32, 0.36, 0.34, 1)
+accent_color = Color(0.72, 0.65, 0.55, 1)
+scale_factor = 1.18
+sprite_name = "shen"
+look = "soldier"
+
+[node name="Name" type="Label" parent="NPC_Shen"]
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "沈戍"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Shen"]
+shape = SubResource("RectInteract")
+
+[node name="NPC_Liu" type="Area2D" parent="."]
+position = Vector2(580, 470)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_npc")
+npc_id = "liu"
+
+[node name="Visual" type="Node2D" parent="NPC_Liu"]
+script = ExtResource("10_actor")
+body_color = Color(0.55, 0.42, 0.4, 1)
+accent_color = Color(0.92, 0.82, 0.75, 1)
+scale_factor = 1.0
+sprite_name = "liu"
+look = "maiden"
+
+[node name="Name" type="Label" parent="NPC_Liu"]
+offset_left = -28.0
+offset_top = -48.0
+offset_right = 28.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+text = "柳筝"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC_Liu"]
+shape = SubResource("RectInteract")
+
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(640, 400)
 collision_layer = 2
@@ -205,21 +707,24 @@ script = ExtResource("1_player")
 script = ExtResource("10_actor")
 body_color = Color(0.38, 0.32, 0.55, 1)
 accent_color = Color(0.95, 0.86, 0.75, 1)
+hair_color = Color(0.12, 0.1, 0.12, 1)
 scale_factor = 1.25
+sprite_name = "wang"
+look = "prince"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectPlayer")
 
 [node name="InteractPrompt" type="Label" parent="Player"]
-offset_left = -70.0
+offset_left = -90.0
 offset_top = -58.0
-offset_right = 70.0
+offset_right = 90.0
 offset_bottom = -34.0
 theme_override_colors/font_color = Color(0.18, 0.12, 0.08, 1)
 theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 14
-text = "E · 互动"
+text = "E / 空格 互动"
 horizontal_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -242,8 +747,8 @@ mouse_filter = 2
 layout_mode = 0
 offset_left = 18.0
 offset_top = 14.0
-offset_right = 210.0
-offset_bottom = 78.0
+offset_right = 250.0
+offset_bottom = 200.0
 
 [node name="VBox" type="VBoxContainer" parent="HUD/HudRoot/PanelMoney"]
 layout_mode = 2
@@ -260,11 +765,64 @@ theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
 theme_override_font_sizes/font_size = 18
 text = "菜蔬 0"
 
+[node name="Fish" type="Label" parent="HUD/HudRoot/PanelMoney/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "鱼 0"
+[node name="Herbs" type="Label" parent="HUD/HudRoot/PanelMoney/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "药材 0"
+[node name="Stock" type="Label" parent="HUD/HudRoot/PanelMoney/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "仓储 0/8"
+
+[node name="Hearts" type="Label" parent="HUD/HudRoot/PanelMoney/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "人心 8"
+
+[node name="Guards" type="Label" parent="HUD/HudRoot/PanelMoney/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.14, 0.1, 1)
+theme_override_font_sizes/font_size = 16
+text = "亲随 0"
+[node name="Objective" type="Label" parent="HUD/HudRoot"]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 18.0
+offset_right = 980.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "目标"
+
+[node name="Toast" type="Label" parent="HUD/HudRoot"]
+visible = false
+layout_mode = 0
+offset_left = 480.0
+offset_top = 320.0
+offset_right = 800.0
+offset_bottom = 360.0
+theme_override_colors/font_color = Color(0.2, 0.12, 0.08, 1)
+theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "+ 文"
+horizontal_alignment = 1
+
 [node name="Tip" type="Label" parent="HUD/HudRoot"]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 678.0
-offset_right = 700.0
+offset_right = 900.0
 offset_bottom = 706.0
 theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
 theme_override_colors/font_outline_color = Color(0.98, 0.94, 0.86, 1)

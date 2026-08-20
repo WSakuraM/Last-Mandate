@@ -1,33 +1,27 @@
 # 非像素 · 免费可商用素材接入清单
 
-> 目标观感：热门 2D 成品风（柔和、手绘/卡通风），**不要像素**。  
-> Kenney Tiny Town 仅作早期试验，**已不再作为画面主风格**。
+> **风格已定：C 赛璐璐。** 见 [`docs/画面风格定案_C.md`](../../docs/画面风格定案_C.md)
 
-## 公司网限制说明
+## 你下载的包应放哪里（已帮你拷好）
 
-本机访问 itch.io 下载失败。请在**家里网络**按下列下载，解压到指定目录后告诉我「素材已放好」，我会继续挂接。
+| 你下载的位置 | 应放入工程的目录（英文名） | 中文意思 |
+|---|---|---|
+| `D:\Game\Gr8FarmPack` | `game/assets_library/vendor/oddblot/great_farm/` | 第三方原包 · Great Farm 蔬菜道具 |
+| `D:\Game\Basic_Hand-Drawn_Asset_Pack_V0.1` | `game/assets_library/vendor/schwarnhild/hand_drawn_v01/` | 第三方原包 · 手绘地表（**需署名 schwarnhild**） |
 
-## 优先包（已核对许可摘要）
+**说明：**  
+- `vendor/` = 原包仓库（完整保留，方便查许可）  
+- 真正给游戏用时，再挑图复制到 `game/assets/models/...`  
+- 原下载文件夹可以留着当备份，也可以删；工程里已经有一份。
 
-### 1) FREE The Great Farm（手绘农场）— 强烈推荐
-- 页面：https://oddblotstudios.itch.io/free-the-great-farm-isometric  
-- 许可：可商用、可改；不可单独转卖素材；不可用于训练 AI  
-- 风格：手绘蔬菜/道具（非像素）  
-- 放到：`game/assets_library/vendor/oddblot/great_farm/`
+## 当前状态
 
-### 2) Basic Hand-Drawn Tileset（手绘顶视角）
-- 页面：https://schwarnhild.itch.io/basic-hand-drawn-tileset-and-asset-pack  
-- 许可：可商用、可改；**需要署名 schwarnhild**；不可再分发素材包  
-- 风格：128 手绘顶视角草地/土/树/房  
-- 放到：`game/assets_library/vendor/schwarnhild/hand_drawn_v01/`
+| 包 | 状态 |
+|---|---|
+| Great Farm（Oddblot） | ✅ 已在 `vendor/oddblot/great_farm/`（约 147 文件） |
+| Hand-Drawn（schwarnhild） | ✅ 已在 `vendor/schwarnhild/hand_drawn_v01/`（约 25 文件） |
+| Kenney 音效 | ✅ 早前已入 |
 
-下载后把许可文件一并放进 `game/assets_library/licenses/`。
+署名见 `licenses/CREDITS_STYLE_C.md`。
 
-## 当前工程已做的画面升级（不等下载）
-
-因网络下不了上述包，已先把 M1 改成**非像素柔和卡通风**（椭圆剪影角色、软边草地、圆角摊位、面板 HUD），观感接近热门 2D 成品的「干净可读」，而不是像素块。  
-等你放好手绘包，我会替换为真正的市场素材。
-
-## 艺术方向更正
-
-「水墨勾边」只是早期文档里的气质讨论，**不是你要求的最终贴图方案**；现以「非像素、可商用、偏热门 2D 成品」为准。
+下一步：正式木框 UI 已挂。可继续：古风立绘候选入库，或角色 PNG 进 `models/characters/`。

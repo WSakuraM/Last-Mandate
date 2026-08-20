@@ -1,22 +1,25 @@
 # 《末命》素材 / 模型库管理说明
 
-本目录是**可商用素材总库**的管理中心；游戏运行时真正引用的资源在 `game/assets/`。
+## 本目录是**可商用素材总库**的管理中心；游戏运行时真正引用的资源在 `game/assets/`。
+
+**中文文件夹对照**：见仓库 [`docs/文件夹说明.md`](../../docs/文件夹说明.md)。
 
 ## 目录约定
 
 ```text
 game/
-  assets_library/           ← 素材库（管理、许可、原始包）
-    README.md               ← 本文件
-    MANIFEST.csv            ← 每条资产登记表（必填）
-    licenses/               ← 许可证原文副本
-    vendor/                 ← 解压后的第三方原始包（按来源分子目录）
-    staging/                ← 下载的 zip 暂存（可删，勿直接引用）
-  assets/                   ← Godot 实际使用的精选/裁切资源
-    sprites/
-    tiles/
+  assets_library/           ← 素材库（管理、许可、原始包）【中文：第三方素材仓库】
+    README.md
+    MANIFEST.csv
+    licenses/               ← 许可证
+    vendor/                 ← 第三方原始包
+    staging/                ← zip 暂存
+  assets/                   ← Godot 实际使用
+    models/                 ← 【模型库】材料/植被/动物/人物/道具
+    audio/                  ← 【声音库】动效/天气/环境/音乐/对话
+    sprites/                ← 旧试验精灵（可逐步迁到 models/）
+    tiles/                  ← 旧地砖
     ui/
-    audio/
 ```
 
 ## 准入规则（防侵权）

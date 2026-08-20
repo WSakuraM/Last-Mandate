@@ -12,6 +12,9 @@ config/icon="res://icon.svg"
 [autoload]
 GameState="*res://scripts/autoload/game_state.gd"
 Dialogue="*res://scripts/autoload/dialogue_bus.gd"
+WorldClock="*res://scripts/autoload/world_clock.gd"
+AssetBank="*res://scripts/autoload/asset_bank.gd"
+Sfx="*res://scripts/autoload/sfx_bus.gd"
 
 [display]
 window/size/viewport_width=1280
@@ -26,4 +29,4 @@ window/stretch/aspect="expand"
 
 [rendering]
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.92, 0.88, 0.78, 1)
+environment/defaults/default_clear_color=Color(0.96, 0.93, 0.86, 1)

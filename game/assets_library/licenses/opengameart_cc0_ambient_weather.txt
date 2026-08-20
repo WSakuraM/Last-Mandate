@@ -1,0 +1,24 @@
+# OpenGameArt CC0 audio (Style C fill)
+
+## Rain ambient
+- Source: https://opengameart.org/content/rain-ambient-not-loopable-2-versions-available
+- File: Ove Melaa - Rainy (NOT loopable).ogg
+- Runtime: assets/audio/weather/rain.ogg
+- License: CC0
+
+## Wind / snow (soft wind)
+- Source: https://opengameart.org/content/wind1
+- Author pack: wind1–wind5 (CC0)
+- Runtime: weather/wind.ogg, weather/snow.ogg
+  (OGA auto-generated ogg previews of wind1/wind2; full WAV also in staging)
+- License: CC0
+
+## Yard day birds
+- Source: https://opengameart.org/content/ambient-bird-sounds
+- File: birds-isaiah658.ogg
+- Runtime: ambient/yard_day.ogg
+- License: CC0
+
+## Optional forest ambient (staging only)
+- https://opengameart.org/content/ambient-mountain-river-wind-and-forest-and-waterfall
+- ambenv_3.mp3 + preview ogg in staging (not copied to runtime; birds used instead)

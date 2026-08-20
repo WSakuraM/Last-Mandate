@@ -39,11 +39,13 @@ git remote -v
 | 顺序 | 文件 | 目的 |
 |---|---|---|
 | 1 | **本文件 AGENTS.md** | 约束与地图 |
-| 2 | [docs/story/00_overview.md](docs/story/00_overview.md) | 剧本细稿总览（图+对白） |
+| 2 | [docs/story/00_剧本总览.md](docs/story/00_剧本总览.md) | 剧本细稿总览（图+对白） |
 | 3 | [archive/index.md](archive/index.md) | 当前生效设计版本 |
 | 4 | [archive/VERSION](archive/VERSION) | 产品版本号 |
-| 5 | [docs/01_vision.md](docs/01_vision.md) | 主题与定位 |
-| 6 | [docs/05_milestones.md](docs/05_milestones.md) | 做到哪、不做什么 |
+| 5 | [docs/01_定位愿景.md](docs/01_定位愿景.md) | 主题与定位 |
+| 5b | [docs/09_M1经营设计.md](docs/09_M1经营设计.md) | M1 经营/货币/小故事（改玩法必读） |
+| 6 | [docs/story/11_剧情总流程.md](docs/story/11_剧情总流程.md) | 剧情总流程与跨度（讲故事一张图） |
+| 7 | [docs/05_里程碑.md](docs/05_里程碑.md) | 做到哪、不做什么 |
 
 Cursor 规则（克隆后自动可用）：
 
@@ -56,16 +58,16 @@ Cursor 规则（克隆后自动可用）：
 
 | 项 | 状态 |
 |---|---|
-| 产品版本 | **0.0.2** 文档 + **M1 可运行切片**（`game/`） |
-| 剧本入口 | [`docs/story/00_overview.md`](docs/story/00_overview.md) |
-| 美术 | **非像素 · 柔和卡通 2D**（对标热门成品观感；市场手绘包待回家下载接入） |
+| 产品版本 | **0.0.5** 文档 + **M1 可运行切片**（`game/`）· 风格 C |
+| 剧本入口 | [`docs/story/00_剧本总览.md`](docs/story/00_剧本总览.md) |
+| 美术 | **非像素 · 赛璐璐平涂**（定案 C；Kenney 音效已入；itch 手绘包待家里下载） |
 | 引擎工程 | **已建**：用 Godot 4.7 打开 [`game/`](game/) |
 | 预定引擎 | **Godot 4**（MIT，永久免费） |
 | 平台 / 语言 | PC Steam · 简体中文 |
 | 结局 | **悲剧定轨煤山**（2A）；无「真·中兴通关」 |
 | 不做 | AI 诏书、大地图实时征战、开放世界 3D 北京等（见 milestones） |
 
-下一里程碑：**M1** — 第一幕最小循环 + 夜召演出（见 `docs/05_milestones.md`）。
+下一里程碑：**M1** — 第一幕最小循环 + 夜召演出（见 `docs/05_里程碑.md`）。
 
 ---
 
@@ -75,16 +77,18 @@ Cursor 规则（克隆后自动可用）：
 Last-Mandate/
 ├── AGENTS.md                 ← 你在这里（跨 Agent 手册）
 ├── README.md                 ← 人类短入口
-├── docs/                     ← 工作稿（可改写）
+├── docs/                     ← 工作稿（可改写；中文文件名）
+│   ├── 文档索引.md           ← 本目录索引
 │   ├── DAILY_LOG.md          ← 每日工作日志（单文件按日改）
-│   ├── 01_vision.md
-│   ├── 02_story_bible.md
-│   ├── 03_systems.md
-│   ├── 04_art_audio.md
-│   ├── 05_milestones.md
-│   ├── 06_memory_fragments.md
-│   ├── 07_git_github.md
-│   └── 08_cross_machine.md   ← 双电脑交叉开发流程
+│   ├── 01_定位愿景.md
+│   ├── 02_故事圣经.md
+│   ├── 03_数值系统.md
+│   ├── 04_美术音频.md
+│   ├── 05_里程碑.md
+│   ├── 06_回忆碎片.md
+│   ├── 07_Git双远程.md
+│   ├── 08_双机交叉开发.md   ← 双电脑交叉开发流程
+│   └── 09_M1经营设计.md
 ├── archive/                  ← 版本化冻结稿（SemVer，不覆盖旧版）
 │   ├── VERSION / CHANGELOG.md / index.md
 │   ├── vision|story|systems|ui|tech|plan|art_audio/
@@ -125,7 +129,7 @@ Last-Mandate/
 
 ### 公司电脑 ↔ 家里电脑
 
-**开工前必须 pull，收工必须 push 两边**，否则另一台会丢改动或冲突。详见 [docs/08_cross_machine.md](docs/08_cross_machine.md)。
+**开工前必须 pull，收工必须 push 两边**，否则另一台会丢改动或冲突。详见 [docs/08_双机交叉开发.md](docs/08_双机交叉开发.md)。
 
 简版：
 
@@ -158,7 +162,7 @@ git push gitee main
 - 改设计 → 更新 `docs/`，重要定稿写入 `archive/` 新版本号  
 - 改议题 → 维护 `data/issues/*.json` 与 README 索引  
 - 提交 → 双远程；作者 Sakura / 上述邮箱  
-- 不确定范围 → 先读 `docs/05_milestones.md` 的「不做清单」
+- 不确定范围 → 先读 `docs/05_里程碑.md` 的「不做清单」
 
 ### Don’t
 
@@ -174,11 +178,11 @@ git push gitee main
 
 | 任务 | 必读 |
 |---|---|
-| 改剧情 / 场次 | `docs/02_story_bible.md` + `archive/story/*` + `docs/06_memory_fragments.md` |
-| 改数值 / 议题 | `docs/03_systems.md` + `data/issues/` |
-| 改 UI | `archive/ui/ui_*.md` + `docs/04_art_audio.md` |
-| 开 Godot / M1 | `archive/tech/tech_*.md` + `docs/05_milestones.md` M1 |
-| 只同步双机 | `docs/08_cross_machine.md` |
+| 改剧情 / 场次 | `docs/02_故事圣经.md` + `archive/story/*` + `docs/06_回忆碎片.md` |
+| 改数值 / 议题 | `docs/03_数值系统.md` + `docs/09_M1经营设计.md` + `data/issues/` |
+| 改 UI | `archive/ui/ui_*.md` + `docs/04_美术音频.md` |
+| 开 Godot / M1 | `archive/tech/tech_*.md` + `docs/05_里程碑.md` M1 |
+| 只同步双机 | `docs/08_双机交叉开发.md` |
 
 ---
 
