@@ -17,7 +17,7 @@
 | [docs/](docs/) | 设计工作稿 |
 | [archive/](archive/) | SemVer 冻结留痕 |
 | [docs/07_git_github.md](docs/07_git_github.md) | GitHub + Gitee |
-| [scripts/daily_backup.ps1](scripts/daily_backup.ps1) | 每日 16:00 本机备份 |
+| [scripts/daily_backup.ps1](scripts/daily_backup.ps1) | 可选手动备份（定时任务已取消） |
 
 ## 远程
 

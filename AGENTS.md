@@ -88,8 +88,8 @@ Last-Mandate/
 │   └── decisions/            ← ADR
 ├── data/issues/              ← 第二幕议题 JSON
 ├── scripts/
-│   ├── daily_backup.ps1      ← 每日 16:00 备份（本机任务）
-│   └── register_daily_backup_task.ps1
+│   ├── daily_backup.ps1      ← 可选手动备份脚本（定时任务已取消）
+│   └── register_daily_backup_task.ps1  ← 已不推荐使用
 └── .cursor/rules/            ← Agent 强制约定
 ```
 
@@ -139,23 +139,12 @@ git push gitee main
 
 ---
 
-## 6. 每日备份说明（重要）
+## 6. 备份说明
 
-每日 **16:00 本机本地时区** 的备份是 **Windows 计划任务**，**不是 Cursor Automations**。
+**每日 16:00 计划任务已取消**（原名 `LastMandate-DailyBackup-1600`）。  
 
-- 任务名：`LastMandate-DailyBackup-1600`  
-- 脚本：`scripts/daily_backup.ps1`  
-- **只在注册过该任务的那台 Windows 上跑**；新电脑要重新执行：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\register_daily_backup_task.ps1
-```
-
-在 Cursor 里**看不到**这个任务。查看方式：
-
-1. `Win + R` → 输入 `taskschd.msc` → 回车  
-2. 任务计划程序库 → 找到 `LastMandate-DailyBackup-1600`  
-3. 或 PowerShell：`Get-ScheduledTask -TaskName LastMandate-DailyBackup-1600`
+请在收工或用户说「提交代码」时：`commit` + `push origin` + `push gitee`。  
+`scripts/daily_backup.ps1` 仅作可选手动工具，**不要再注册定时任务**，除非用户重新要求。
 
 ---
 

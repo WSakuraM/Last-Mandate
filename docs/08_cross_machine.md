@@ -61,14 +61,8 @@ git push gitee main
 
 ## 每日 16:00 备份
 
-- 是 **Windows 计划任务**，绑定「注册过任务的那台电脑」。  
-- **公司与家里需要各自注册一次**（若两边都想自动备份）：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\register_daily_backup_task.ps1
-```
-
-- 若某台电脑 16:00 关机，则该台不会备份；靠你收工时的手动双推更重要。
+**已取消**（计划任务 `LastMandate-DailyBackup-1600` 已删除）。  
+交叉开发请靠收工时手动 `push origin` + `push gitee`，见上文流程。
 
 ## 检查清单（切换电脑前）
 

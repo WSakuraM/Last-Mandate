@@ -60,4 +60,5 @@ Agent 规则见 [`.cursor/rules/design-traceability.mdc`](../.cursor/rules/desig
 
 ## 每日备份
 
-每天 **16:00（本机本地时区）** 由 Windows 计划任务运行 [`scripts/daily_backup.ps1`](../scripts/daily_backup.ps1)：若有未提交改动则自动 commit，并推送到 **GitHub + Gitee**。
+**已取消。** 不再使用 Windows 计划任务 `LastMandate-DailyBackup-1600`。  
+请靠收工时手动双推（GitHub + Gitee）；需要时可自行运行 `scripts/daily_backup.ps1`，但项目默认不注册定时任务。

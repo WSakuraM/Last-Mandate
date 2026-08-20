@@ -6,6 +6,14 @@
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- 取消 Windows 计划任务 `LastMandate-DailyBackup-1600`；不再每日 16:00 自动备份。
+
+---
+
 ## [0.0.1] - 2026-08-20
 
 ### Docs
