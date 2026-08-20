@@ -13,7 +13,10 @@ git config user.email "1124114910@qq.com"
 | 远程名 | 平台 | 地址 |
 |---|---|---|
 | `origin` | GitHub | https://github.com/WSakuraM/Last-Mandate.git |
-| `gitee` | Gitee | （创建后填入，形如 https://gitee.com/\<用户名\>/Last-Mandate.git） |
+| `gitee` | Gitee | https://gitee.com/ChenZheng521/last-mandate.git |
+
+> 若你在 Gitee 将「个人空间地址」改为 `Sakura`（或其它），仓库 URL 会变，需执行：  
+> `git remote set-url gitee https://gitee.com/<新空间名>/last-mandate.git`
 
 日后说「提交代码」= **本地 commit + 同时 push 到 origin 与 gitee**。
 
