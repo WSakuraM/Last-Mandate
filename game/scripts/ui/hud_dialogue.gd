@@ -6,8 +6,8 @@ extends CanvasLayer
 @onready var body_label: Label = $DialoguePanel/Margin/VBox/Body
 @onready var hint_label: Label = $DialoguePanel/Margin/VBox/Hint
 @onready var choice_box: VBoxContainer = $DialoguePanel/Margin/VBox/Choices
-@onready var money_label: Label = $HudRoot/Money
-@onready var veg_label: Label = $HudRoot/Veggies
+@onready var money_label: Label = $HudRoot/PanelMoney/VBox/Money
+@onready var veg_label: Label = $HudRoot/PanelMoney/VBox/Veggies
 @onready var tip_label: Label = $HudRoot/Tip
 
 func _ready() -> void:
