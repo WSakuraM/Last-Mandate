@@ -1,0 +1,4 @@
+# Daily backup logs (local). Kept out of git to avoid noisy commits.
+*
+!.gitignore
+!.gitkeep

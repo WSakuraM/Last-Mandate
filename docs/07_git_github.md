@@ -20,6 +20,18 @@ git config user.email "1124114910@qq.com"
 
 日后说「提交代码」= **本地 commit + 同时 push 到 origin 与 gitee**。
 
+## 每日备份（本机 16:00）
+
+Windows 计划任务：`LastMandate-DailyBackup-1600`  
+脚本：[`scripts/daily_backup.ps1`](../scripts/daily_backup.ps1)
+
+```powershell
+cd D:\Game\Last-Mandate
+powershell -ExecutionPolicy Bypass -File .\scripts\register_daily_backup_task.ps1
+```
+
+有改动则自动 commit（作者 Sakura）并推送两边；无改动不产生空提交。日志在 `archive/daily/`（默认不入库）。
+
 ## 日常命令
 
 ```powershell
