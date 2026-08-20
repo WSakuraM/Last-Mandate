@@ -35,4 +35,6 @@ exports/
 credentials.json
 
 # Cursor / local agent
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**

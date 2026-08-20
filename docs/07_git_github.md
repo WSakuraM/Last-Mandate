@@ -1,58 +1,61 @@
-# Git / GitHub 管控说明
+# Git 管控说明（GitHub + Gitee）
 
-## 已完成（本地）
-
-- 仓库已 `git init`，默认分支 `main`
-- 首次提交作者：**Sakura \<1124114910@qq.com\>**
-- 已添加适合 Godot 的 `.gitignore`
-
-## 本仓库建议的本地身份（只影响本项目）
-
-在项目根目录执行（不要改全局配置，除非你自己想改）：
+## 身份（仅本仓库）
 
 ```powershell
+cd D:\Game\Last-Mandate
 git config user.name "Sakura"
 git config user.email "1124114910@qq.com"
 ```
 
-之后在本仓库的普通 `git commit` 都会用上述署名。
+## 远程
 
-## 推到 GitHub（需你完成一次账号侧操作）
+| 远程名 | 平台 | 地址 |
+|---|---|---|
+| `origin` | GitHub | https://github.com/WSakuraM/Last-Mandate.git |
+| `gitee` | Gitee | （创建后填入，形如 https://gitee.com/\<用户名\>/Last-Mandate.git） |
 
-1. 打开 https://github.com/new  
-2. Repository name 建议：`Last-Mandate`（或 `LastMandate`）  
-3. 选 **Private** 或 Public（按你意愿）  
-4. **不要**勾选 “Add a README”（本地已有内容）  
-5. 创建后，把页面上的仓库地址发我，或自己执行：
+日后说「提交代码」= **本地 commit + 同时 push 到 origin 与 gitee**。
 
-```powershell
-cd D:\Game\Last-Mandate
-git remote add origin https://github.com/<你的用户名>/Last-Mandate.git
-git push -u origin main
-```
-
-若使用 SSH：
-
-```powershell
-git remote add origin git@github.com:<你的用户名>/Last-Mandate.git
-git push -u origin main
-```
-
-## 日常管控常用命令
+## 日常命令
 
 ```powershell
 git status
 git add -A
 git commit -m "说明本次改动原因"
-git push
-git pull
+git push origin main
+git push gitee main
 ```
 
-## 可选：安装 GitHub CLI
+拉取以 GitHub 为主即可：
 
-安装后可用 `gh repo create` 一键建库并推送：
+```powershell
+git pull origin main
+```
 
-- https://cli.github.com/
-- 或 `winget install GitHub.cli`
+## 首次接入 Gitee
 
-安装并 `gh auth login` 后告诉我，我可以帮你创建远程仓库并完成首次推送。
+1. 打开 https://gitee.com/projects/new  
+2. 仓库名：`Last-Mandate`  
+3. **不要**勾选「使用 Readme 文件初始化仓库」  
+4. 可见性自选（公开/私有）  
+5. 创建后执行（把 URL 换成你的）：
+
+```powershell
+cd D:\Game\Last-Mandate
+git remote add gitee https://gitee.com/<你的用户名>/Last-Mandate.git
+git push -u gitee main
+```
+
+推送时按提示登录 Gitee（账号密码或私人令牌）。
+
+## 可选：一条命令推两边
+
+```powershell
+git remote add all https://github.com/WSakuraM/Last-Mandate.git
+git remote set-url --add --push all https://github.com/WSakuraM/Last-Mandate.git
+git remote set-url --add --push all https://gitee.com/<你的用户名>/Last-Mandate.git
+git push all main
+```
+
+仍建议保留独立的 `origin` / `gitee`，便于单独排查。
