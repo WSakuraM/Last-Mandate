@@ -41,9 +41,9 @@ game/
 
 ## 当前阶段策略
 
-- 正式水墨明末套装市面几乎没有「又免费又贴题」的完整包。  
-- **M1 先用 Kenney 等 CC0 像素/小镇素材**把可玩性做扎实。  
-- 贴题水墨角色/建筑：后续你确认后「自制 / 委托 / 付费可商用包」再替换，`MANIFEST` 里用 `status=placeholder|final` 区分。
+- 画面目标：**非像素**、对标热门 2D 成品（柔和/手绘卡通），**不用像素作主风格**。  
+- M1 已先用柔和卡通程序绘制保证可读；回家按 [`NEXT_STEPS.md`](NEXT_STEPS.md) 接入 Great Farm / Hand-Drawn Tileset 等可商用包。  
+- `MANIFEST` 用 `status=placeholder|final` 区分临时与定稿。
 
 ## Godot 路径
 

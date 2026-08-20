@@ -13,7 +13,8 @@
 
 见 [`assets_library/README.md`](assets_library/README.md) 与 [`assets_library/MANIFEST.csv`](assets_library/MANIFEST.csv)。
 
-当前画面精灵来自 **Kenney Tiny Town / Tiny Dungeon（CC0，可商用）**，作 M1 占位；正式水墨明末风需后续替换（自制/委托/付费可商用包）。
+当前 M1 画面为**非像素柔和卡通**（程序绘制剪影 + 软边场地）。  
+下一步：按 [`assets_library/NEXT_STEPS.md`](assets_library/NEXT_STEPS.md) 回家下载手绘可商用包后替换为成品贴图。
 
 ## 玩法提示
 

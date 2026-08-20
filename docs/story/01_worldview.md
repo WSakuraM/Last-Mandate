@@ -49,7 +49,7 @@ flowchart LR
 
 ---
 
-## 空间想象（水墨勾边 2D）
+## 空间想象（非像素 2D）
 
 ```mermaid
 flowchart LR
