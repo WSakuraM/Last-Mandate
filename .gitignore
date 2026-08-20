@@ -38,3 +38,6 @@ credentials.json
 .cursor/*
 !.cursor/rules/
 !.cursor/rules/**
+
+# Local agent scratch
+.workbuddy/
