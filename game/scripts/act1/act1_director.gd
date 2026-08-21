@@ -785,6 +785,7 @@ func _on_gazette_choice(choice_id: String) -> void:
 				{"narration": true, "text": "纸成灰。灰比字安全。"},
 				{"speaker": "林生", "text": "善。"},
 			])
+	Dialogue.dialogue_finished.connect(_hide_named.bind("NPC_LinSheng"), CONNECT_ONE_SHOT)
 
 func _talk_gate_soldier() -> void:
 	if not GameState.flags.get("gate_open", false):
@@ -845,9 +846,48 @@ func _hide_named(node_name: String) -> void:
 	var n := get_parent().get_node_or_null(node_name)
 	if n == null:
 		return
-	await get_tree().create_timer(0.25).timeout
+	var ink_id := _ink_id_for_node(node_name)
+	if Dialogue.is_busy():
+		await Dialogue.dialogue_finished
+	if ink_id != "":
+		await InkFarewell.play(ink_id)
+	else:
+		await get_tree().create_timer(0.25).timeout
+	if not is_instance_valid(n):
+		return
 	n.visible = false
 	n.set_deferred("monitoring", false)
+
+func _ink_id_for_node(node_name: String) -> String:
+	match node_name:
+		"NPC_Eunuch":
+			return "eunuch"
+		"NPC_GateChild":
+			return "gate_child"
+		"NPC_Weaver":
+			return "weaver"
+		"NPC_GateSoldier":
+			return "gate_soldier"
+		"NPC_Relief":
+			return "relief"
+		"NPC_Qiushui":
+			return "qiushui"
+		"NPC_LinSheng":
+			return "lin_sheng"
+		"NPC_Zhou":
+			return "zhou"
+		"NPC_Shen":
+			return "shen"
+		"NPC_Liu":
+			return "liu"
+		_:
+			return ""
+
+func _play_ink_seal(character_id: String) -> void:
+	## 不离开场景的支线收束：只播水墨定格，不隐藏 NPC。
+	if Dialogue.is_busy():
+		await Dialogue.dialogue_finished
+	await InkFarewell.play(character_id)
 
 func _ensure_shen_liu() -> void:
 	if not GameState.flags.get("shen_joined", false):
@@ -913,6 +953,11 @@ func _try_lovers_sugar() -> void:
 		{"speaker": "柳筝", "text": "那就永远欠着。欠着也好过没有。"},
 		{"narration": true, "text": "半块粗糖。比宫里的琴简单，也比国运短。"},
 	])
+	Dialogue.dialogue_finished.connect(_after_lovers_sugar, CONNECT_ONE_SHOT)
+
+func _after_lovers_sugar() -> void:
+	await InkFarewell.play("shen")
+	await InkFarewell.play("liu")
 
 func _talk_zhou() -> void:
 	if GameState.flags.get("met_zhou", false):
@@ -930,6 +975,7 @@ func _talk_zhou() -> void:
 	])
 	GameState.set_flag("met_zhou", true)
 	GameState.add_memory("MF_A1_ZHOU_GARDEN")
+	Dialogue.dialogue_finished.connect(_play_ink_seal.bind("zhou"), CONNECT_ONE_SHOT)
 
 func _talk_relief() -> void:
 	if not GameState.flags.get("relief_open", false):
@@ -1164,7 +1210,11 @@ func _on_crisis_choice(choice_id: String) -> void:
 				{"speaker": "你", "text": "府中也紧。恕难。"},
 				{"speaker": "秋穗", "text": hard},
 			])
-	Dialogue.dialogue_finished.connect(_check_night_ready, CONNECT_ONE_SHOT)
+	Dialogue.dialogue_finished.connect(_after_qiushui_crisis, CONNECT_ONE_SHOT)
+
+func _after_qiushui_crisis() -> void:
+	await _hide_named("NPC_Qiushui")
+	_check_night_ready()
 
 func _check_night_ready() -> void:
 	if GameState.flags.get("night_summon_done", false):

@@ -11,6 +11,7 @@
 ### Added
 
 - 风格 C **正式木框 UI**：资源条 / 目标 / 时钟 / 对白 / Toast / Tip / 抉择按钮；对白旁立绘色槽。见 `archive/ui/ui_0.0.3.md`。
+- **支线水墨下线动画**（10 角色 × 3 帧）+ `InkFarewell` 播放器。见 `archive/art_audio/ink_farewell_0.0.5.md`。
 
 ### Changed
 

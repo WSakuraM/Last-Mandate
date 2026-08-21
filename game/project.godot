@@ -15,6 +15,7 @@ Dialogue="*res://scripts/autoload/dialogue_bus.gd"
 WorldClock="*res://scripts/autoload/world_clock.gd"
 AssetBank="*res://scripts/autoload/asset_bank.gd"
 Sfx="*res://scripts/autoload/sfx_bus.gd"
+InkFarewell="*res://scripts/autoload/ink_farewell.gd"
 
 [display]
 window/size/viewport_width=1280

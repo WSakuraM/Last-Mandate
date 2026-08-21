@@ -13,7 +13,7 @@ func _ready() -> void:
 	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
-	if Dialogue.is_busy():
+	if Dialogue.is_busy() or InkFarewell.is_busy():
 		velocity = Vector2.ZERO
 		move_and_slide()
 		_prompt.visible = false
@@ -32,6 +32,9 @@ func _physics_process(delta: float) -> void:
 	_update_prompt(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if InkFarewell.is_busy():
+		get_viewport().set_input_as_handled()
+		return
 	if Dialogue.is_busy():
 		if event.is_action_pressed("ui_accept") or (event is InputEventKey and event.pressed and (event.keycode == KEY_E or event.keycode == KEY_SPACE)):
 			Dialogue.notify_continue()
