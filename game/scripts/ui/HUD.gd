@@ -5,6 +5,7 @@ var bars := {}
 var mandate_bar: ProgressBar
 var info_label: Label
 var prompt_label: Label
+var memory_label: Label
 
 func _ready():
 	var root := Control.new()
@@ -49,6 +50,11 @@ func _ready():
 	info_label.text = ""
 	vb.add_child(info_label)
 
+	memory_label = Label.new()
+	memory_label.text = "回忆碎片 ×0"
+	memory_label.add_theme_color_override("font_color", Color(0.7, 0.6, 0.4))
+	vb.add_child(memory_label)
+
 	prompt_label = Label.new()
 	prompt_label.text = ""
 	prompt_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
@@ -61,6 +67,7 @@ func _ready():
 	ResourceManager.mandate_changed.connect(_on_man)
 	EventBus.interact_prompt.connect(_on_prompt)
 	EventBus.interact_hide.connect(_on_hide)
+	IssueManager.memory_added.connect(_on_memory)
 
 func _on_res(s: Dictionary):
 	for k in bars:
@@ -75,3 +82,6 @@ func _on_prompt(t: String):
 
 func _on_hide():
 	prompt_label.text = ""
+
+func _on_memory(_id: String, _weight: int):
+	memory_label.text = "回忆碎片 ×%d" % IssueManager.memories.size()

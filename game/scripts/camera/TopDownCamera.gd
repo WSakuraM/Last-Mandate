@@ -15,6 +15,8 @@ func _ready():
 		target = t
 
 func _process(delta):
+	if IssueManager.night_council_active:
+		return
 	if Input.is_key_pressed(KEY_LEFT):
 		yaw += delta * 1.2
 	if Input.is_key_pressed(KEY_RIGHT):

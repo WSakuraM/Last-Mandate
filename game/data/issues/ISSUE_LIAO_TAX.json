@@ -1,0 +1,32 @@
+{
+  "id": "ISSUE_LIAO_TAX",
+  "title": "辽饷加派",
+  "stage": ["B3", "B4"],
+  "weight": 90,
+  "once": false,
+  "summary": "边军催饷急如星火。加派则民怨，不加则士哗。",
+  "choices": [
+    {
+      "id": "raise",
+      "label": "加派辽饷",
+      "deltas": { "treasury": 12, "popular": -10, "frontier": 6, "rebel_pressure": 0.4 },
+      "flags_add": ["liao_tax_raised"],
+      "memory": "MF_A2_LIAO_TAX",
+      "memory_weight": 8
+    },
+    {
+      "id": "cut_court",
+      "label": "先削京中冗费供边",
+      "deltas": { "treasury": 6, "court": -8, "popular": 2, "frontier": 3, "mandate_decay": -0.15 },
+      "memory": "MF_A2_CUT_COURT_FOR_LIAO",
+      "memory_weight": 6
+    },
+    {
+      "id": "delay",
+      "label": "拖延慰军，来日再议",
+      "deltas": { "frontier": -6, "resolve": -3, "mandate_decay": 0.25 },
+      "memory": "MF_A2_LIAO_DELAY",
+      "memory_weight": 5
+    }
+  ]
+}

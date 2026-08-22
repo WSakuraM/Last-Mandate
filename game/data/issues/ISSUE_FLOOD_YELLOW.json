@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_FLOOD_YELLOW",
+  "title": "河决告急",
+  "stage": ["B4", "B5"],
+  "weight": 55,
+  "once": false,
+  "summary": "黄淮报决口。修堤要银，不修则千里泽国。",
+  "choices": [
+    {
+      "id": "repair",
+      "label": "发帑修堤",
+      "deltas": { "treasury": -10, "popular": 7, "rebel_pressure": -0.2 },
+      "memory": "MF_A2_FLOOD_REPAIR",
+      "memory_weight": 5
+    },
+    {
+      "id": "local",
+      "label": "责令地方自筹",
+      "deltas": { "treasury": 0, "popular": -6, "court": 2, "rebel_pressure": 0.25 },
+      "memory": "MF_A2_FLOOD_LOCAL",
+      "memory_weight": 5
+    },
+    {
+      "id": "delay_flood",
+      "label": "来年再说",
+      "deltas": { "popular": -10, "rebel_pressure": 0.5, "mandate_decay": 0.25 },
+      "memory": "MF_A2_FLOOD_DELAY",
+      "memory_weight": 6
+    }
+  ]
+}

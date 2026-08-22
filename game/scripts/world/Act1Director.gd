@@ -1,7 +1,11 @@
 extends Node3D
-# 第一幕导演：构建 3D 俯视信王府院落，并驱动时间循环与终章跳转。
+# 第一幕导演：构建 3D 俯视信王府院落，驱动时间循环、夜召议题与终章跳转。
 
 var _ended := false
+var _env: Environment
+var _night_council_cd := 0.0
+var near_hall := false
+var _hall_area: Area3D
 
 func _ready():
 	_setup_environment()
@@ -9,18 +13,19 @@ func _ready():
 	_spawn_player()
 	_spawn_camera()
 	_setup_day_cycle()
+	_setup_night_council_hall()
 	ResourceManager.game_over.connect(_on_game_over)
 
 func _setup_environment():
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.55, 0.5, 0.45)
-	env.ambient_light_color = Color(0.5, 0.45, 0.4)
-	env.ambient_light_energy = 0.8
-	env.fog_enabled = true
-	env.fog_color = Color(0.5, 0.46, 0.42)
-	env.fog_density = 0.012
-	get_viewport().world_environment = env
+	_env = Environment.new()
+	_env.background_mode = Environment.BG_COLOR
+	_env.background_color = Color(0.55, 0.5, 0.45)
+	_env.ambient_light_color = Color(0.5, 0.45, 0.4)
+	_env.ambient_light_energy = 0.8
+	_env.fog_enabled = true
+	_env.fog_light_color = Color(0.5, 0.46, 0.42)
+	_env.fog_density = 0.012
+	get_viewport().world_3d.environment = _env
 
 func _build_courtyard():
 	var ground := MeshInstance3D.new()
@@ -51,7 +56,7 @@ func _build_courtyard():
 	var positions := [Vector3(-8, 0, -8), Vector3(0, 0, -8), Vector3(8, 0, -8),
 	                  Vector3(-8, 0, 4), Vector3(0, 0, 4), Vector3(8, 0, 4)]
 	for i in positions.size():
-		var p := load("res://scripts/world/CourtPlot.gd").new()
+		var p: Node = load("res://scripts/world/CourtPlot.gd").new()
 		p.plot_id = "plot_%d" % i
 		p.position = positions[i]
 		add_child(p)
@@ -62,9 +67,6 @@ func _build_courtyard():
 	sun.light_color = Color(1.0, 0.85, 0.6)
 	sun.light_energy = 1.2
 	add_child(sun)
-	var amb := AmbientLight3D.new()
-	amb.light_energy = 0.4
-	add_child(amb)
 
 func _wall(pos: Vector3, size: Vector2):
 	var w := MeshInstance3D.new()
@@ -78,21 +80,109 @@ func _wall(pos: Vector3, size: Vector2):
 	add_child(w)
 
 func _spawn_player():
-	var player := load("res://scripts/player/Player.gd").new()
+	var player: Node = load("res://scripts/player/Player.gd").new()
 	player.position = Vector3(0, 1, 0)
 	player.add_to_group("player")
 	add_child(player)
 
 func _spawn_camera():
-	var rig := load("res://scripts/camera/TopDownCamera.gd").new()
+	var rig: Node = load("res://scripts/camera/TopDownCamera.gd").new()
 	add_child(rig)
 
 func _setup_day_cycle():
 	var t := Timer.new()
 	t.wait_time = 6.0
-	t.timeout.connect(func(): ResourceManager.tick_day())
+	t.timeout.connect(func():
+		if IssueManager.night_council_active:
+			return
+		ResourceManager.tick_day()
+		if ResourceManager.day % 7 == 0:
+			_start_night_council()
+	)
 	add_child(t)
 	t.start()
+
+func _setup_night_council_hall():
+	# 夜召堂：简易低模屋 + 进入触发区
+	var hall := Node3D.new()
+	hall.name = "NightCouncilHall"
+	var body := MeshInstance3D.new()
+	var bm := BoxMesh.new()
+	bm.size = Vector3(8, 5, 6)
+	body.mesh = bm
+	var bmat := StandardMaterial3D.new()
+	bmat.albedo_color = Color(0.4, 0.32, 0.28)
+	body.material_override = bmat
+	body.position.y = 2.5
+	hall.add_child(body)
+	var roof := MeshInstance3D.new()
+	var rm := BoxMesh.new()
+	rm.size = Vector3(9.4, 0.6, 7.4)
+	roof.mesh = rm
+	var rmat := StandardMaterial3D.new()
+	rmat.albedo_color = Color(0.3, 0.22, 0.2)
+	roof.material_override = rmat
+	roof.position.y = 5.3
+	hall.add_child(roof)
+	var lantern := MeshInstance3D.new()
+	var lm := SphereMesh.new()
+	lm.radius = 0.3
+	lantern.mesh = lm
+	lantern.position = Vector3(0, 4.2, 3.2)
+	var lmat := StandardMaterial3D.new()
+	lmat.emission_enabled = true
+	lmat.emission = Color(1.0, 0.6, 0.2)
+	lmat.emission_energy = 2.0
+	lantern.material_override = lmat
+	hall.add_child(lantern)
+	hall.position = Vector3(18, 0, -18)
+	add_child(hall)
+
+	_hall_area = Area3D.new()
+	_hall_area.name = "EnterZone"
+	var col := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(11, 6, 9)
+	col.shape = shape
+	_hall_area.add_child(col)
+	_hall_area.position = Vector3(18, 3, -18)
+	_hall_area.body_entered.connect(_on_hall_entered)
+	_hall_area.body_exited.connect(_on_hall_exited)
+	add_child(_hall_area)
+
+func _on_hall_entered(b):
+	if b.is_in_group("player"):
+		near_hall = true
+		EventBus.interact_prompt.emit("进入夜召堂（按 E 召议）")
+
+func _on_hall_exited(b):
+	if b.is_in_group("player"):
+		near_hall = false
+		EventBus.interact_hide.emit()
+
+func _start_night_council():
+	if IssueManager.night_council_active or _ended:
+		return
+	var issue = IssueManager.draw_issue()
+	if issue.is_empty():
+		return
+	IssueManager.night_council_active = true
+	EventBus.interact_hide.emit()
+	# 压暗环境（烛光聚焦前奏）
+	if _env:
+		_env.ambient_light_energy = 0.22
+		_env.background_color = Color(0.1, 0.09, 0.08)
+	var panel: Node = load("res://scripts/ui/DecisionPanel.gd").new()
+	get_tree().root.add_child(panel)
+	panel.choice_made.connect(_on_issue_resolved)
+	panel.present(issue)
+
+func _on_issue_resolved(_res):
+	IssueManager.night_council_active = false
+	if _env:
+		_env.ambient_light_energy = 0.8
+		_env.background_color = Color(0.55, 0.5, 0.45)
+	_night_council_cd = 3.0
 
 func _on_game_over():
 	if _ended:
@@ -100,7 +190,13 @@ func _on_game_over():
 	_ended = true
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")
 
-func _process(_delta):
+func _process(delta):
+	if IssueManager.night_council_active:
+		return
+	if _night_council_cd > 0.0:
+		_night_council_cd = max(0.0, _night_council_cd - delta)
+	elif near_hall and Input.is_key_pressed(KEY_E):
+		_start_night_council()
 	if Input.is_key_pressed(KEY_M) and not _ended:
 		_ended = true
 		get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")

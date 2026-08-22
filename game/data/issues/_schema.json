@@ -1,0 +1,30 @@
+{
+  "$schema_comment": "议题卡 schema v0 — Godot 导入用",
+  "fields": {
+    "id": "string, unique",
+    "title": "string",
+    "stage": "array of B0-B6",
+    "weight": "int, draw weight",
+    "once": "bool, mainline once",
+    "summary": "string",
+    "choices": [
+      {
+        "id": "string",
+        "label": "string",
+        "deltas": {
+          "treasury": "int optional",
+          "popular": "int optional",
+          "frontier": "int optional",
+          "court": "int optional",
+          "resolve": "int optional",
+          "mandate_decay": "float optional, usually >=0; relief negative capped",
+          "rebel_pressure": "float optional"
+        },
+        "flags_add": ["string"],
+        "flags_remove": ["string"],
+        "memory": "MF_* id",
+        "memory_weight": "int 1-10"
+      }
+    ]
+  }
+}

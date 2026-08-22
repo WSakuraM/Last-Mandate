@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_CAPITAL_GRAIN",
+  "title": "京仓储粮",
+  "stage": ["B2", "B4"],
+  "weight": 55,
+  "once": false,
+  "summary": "通州仓报不足。是调外省、是清查鼠雀、是先稳京军肚子。",
+  "choices": [
+    {
+      "id": "transfer",
+      "label": "急调外省漕粮",
+      "deltas": { "treasury": -7, "popular": 3, "court": -2 },
+      "memory": "MF_A2_CAPITAL_TRANSFER",
+      "memory_weight": 4
+    },
+    {
+      "id": "audit",
+      "label": "严查仓鼠",
+      "deltas": { "treasury": 4, "court": -4, "resolve": 4 },
+      "memory": "MF_A2_CAPITAL_AUDIT",
+      "memory_weight": 5
+    },
+    {
+      "id": "feed_army",
+      "label": "先发京营月粮",
+      "deltas": { "treasury": -5, "frontier": 3, "popular": -2 },
+      "memory": "MF_A2_CAPITAL_FEED_ARMY",
+      "memory_weight": 4
+    }
+  ]
+}

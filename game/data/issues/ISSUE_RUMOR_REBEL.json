@@ -1,0 +1,34 @@
+{
+  "id": "ISSUE_RUMOR_REBEL",
+  "title": "驿卒起事传闻",
+  "stage": ["B4", "B5"],
+  "weight": 70,
+  "once": true,
+  "summary": "陕西传来消息：有失业驿卒聚众，伪称王号。是大题小做，还是当作疥癣？",
+  "requires_any_flags": ["yi_cut", "yi_partial"],
+  "choices": [
+    {
+      "id": "serious",
+      "label": "当作大患，派兵进剿",
+      "deltas": { "treasury": -6, "frontier": -3, "rebel_pressure": -0.4, "mandate_decay": -0.1 },
+      "memory": "MF_A2_REBEL_SERIOUS",
+      "memory_weight": 7
+    },
+    {
+      "id": "ignore",
+      "label": "疥癣之疾，勿扰朝廷",
+      "deltas": { "resolve": 3, "rebel_pressure": 0.9, "mandate_decay": 0.35 },
+      "flags_add": ["rebel_ignored"],
+      "memory": "MF_A2_REBEL_IGNORE",
+      "memory_weight": 9
+    },
+    {
+      "id": "amnesty",
+      "label": "赦从抚，复部分驿额",
+      "deltas": { "treasury": -5, "popular": 5, "rebel_pressure": -0.5, "court": -3 },
+      "flags_remove": ["yi_cut"],
+      "memory": "MF_A2_REBEL_AMNESTY",
+      "memory_weight": 8
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_JIANGNAN_TAX_RIOT",
+  "title": "江南抗税",
+  "stage": ["B4", "B5"],
+  "weight": 65,
+  "once": false,
+  "summary": "加派之下，吴中士民聚啸抗税。是柔是刚，皆伤国体。",
+  "choices": [
+    {
+      "id": "soften",
+      "label": "减征抚慰",
+      "deltas": { "treasury": -8, "popular": 8, "court": -3, "rebel_pressure": -0.2 },
+      "memory": "MF_A2_JIANGNAN_SOFT",
+      "memory_weight": 6
+    },
+    {
+      "id": "hard",
+      "label": "派兵弹压",
+      "deltas": { "treasury": -3, "popular": -10, "court": 4, "rebel_pressure": 0.3, "mandate_decay": 0.2 },
+      "memory": "MF_A2_JIANGNAN_HARD",
+      "memory_weight": 7
+    },
+    {
+      "id": "scapegoat",
+      "label": "惩一吏以谢地方",
+      "deltas": { "popular": 4, "court": -5, "resolve": 3 },
+      "memory": "MF_A2_JIANGNAN_SCAPEGOAT",
+      "memory_weight": 5
+    }
+  ]
+}

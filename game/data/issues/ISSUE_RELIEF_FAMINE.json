@@ -1,0 +1,33 @@
+{
+  "id": "ISSUE_RELIEF_FAMINE",
+  "title": "旱蝗赈灾",
+  "stage": ["B4", "B5"],
+  "weight": 85,
+  "once": false,
+  "summary": "河南、陕西报灾。开仓则内帑见底；劝捐则官绅作态；严剿流民则民心成灰。",
+  "choices": [
+    {
+      "id": "open_granary",
+      "label": "开仓赈济",
+      "deltas": { "treasury": -12, "popular": 10, "rebel_pressure": -0.5, "mandate_decay": -0.25 },
+      "flags_add": ["opened_granary"],
+      "memory": "MF_A2_OPEN_GRANARY",
+      "memory_weight": 9
+    },
+    {
+      "id": "persuade_donate",
+      "label": "敕令官绅劝捐",
+      "deltas": { "treasury": -2, "popular": 3, "court": -5, "rebel_pressure": -0.1 },
+      "memory": "MF_A2_DONATE_DRIVE",
+      "memory_weight": 5
+    },
+    {
+      "id": "suppress",
+      "label": "严剿流民以靖地方",
+      "deltas": { "popular": -14, "court": 4, "rebel_pressure": -0.3, "mandate_decay": 0.4 },
+      "flags_add": ["suppressed_refugees"],
+      "memory": "MF_A2_SUPPRESS_REFUGEES",
+      "memory_weight": 10
+    }
+  ]
+}

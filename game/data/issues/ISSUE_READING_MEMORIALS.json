@@ -1,0 +1,32 @@
+{
+  "id": "ISSUE_READING_MEMORIALS",
+  "title": "彻夜批红",
+  "stage": ["B2", "B5"],
+  "weight": 40,
+  "once": false,
+  "summary": "王承恩劝你歇息。你面前还有未批奏折如山。",
+  "choices": [
+    {
+      "id": "all_night",
+      "label": "今夜批完",
+      "deltas": { "resolve": 6, "court": 2, "mandate_decay": -0.05 },
+      "memory": "MF_A2_ALL_NIGHT_HABIT",
+      "memory_weight": 5
+    },
+    {
+      "id": "delegate",
+      "label": "交阁臣票拟",
+      "deltas": { "resolve": -4, "court": -3, "mandate_decay": 0.05 },
+      "memory": "MF_A2_DELEGATE",
+      "memory_weight": 4
+    },
+    {
+      "id": "rest",
+      "label": "听劝，少歇",
+      "deltas": { "resolve": -2, "popular": 0 },
+      "flags_add": ["listened_cheng_en"],
+      "memory": "MF_A2_SEED_REMINDER",
+      "memory_weight": 6
+    }
+  ]
+}

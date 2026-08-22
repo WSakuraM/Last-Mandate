@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_SALT_MONOPOLY",
+  "title": "盐引整顿",
+  "stage": ["B2", "B3"],
+  "weight": 45,
+  "once": false,
+  "summary": "盐课是财源，也是蠹根。动之则商怨，不动则库空。",
+  "choices": [
+    {
+      "id": "reform_salt",
+      "label": "清查盐引",
+      "deltas": { "treasury": 8, "court": -5, "popular": -2 },
+      "memory": "MF_A2_SALT_REFORM",
+      "memory_weight": 4
+    },
+    {
+      "id": "tax_salt",
+      "label": "加征盐税",
+      "deltas": { "treasury": 10, "popular": -8, "rebel_pressure": 0.2 },
+      "memory": "MF_A2_SALT_TAX",
+      "memory_weight": 5
+    },
+    {
+      "id": "leave_salt",
+      "label": "暂不动盐法",
+      "deltas": { "court": 2, "treasury": -2 },
+      "memory": "MF_A2_SALT_LEAVE",
+      "memory_weight": 2
+    }
+  ]
+}

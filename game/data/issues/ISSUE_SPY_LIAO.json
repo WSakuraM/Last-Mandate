@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_SPY_LIAO",
+  "title": "反间与疑",
+  "stage": ["B3", "B5"],
+  "weight": 50,
+  "once": false,
+  "summary": "有密报称边将通敌。真假难辨。多疑是你的盔，也是你的刃。",
+  "choices": [
+    {
+      "id": "believe",
+      "label": "信密报，收权夺印",
+      "deltas": { "resolve": 7, "frontier": -7, "court": -2, "mandate_decay": 0.2 },
+      "memory": "MF_A2_SPY_BELIEVE",
+      "memory_weight": 8
+    },
+    {
+      "id": "investigate",
+      "label": "密查勿惊",
+      "deltas": { "resolve": 3, "treasury": -2 },
+      "memory": "MF_A2_SPY_INVESTIGATE",
+      "memory_weight": 4
+    },
+    {
+      "id": "discard",
+      "label": "斥为构陷",
+      "deltas": { "frontier": 3, "court": -4, "resolve": -3 },
+      "memory": "MF_A2_SPY_DISCARD",
+      "memory_weight": 5
+    }
+  ]
+}

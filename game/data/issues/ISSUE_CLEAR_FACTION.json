@@ -1,0 +1,33 @@
+{
+  "id": "ISSUE_CLEAR_FACTION",
+  "title": "清流请诛余党",
+  "stage": ["B1", "B2"],
+  "weight": 60,
+  "once": false,
+  "summary": "除阉之后，清流请扩大清算。洗得越净，能办事的人越少。",
+  "choices": [
+    {
+      "id": "expand",
+      "label": "扩大清算",
+      "deltas": { "popular": 3, "court": -10, "resolve": 5, "mandate_decay": 0.15 },
+      "flags_add": ["purge_expanded"],
+      "memory": "MF_A2_PURGE_EXPAND",
+      "memory_weight": 7
+    },
+    {
+      "id": "stop",
+      "label": "适可而止",
+      "deltas": { "court": 4, "popular": -2, "resolve": -2, "mandate_decay": -0.1 },
+      "memory": "MF_A2_PURGE_STOP",
+      "memory_weight": 6
+    },
+    {
+      "id": "use_them",
+      "label": "留才不问旧党",
+      "deltas": { "court": 2, "popular": -6, "treasury": 2 },
+      "flags_add": ["purged_soft"],
+      "memory": "MF_A2_PURGE_SOFT",
+      "memory_weight": 7
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "ISSUE_REPLACE_CHANCELLOR",
+  "title": "更易阁臣",
+  "stage": ["B2", "B5"],
+  "weight": 70,
+  "once": false,
+  "summary": "你厌倦了这一张名牌。换相可换一时振作，朝野却渐渐学会：莫要真心任事。",
+  "choices": [
+    {
+      "id": "replace",
+      "label": "罢相另简",
+      "deltas": { "resolve": 8, "court": -6, "mandate_decay": 0.1 },
+      "flags_add": ["chancellor_replaced"],
+      "memory": "MF_A2_REPLACE_XIANG",
+      "memory_weight": 7
+    },
+    {
+      "id": "keep_pressure",
+      "label": "留任而严责",
+      "deltas": { "resolve": 4, "court": -2 },
+      "memory": "MF_A2_PRESSURE_XIANG",
+      "memory_weight": 4
+    },
+    {
+      "id": "endure",
+      "label": "隐忍不换，先办实事",
+      "deltas": { "resolve": -3, "court": 3, "mandate_decay": -0.1 },
+      "memory": "MF_A2_ENDURE_XIANG",
+      "memory_weight": 5
+    }
+  ]
+}

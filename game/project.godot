@@ -10,6 +10,7 @@ run/main_scene="res://scenes/main/Main.tscn"
 ResourceManager="*res://scripts/managers/ResourceManager.gd"
 EventBus="*res://scripts/managers/EventBus.gd"
 SaveManager="*res://scripts/managers/SaveManager.gd"
+IssueManager="*res://scripts/managers/IssueManager.gd"
 
 [rendering]
 renderer/rendering_method="forward_plus"

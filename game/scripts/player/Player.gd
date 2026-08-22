@@ -24,6 +24,10 @@ func _ready():
 	add_child(vis)
 
 func _physics_process(_delta):
+	if IssueManager.night_council_active:
+		velocity = Vector3.ZERO
+		move_and_slide()
+		return
 	var d := Vector3.ZERO
 	if Input.is_key_pressed(KEY_W): d.z -= 1
 	if Input.is_key_pressed(KEY_S): d.z += 1

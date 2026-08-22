@@ -62,6 +62,8 @@ func _on_body_exited(b):
 		EventBus.interact_hide.emit()
 
 func _process(delta):
+	if IssueManager.night_council_active:
+		return
 	_cd = max(0.0, _cd - delta)
 	if near and Input.is_key_pressed(KEY_E) and _cd <= 0.0:
 		tend()

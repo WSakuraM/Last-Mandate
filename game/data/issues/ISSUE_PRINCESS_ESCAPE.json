@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_PRINCESS_ESCAPE",
+  "title": "后宫安危",
+  "stage": ["B6"],
+  "weight": 100,
+  "once": true,
+  "summary": "城将破。后宫哭声一片。是遣散求活，还是……你不敢想完。",
+  "choices": [
+    {
+      "id": "disperse",
+      "label": "遣散求活",
+      "deltas": { "resolve": -5, "mandate_decay": 0.1 },
+      "memory": "MF_A2_PALACE_DISPERSE",
+      "memory_weight": 9
+    },
+    {
+      "id": "guard",
+      "label": "令太监死守坤宁",
+      "deltas": { "resolve": 4 },
+      "memory": "MF_A2_PALACE_GUARD",
+      "memory_weight": 8
+    },
+    {
+      "id": "silence",
+      "label": "无言，只走向外朝",
+      "deltas": { "resolve": 2 },
+      "memory": "MF_A2_PALACE_SILENCE",
+      "memory_weight": 9
+    }
+  ]
+}

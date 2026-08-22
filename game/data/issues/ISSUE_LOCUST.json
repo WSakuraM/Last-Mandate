@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_LOCUST",
+  "title": "飞蝗蔽日",
+  "stage": ["B4", "B5"],
+  "weight": 60,
+  "once": false,
+  "summary": "蝗阵过境，稼禾如剃。是祈禳、是捕杀、是迁民，朝中又吵成一团。",
+  "choices": [
+    {
+      "id": "pray",
+      "label": "亲祭祈禳以安人心",
+      "deltas": { "popular": 4, "treasury": -2, "resolve": 2, "rebel_pressure": 0.1 },
+      "memory": "MF_A2_LOCUST_PRAY",
+      "memory_weight": 4
+    },
+    {
+      "id": "bounty",
+      "label": "悬赏捕蝗",
+      "deltas": { "treasury": -6, "popular": 5, "rebel_pressure": -0.15 },
+      "memory": "MF_A2_LOCUST_BOUNTY",
+      "memory_weight": 5
+    },
+    {
+      "id": "migrate",
+      "label": "强制迁民就食",
+      "deltas": { "popular": -8, "treasury": -4, "rebel_pressure": 0.35, "mandate_decay": 0.15 },
+      "memory": "MF_A2_LOCUST_MIGRATE",
+      "memory_weight": 7
+    }
+  ]
+}

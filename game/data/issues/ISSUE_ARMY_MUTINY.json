@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_ARMY_MUTINY",
+  "title": "缺饷哗变",
+  "stage": ["B3", "B5"],
+  "weight": 65,
+  "once": false,
+  "summary": "某镇因欠饷鼓噪。是补发、是斩哗兵、是空文安慰。",
+  "choices": [
+    {
+      "id": "pay",
+      "label": "补发欠饷",
+      "deltas": { "treasury": -12, "frontier": 8, "popular": -2 },
+      "memory": "MF_A2_MUTINY_PAY",
+      "memory_weight": 6
+    },
+    {
+      "id": "execute_leaders",
+      "label": "斩首事者以靖军",
+      "deltas": { "frontier": -4, "resolve": 6, "popular": -3, "mandate_decay": 0.15 },
+      "memory": "MF_A2_MUTINY_EXECUTE",
+      "memory_weight": 7
+    },
+    {
+      "id": "promise",
+      "label": "温旨空许来日",
+      "deltas": { "frontier": -8, "resolve": -2, "rebel_pressure": 0.2, "mandate_decay": 0.2 },
+      "memory": "MF_A2_MUTINY_PROMISE",
+      "memory_weight": 6
+    }
+  ]
+}

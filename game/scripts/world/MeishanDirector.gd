@@ -8,9 +8,9 @@ func _ready():
 	env.ambient_light_color = Color(0.2, 0.25, 0.35)
 	env.ambient_light_energy = 0.5
 	env.fog_enabled = true
-	env.fog_color = Color(0.1, 0.12, 0.18)
+	env.fog_light_color = Color(0.1, 0.12, 0.18)
 	env.fog_density = 0.02
-	get_viewport().world_environment = env
+	get_viewport().world_3d.environment = env
 
 	var ground := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
