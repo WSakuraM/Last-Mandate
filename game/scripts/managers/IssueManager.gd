@@ -80,19 +80,32 @@ func eligible(stage_filter: Array = []) -> Array:
 					break
 			if not hit:
 				continue
+		# 分段解锁：unlock_day 之后的天数才进入可抽池（第一幕按 total_day 推进剧情）
+		var unlock: int = int(it.get("unlock_day", 1))
+		if ResourceManager.total_day < unlock:
+			continue
 		out.append(it)
 	return out
 
-# 按剧本固定顺序（order 升序）循环呈现议题，保证叙事稳定、不随机
+# 按剧本固定顺序（order 升序）+ 分段解锁 + 线性消耗呈现议题。
+# 已呈现过的议题记入 used_once 不再出现——保证剧情层层递进、演过不再回头，不循环重复。
 func draw_issue(stage_filter: Array = []) -> Dictionary:
 	var pool := eligible(stage_filter)
 	if pool.is_empty():
 		return {}
+	# 排除已消耗议题（线性推进，不重复）
+	var avail := []
+	for it in pool:
+		if used_once.has(it["id"]):
+			continue
+		avail.append(it)
+	if avail.is_empty():
+		return {}
 	# 按 order 升序排序（缺省排末尾），保证"剧本固定顺序呈现"
-	pool.sort_custom(func(a, b): return a.get("order", 999) < b.get("order", 999))
-	var n := pool.size()
-	var chosen: Dictionary = pool[_seq_cursor % n]
-	_seq_cursor = (_seq_cursor + 1) % n
+	avail.sort_custom(func(a, b): return a.get("order", 999) < b.get("order", 999))
+	var chosen: Dictionary = avail[0]
+	# 线性消耗：标记已用，下次不再出现
+	used_once[chosen.get("id", "")] = true
 	return chosen
 
 # 应用某选项的全部后果。返回结算结果 dict。

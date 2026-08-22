@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_WELL_CHILD",
+  "title": "水井童殇",
+  "stage": ["A1"],
+  "order": 8,
+  "unlock_day": 80,
+  "weight": 50,
+  "once": false,
+  "summary": "大旱井涸，封地孩童为争饮坠井而亡。是亲往抚慰尸亲、浚井济众，还是令府役善后了事。",
+  "choices": [
+    {
+      "id": "comfort",
+      "label": "亲往抚慰浚井",
+      "deltas": { "treasury": -3, "popular": 7, "resolve": -2, "mandate_decay": -3 },
+      "memory": "MF_A1_WELL_CHILD",
+      "memory_weight": 8,
+      "memory_pillar": "Ⅲ"
+    },
+    {
+      "id": "steward",
+      "label": "府役善后",
+      "deltas": { "popular": -4, "resolve": 1, "mandate_decay": 2 },
+      "memory": "MF_A1_WELL_STEWARD",
+      "memory_weight": 5,
+      "memory_pillar": "Ⅲ"
+    }
+  ]
+}

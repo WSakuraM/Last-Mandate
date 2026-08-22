@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_NEIGHBOR_FAMINE",
+  "title": "邻县告饥",
+  "stage": ["A1"],
+  "order": 9,
+  "unlock_day": 90,
+  "weight": 60,
+  "once": false,
+  "summary": "邻县颗粒无收，县令泣请借粮。是挪封地仓储相济，还是闭粜自保以免本府动摇。",
+  "choices": [
+    {
+      "id": "lend",
+      "label": "挪储相济",
+      "deltas": { "treasury": -6, "popular": 9, "mandate_decay": -3 },
+      "memory": "MF_A1_NEIGHBOR_LEND",
+      "memory_weight": 7,
+      "memory_pillar": "Ⅲ"
+    },
+    {
+      "id": "keep",
+      "label": "闭粜自保",
+      "deltas": { "treasury": 2, "popular": -6, "mandate_decay": 3 },
+      "memory": "MF_A1_NEIGHBOR_KEEP",
+      "memory_weight": 6,
+      "memory_pillar": "Ⅲ"
+    }
+  ]
+}

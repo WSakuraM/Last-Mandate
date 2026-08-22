@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_EVE_OF_ACCESSION",
+  "title": "入继前夜",
+  "stage": ["A1"],
+  "order": 15,
+  "unlock_day": 145,
+  "weight": 40,
+  "once": false,
+  "summary": "天启崩逝，遗命信王入继大统。今夜烛下，王承恩静立。是焚香誓「勿伤我百姓」，还是独对铜镜无言。",
+  "choices": [
+    {
+      "id": "vow",
+      "label": "焚香立誓",
+      "deltas": { "resolve": 6, "popular": 2, "mandate_decay": -2 },
+      "memory": "MF_A1_VOW_PEOPLE",
+      "memory_weight": 9,
+      "memory_pillar": "Ⅲ"
+    },
+    {
+      "id": "silent",
+      "label": "独对铜镜",
+      "deltas": { "resolve": 2, "mandate_decay": -1 },
+      "memory": "MF_A1_MIRROR",
+      "memory_weight": 5,
+      "memory_pillar": "Ⅰ"
+    }
+  ]
+}

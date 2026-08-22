@@ -1,0 +1,26 @@
+{
+  "id": "ISSUE_A1_NEW_YEAR",
+  "title": "府中岁时",
+  "stage": ["A1"],
+  "order": 5,
+  "unlock_day": 45,
+  "weight": 35,
+  "once": false,
+  "summary": "岁时节庆，府中张灯。是开仓赐米与封地老幼同欢，还是循旧例薄施而已。",
+  "choices": [
+    {
+      "id": "feast",
+      "label": "赐米同欢",
+      "deltas": { "treasury": -4, "popular": 8, "mandate_decay": -2 },
+      "memory": "MF_A1_NEW_YEAR",
+      "memory_weight": 6,
+      "memory_pillar": "Ⅲ"
+    },
+    {
+      "id": "custom",
+      "label": "循例薄施",
+      "deltas": { "popular": 2, "mandate_decay": 0 },
+      "memory_pillar": "Ⅱ"
+    }
+  ]
+}

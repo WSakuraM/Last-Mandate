@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_BITTER_COLD",
+  "title": "冬日奇寒",
+  "stage": ["A1"],
+  "order": 10,
+  "unlock_day": 105,
+  "weight": 50,
+  "once": false,
+  "summary": "朔风奇寒，露宿流民多僵毙道旁。是发旧衣柴薪活人，还是以「天灾难免」慰己。",
+  "choices": [
+    {
+      "id": "relief",
+      "label": "发衣施薪",
+      "deltas": { "treasury": -5, "popular": 8, "mandate_decay": -2 },
+      "memory": "MF_A1_BITTER_COLD",
+      "memory_weight": 7,
+      "memory_pillar": "Ⅲ"
+    },
+    {
+      "id": "fate",
+      "label": "天灾难免",
+      "deltas": { "popular": -5, "resolve": 1, "mandate_decay": 2 },
+      "memory": "MF_A1_COLD_FATE",
+      "memory_weight": 5,
+      "memory_pillar": "Ⅲ"
+    }
+  ]
+}

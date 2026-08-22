@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_REBEL_SPARK",
+  "title": "流寇初现",
+  "stage": ["A1"],
+  "order": 14,
+  "unlock_day": 138,
+  "weight": 60,
+  "once": false,
+  "summary": "陕地饥民聚而为盗，烽烟已将及畿辅。是练乡勇保境，还是飞章请饷征剿。",
+  "choices": [
+    {
+      "id": "militia",
+      "label": "练乡勇保境",
+      "deltas": { "border_army": 3, "treasury": -4, "mandate_decay": -1 },
+      "memory": "MF_A1_REBEL_MILITIA",
+      "memory_weight": 5,
+      "memory_pillar": "Ⅱ"
+    },
+    {
+      "id": "petition",
+      "label": "飞章请饷",
+      "deltas": { "treasury": -2, "court_order": -2, "mandate_decay": 2 },
+      "memory": "MF_A1_REBEL_PETITION",
+      "memory_weight": 4,
+      "memory_pillar": "Ⅱ"
+    }
+  ]
+}

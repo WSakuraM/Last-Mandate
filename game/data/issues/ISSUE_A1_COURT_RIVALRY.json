@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_COURT_RIVALRY",
+  "title": "朝臣倾轧",
+  "stage": ["A1"],
+  "order": 12,
+  "unlock_day": 130,
+  "weight": 50,
+  "once": false,
+  "summary": "朝中阉党与新贵交攻，各有密信笼络信王。是超然不答以避祸，还是暗结清流以待时。",
+  "choices": [
+    {
+      "id": "aloof",
+      "label": "超然不答",
+      "deltas": { "court_order": 1, "resolve": 2, "mandate_decay": -1 },
+      "memory": "MF_A1_RIVAL_ALOOF",
+      "memory_weight": 4,
+      "memory_pillar": "Ⅱ"
+    },
+    {
+      "id": "ally",
+      "label": "暗结清流",
+      "deltas": { "court_order": -3, "emperor_heart": 3, "mandate_decay": 1 },
+      "memory": "MF_A1_RIVAL_ALLY",
+      "memory_weight": 4,
+      "memory_pillar": "Ⅱ"
+    }
+  ]
+}

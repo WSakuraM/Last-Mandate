@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_BORDER_INTEL",
+  "title": "边关谍报",
+  "stage": ["A1"],
+  "order": 11,
+  "unlock_day": 110,
+  "weight": 55,
+  "once": false,
+  "summary": "辽东谍报迭至：虏势日炽，边将骄蹇。是密疏朝廷早为之备，还是封府自守不涉兵事。",
+  "choices": [
+    {
+      "id": "memo",
+      "label": "密疏早备",
+      "deltas": { "border_army": 4, "court_order": -2, "mandate_decay": -2 },
+      "memory": "MF_A1_BORDER_MEMO",
+      "memory_weight": 5,
+      "memory_pillar": "Ⅱ"
+    },
+    {
+      "id": "quiet",
+      "label": "封府自守",
+      "deltas": { "border_army": -2, "resolve": 1, "mandate_decay": 1 },
+      "memory": "MF_A1_BORDER_QUIET",
+      "memory_weight": 4,
+      "memory_pillar": "Ⅱ"
+    }
+  ]
+}

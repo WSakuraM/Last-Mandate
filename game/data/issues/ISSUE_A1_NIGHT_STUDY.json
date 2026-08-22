@@ -1,0 +1,28 @@
+{
+  "id": "ISSUE_A1_NIGHT_STUDY",
+  "title": "书房夜读",
+  "stage": ["A1"],
+  "order": 3,
+  "unlock_day": 10,
+  "weight": 30,
+  "once": false,
+  "summary": "信王挑灯夜读《资治通鉴》，掩卷长叹汉唐衰亡之弊。是抄录警句自省，还是与幕僚论政。",
+  "choices": [
+    {
+      "id": "copy",
+      "label": "抄录警句",
+      "deltas": { "resolve": 3, "mandate_decay": -1 },
+      "memory": "MF_A1_NIGHT_STUDY",
+      "memory_weight": 4,
+      "memory_pillar": "Ⅰ"
+    },
+    {
+      "id": "discuss",
+      "label": "与幕僚论政",
+      "deltas": { "court_order": 2, "resolve": 1, "mandate_decay": -1 },
+      "memory": "MF_A1_DISCUSS",
+      "memory_weight": 3,
+      "memory_pillar": "Ⅱ"
+    }
+  ]
+}
