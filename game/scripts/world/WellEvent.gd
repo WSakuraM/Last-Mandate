@@ -1,6 +1,6 @@
 extends Node3D
-# 第一幕「人民疾苦」情感钩子：府门外流民老妪。
-# 玩家靠近触发一次性叙事卡，并写入回忆碎片（终章蒙太奇回收）。
+# 第一幕「井边」小事件：信王亲为下人汲水，润泽府中人心。
+# 一次性叙事卡 + 轻微民心增益 + 回忆碎片（Ⅰ · 府中人心）。
 
 const GOLD := Color(0.95, 0.8, 0.4)
 
@@ -8,43 +8,17 @@ var shown := false
 var overlay: CanvasLayer
 
 func _ready():
-	# 老妪简模：佝偻身躯 + 怀中孙儿
-	var granny := MeshInstance3D.new()
-	var gm := CapsuleMesh.new()
-	gm.radius = 0.42
-	gm.height = 1.0
-	granny.mesh = gm
-	granny.position.y = 0.5
-	var gmat := StandardMaterial3D.new()
-	gmat.albedo_color = Color(0.52, 0.46, 0.4)
-	gmat.roughness = 1.0
-	granny.material_override = gmat
-	add_child(granny)
-
-	var child := MeshInstance3D.new()
-	var cm := CapsuleMesh.new()
-	cm.radius = 0.22
-	cm.height = 0.5
-	child.mesh = cm
-	child.position = Vector3(0.0, 0.35, 0.3)
-	var cmat := StandardMaterial3D.new()
-	cmat.albedo_color = Color(0.6, 0.55, 0.5)
-	child.material_override = cmat
-	add_child(child)
-
-	# 触发区
 	var area := Area3D.new()
-	area.name = "RefugeeZone"
+	area.name = "WellZone"
 	var col := CollisionShape3D.new()
 	var shape := CylinderShape3D.new()
-	shape.radius = 3.2
+	shape.radius = 3.0
 	shape.height = 2.0
 	col.shape = shape
 	area.add_child(col)
 	area.body_entered.connect(_on_enter)
 	add_child(area)
-
-	position = Vector3(0, 0, -27)   # 南墙内、府门附近
+	position = Vector3(-10, 0, 8)   # 与 Act1Director 中水井 mesh 同址
 
 func _on_enter(b):
 	if not b.is_in_group("player"):
@@ -55,6 +29,7 @@ func _on_enter(b):
 	_show_card()
 
 func _show_card():
+	IssueManager.night_council_active = true   # 锁世界输入，避免 UI 叠加
 	overlay = CanvasLayer.new()
 	add_child(overlay)
 	var root := Control.new()
@@ -68,7 +43,7 @@ func _show_card():
 
 	var card := PanelContainer.new()
 	card.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	card.custom_minimum_size = Vector2(580, 250)
+	card.custom_minimum_size = Vector2(540, 220)
 	var cs := StyleBoxFlat.new()
 	cs.bg_color = Color(0.15, 0.12, 0.1, 0.97)
 	cs.border_color = GOLD
@@ -88,13 +63,13 @@ func _show_card():
 	card.add_child(vb)
 
 	var title := Label.new()
-	title.text = "府门外"
+	title.text = "井边"
 	title.add_theme_font_size_override("font_size", 26)
 	title.add_theme_color_override("font_color", GOLD)
 	vb.add_child(title)
 
 	var txt := Label.new()
-	txt.text = "一位衣衫褴褛的老妪跪在雪泥里，怀中抱着枯瘦的孙儿，只是望着你。\n你才想起，还身为信王时，这京城之外的天下，早已千疮百孔。"
+	txt.text = "你挽起袖口，替怯生生的小厮打上一桶井水。他慌得要接，你只说：『自家的人，不必拘礼。』\n——那时你还只是信王，府中岁月尚暖。"
 	txt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	txt.add_theme_font_size_override("font_size", 18)
 	txt.add_theme_color_override("font_color", Color(0.85, 0.82, 0.78))
@@ -106,16 +81,11 @@ func _show_card():
 	hint.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
 	vb.add_child(hint)
 
-	# 写入回忆碎片（终章回收，人民疾苦支柱 Ⅲ）
-	var mid := "MF_A1_VIGNETTE_GRANNY"
-	IssueManager.add_memory(mid, 8, "府门外，流民老妪怀中枯瘦的孙儿", "Ⅲ")
+	ResourceManager.add("people", 1.0)
+	IssueManager.add_memory("MF_A1_WELL", 4, "井边，你亲手为下人打上一桶水", "Ⅰ")
 
-	# 锁住世界输入，避免与夜召面板叠加冲突
-	IssueManager.night_council_active = true
-
-	# 超时自动关闭（兜底）
 	var t := Timer.new()
-	t.wait_time = 7.0
+	t.wait_time = 6.0
 	t.one_shot = true
 	t.timeout.connect(_dismiss)
 	add_child(t)

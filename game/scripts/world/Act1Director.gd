@@ -18,6 +18,8 @@ func _ready():
 	_setup_night_council_hall()
 	var vignette: Node = load("res://scripts/world/RefugeeVignette.gd").new()
 	add_child(vignette)
+	var well_event: Node = load("res://scripts/world/WellEvent.gd").new()
+	add_child(well_event)
 	ResourceManager.game_over.connect(_on_game_over)
 	_show_intro()
 
@@ -98,10 +100,15 @@ func _setup_day_cycle():
 	var t := Timer.new()
 	t.wait_time = 6.0
 	t.timeout.connect(func():
-		if IssueManager.night_council_active:
+		if IssueManager.night_council_active or _ended:
 			return
 		ResourceManager.tick_day()
-		if ResourceManager.day % 7 == 0:
+		if _ended:
+			return
+		# 第一幕收束：信王时期走满跨度，触发入继事件（而非无限循环或被强制拖入煤山）
+		if ResourceManager.total_day >= ResourceManager.ACT1_SPAN_DAYS:
+			_start_act1_closure()
+		elif ResourceManager.day % 7 == 0:
 			_start_night_council()
 	)
 	add_child(t)
@@ -195,12 +202,26 @@ func _on_game_over():
 	_ended = true
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")
 
+# 第一幕收束：信王入继。锁住世界、压暗、弹出收束画面。
+func _start_act1_closure():
+	if _ended:
+		return
+	_ended = true
+	IssueManager.night_council_active = true
+	if _env:
+		_env.ambient_light_energy = 0.15
+		_env.background_color = Color(0.06, 0.05, 0.05)
+	var closure: Node = load("res://scripts/ui/Act1Closure.gd").new()
+	get_tree().root.add_child(closure)
+	closure.show_closure()
+
 func _process(delta):
 	if _intro_layer and (Input.is_key_pressed(KEY_E) or Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_ENTER)):
 		var l = _intro_layer
 		_intro_layer = null
 		if is_instance_valid(l):
 			l.queue_free()
+		IssueManager.night_council_active = false
 	if IssueManager.night_council_active:
 		return
 	if _night_council_cd > 0.0:
@@ -215,6 +236,7 @@ func _show_intro():
 	var layer := CanvasLayer.new()
 	add_child(layer)
 	_intro_layer = layer
+	IssueManager.night_council_active = true   # 开场字幕期间锁住世界输入
 	var root := Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	layer.add_child(root)
@@ -254,6 +276,7 @@ func _show_intro():
 		if is_instance_valid(_intro_layer):
 			_intro_layer.queue_free()
 			_intro_layer = null
+		IssueManager.night_council_active = false
 	)
 	add_child(t)
 	t.start()

@@ -11,21 +11,24 @@
       "label": "开仓赈济",
       "deltas": { "treasury": -6, "popular": 8, "mandate_decay": -4 },
       "memory": "MF_A1_GRANNY_RELIEF",
-      "memory_weight": 8
+      "memory_weight": 8,
+      "memory_pillar": "Ⅲ"
     },
     {
       "id": "close",
       "label": "闭门不纳",
       "deltas": { "popular": -6, "resolve": 2, "mandate_decay": 3 },
       "memory": "MF_A1_GRANNY_TURNED",
-      "memory_weight": 7
+      "memory_weight": 7,
+      "memory_pillar": "Ⅲ"
     },
     {
       "id": "congee",
       "label": "遣人施粥",
       "deltas": { "treasury": -3, "popular": 4, "mandate_decay": -1 },
       "memory": "MF_A1_GRANNY_CONGEE",
-      "memory_weight": 5
+      "memory_weight": 5,
+      "memory_pillar": "Ⅲ"
     }
   ]
 }

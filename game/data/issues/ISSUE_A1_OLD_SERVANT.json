@@ -11,12 +11,14 @@
       "label": "亲临守殓",
       "deltas": { "resolve": 5, "popular": 1, "mandate_decay": -1 },
       "memory": "MF_A1_OLD_SERVANT",
-      "memory_weight": 6
+      "memory_weight": 6,
+      "memory_pillar": "Ⅰ"
     },
     {
       "id": "proxy",
       "label": "遣人代祭",
-      "deltas": { "resolve": -1, "court_order": 1 }
+      "deltas": { "resolve": -1, "court_order": 1 },
+      "memory_pillar": "Ⅱ"
     }
   ]
 }

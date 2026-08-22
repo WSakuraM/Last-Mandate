@@ -17,8 +17,9 @@ var issues := []            # 全部议题（dict）
 var flags := {}             # 当前旗标 Bool
 var used_once := {}         # 已用过的 once 议题 id
 var rebel_pressure := 0.0   # 民变压力（派生指标）
-var memories := []          # [{id, weight, text}]
+var memories := []          # [{id, weight, text, pillar}]  pillar: Ⅰ朱由检悲情/Ⅱ明末动乱/Ⅲ人民疾苦
 var night_council_active := false  # 夜召进行中：锁住世界输入
+var _last_issue_id := ""    # 上次抽中议题，避免连续重复
 
 signal issue_pool_ready(count: int)
 signal issue_presented(issue: Dictionary)
@@ -82,11 +83,24 @@ func eligible(stage_filter: Array = []) -> Array:
 		out.append(it)
 	return out
 
-# 按 weight 加权随机抽取一个议题
+# 按 weight 加权随机抽取一个议题（避免与上次连抽同一条）
 func draw_issue(stage_filter: Array = []) -> Dictionary:
 	var pool := eligible(stage_filter)
 	if pool.is_empty():
 		return {}
+	if pool.size() > 1:
+		var filtered := []
+		for it in pool:
+			if it.get("id", "") != _last_issue_id:
+				filtered.append(it)
+		if filtered.size() > 0:
+			pool = filtered
+	var chosen := _weighted_pick(pool)
+	_last_issue_id = chosen.get("id", "")
+	return chosen
+
+# 加权抽取 helper
+func _weighted_pick(pool: Array) -> Dictionary:
 	var total := 0
 	for it in pool:
 		total += max(1, it.get("weight", 1))
@@ -137,9 +151,9 @@ func apply_choice(issue: Dictionary, choice_id: String) -> Dictionary:
 	var mid: String = choice.get("memory", "")
 	if mid != "":
 		var w := int(choice.get("memory_weight", 5))
+		var pillar: String = choice.get("memory_pillar", "Ⅰ")
 		var txt := "「%s」%s" % [issue.get("title", ""), choice.get("label", "")]
-		memories.append({"id": mid, "weight": w, "text": txt})
-		memory_added.emit(mid, w)
+		add_memory(mid, w, txt, pillar)
 
 	# 5) once 标记
 	if issue.get("once", false):
@@ -154,15 +168,42 @@ func apply_choice(issue: Dictionary, choice_id: String) -> Dictionary:
 	issue_resolved.emit(result)
 	return result
 
-# 终章用：按权重抽取被辜负的回忆碎片文本
+# 写入回忆碎片：同 id 去重（保留更高 weight），并携带 pillar 支柱信息。
+func add_memory(id: String, weight: int, text: String, pillar: String = "Ⅰ"):
+	var existing = null
+	for m in memories:
+		if m["id"] == id:
+			existing = m
+			break
+	if existing != null:
+		if weight > existing["weight"]:
+			existing["weight"] = weight
+			existing["text"] = text
+			existing["pillar"] = pillar
+	else:
+		memories.append({"id": id, "weight": weight, "text": text, "pillar": pillar})
+	memory_added.emit(id, weight)
+
+# 终章用：人民疾苦（Ⅲ）优先，最多 5 张；再补其余高权重，直到 max_count。
 func draw_memory_texts(max_count: int = 6) -> Array:
 	if memories.is_empty():
 		return []
-	var sorted := memories.duplicate()
-	sorted.sort_custom(func(a, b): return a["weight"] > b["weight"])
+	var people := []
+	var others := []
+	for m in memories:
+		if m.get("pillar", "Ⅰ") == "Ⅲ":
+			people.append(m)
+		else:
+			others.append(m)
+	people.sort_custom(func(a, b): return a["weight"] > b["weight"])
+	others.sort_custom(func(a, b): return a["weight"] > b["weight"])
 	var out := []
-	for m in sorted:
+	for m in people:
+		if out.size() >= mini(max_count, 5):
+			break
 		out.append(m["text"])
+	for m in others:
 		if out.size() >= max_count:
 			break
+		out.append(m["text"])
 	return out

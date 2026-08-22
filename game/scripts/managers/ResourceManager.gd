@@ -11,8 +11,10 @@ var r := {
 }
 var mandate_decay := 12.0   # 气数：0=天命尚存, 100=气数已尽（不可清零，最低维持4）
 var day := 1
+var total_day := 0         # 单调递增天数，用于第一幕收束判定（day 每季归零，此值不减）
 var season := 0            # 0春 1夏 2秋 3冬
 var year := 1627           # 天启七年，信王时期
+const ACT1_SPAN_DAYS := 150  # 第一幕跨度（信王时期压缩为 150 游戏日），届时触发入继收束
 
 signal resources_changed(state: Dictionary)
 signal mandate_changed(value: float)
@@ -23,6 +25,7 @@ func get_state() -> Dictionary:
 	var s := r.duplicate()
 	s["mandate_decay"] = mandate_decay
 	s["day"] = day
+	s["total_day"] = total_day
 	s["season"] = season
 	s["year"] = year
 	return s
@@ -42,13 +45,22 @@ func add_mandate(amount: float):
 		game_over.emit()
 
 func tick_day():
+	total_day += 1
 	day += 1
 	if day > 90:
 		day = 1
 		season = (season + 1) % 4
 		if season == 0:
 			year += 1
-	add_mandate(0.4)        # 王朝衰势，气数缓增
-	add("people", -0.1)      # 苛政之下民心缓降（示例）
+	# 王朝衰势：气数硬性缓增，且随 elapsed 时间抬升「命运下限」。
+	# 即便玩家夜召全选善政，气数也只能被延缓、无法长期压在 4——时间本身即亡国之势（悲剧定轨）。
+	var floor := 4.0 + (year - 1627) * 15.0 + float(total_day) * 0.03
+	floor = clampf(floor, 4.0, 100.0)
+	mandate_decay = max(mandate_decay + 0.4, floor)
+	mandate_decay = clampf(mandate_decay, 4.0, 100.0)
+	mandate_changed.emit(mandate_decay)
+	if mandate_decay >= 100.0:
+		game_over.emit()
+	add("people", -0.1)      # 封地小民艰难，民心缓降
 	day_passed.emit(day, season, year)
 	resources_changed.emit(get_state())

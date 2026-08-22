@@ -11,12 +11,14 @@
       "label": "与承恩夜话",
       "deltas": { "resolve": 4, "mandate_decay": -1 },
       "memory": "MF_A1_CHENGEN_LAMP",
-      "memory_weight": 5
+      "memory_weight": 5,
+      "memory_pillar": "Ⅰ"
     },
     {
       "id": "alone",
       "label": "独坐批览",
-      "deltas": { "resolve": 1, "mandate_decay": -1 }
+      "deltas": { "resolve": 1, "mandate_decay": -1 },
+      "memory_pillar": "Ⅰ"
     }
   ]
 }

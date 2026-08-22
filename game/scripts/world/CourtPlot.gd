@@ -73,17 +73,26 @@ func tend():
 	match state:
 		"fallow":
 			state = "tilled"
-			ResourceManager.add("treasury", 1.0)
+			ResourceManager.add("treasury", -0.5)   # 种子与人力之费
 		"tilled":
 			state = "growing"
 		"growing":
 			state = "ripe"
 		"ripe":
 			state = "fallow"
-			ResourceManager.add("treasury", 4.0)
-			ResourceManager.add("people", 1.0)
+			_harvest()
 	_refresh()
 	EventBus.interact_prompt.emit("按 E 照料菜圃（%s）" % _zh(state))
+
+# 收获：受季节与天时调制，杜绝「无成本无限刷资源」。
+# 春播高产、夏秋平、冬寒歉收；若已逢旱象旗标则再减半。
+func _harvest():
+	var mult: float = [1.5, 1.0, 1.25, 0.4][ResourceManager.season]   # 春夏秋冬
+	if IssueManager.flags.get("drought", false):
+		mult *= 0.5
+	var r := randf_range(0.85, 1.15)
+	ResourceManager.add("treasury", 4.0 * mult * r)
+	ResourceManager.add("people", 1.0 * mult * r)
 
 func _refresh():
 	match state:
