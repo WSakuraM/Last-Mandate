@@ -2,6 +2,7 @@
   "id": "ISSUE_A1_DROUGHT",
   "title": "旱象初显",
   "stage": ["A1"],
+  "order": 3,
   "weight": 55,
   "once": false,
   "summary": "封地旱象初显，田土龟裂。是祈雨斋戒、开仓平粜，还是听之任之。",

@@ -2,6 +2,7 @@
   "id": "ISSUE_A1_FRUGAL",
   "title": "戒奢省用",
   "stage": ["A1"],
+  "order": 2,
   "weight": 40,
   "once": false,
   "summary": "府中用度渐奢。是躬行俭约以为天下先，还是王府威仪不可废。",

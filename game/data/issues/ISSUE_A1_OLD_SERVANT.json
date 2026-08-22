@@ -2,6 +2,7 @@
   "id": "ISSUE_A1_OLD_SERVANT",
   "title": "老仆病殁",
   "stage": ["A1"],
+  "order": 5,
   "weight": 35,
   "once": false,
   "summary": "自幼随侍的老仆病殁。是亲临守殓以全情分，还是遣人代祭不废政务。",

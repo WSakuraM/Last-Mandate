@@ -19,7 +19,7 @@ var used_once := {}         # 已用过的 once 议题 id
 var rebel_pressure := 0.0   # 民变压力（派生指标）
 var memories := []          # [{id, weight, text, pillar}]  pillar: Ⅰ朱由检悲情/Ⅱ明末动乱/Ⅲ人民疾苦
 var night_council_active := false  # 夜召进行中：锁住世界输入
-var _last_issue_id := ""    # 上次抽中议题，避免连续重复
+var _seq_cursor := 0        # 固定顺序游标：按议题 order 升序循环呈现
 
 signal issue_pool_ready(count: int)
 signal issue_presented(issue: Dictionary)
@@ -83,33 +83,17 @@ func eligible(stage_filter: Array = []) -> Array:
 		out.append(it)
 	return out
 
-# 按 weight 加权随机抽取一个议题（避免与上次连抽同一条）
+# 按剧本固定顺序（order 升序）循环呈现议题，保证叙事稳定、不随机
 func draw_issue(stage_filter: Array = []) -> Dictionary:
 	var pool := eligible(stage_filter)
 	if pool.is_empty():
 		return {}
-	if pool.size() > 1:
-		var filtered := []
-		for it in pool:
-			if it.get("id", "") != _last_issue_id:
-				filtered.append(it)
-		if filtered.size() > 0:
-			pool = filtered
-	var chosen := _weighted_pick(pool)
-	_last_issue_id = chosen.get("id", "")
+	# 按 order 升序排序（缺省排末尾），保证"剧本固定顺序呈现"
+	pool.sort_custom(func(a, b): return a.get("order", 999) < b.get("order", 999))
+	var n := pool.size()
+	var chosen: Dictionary = pool[_seq_cursor % n]
+	_seq_cursor = (_seq_cursor + 1) % n
 	return chosen
-
-# 加权抽取 helper
-func _weighted_pick(pool: Array) -> Dictionary:
-	var total := 0
-	for it in pool:
-		total += max(1, it.get("weight", 1))
-	var r := randi() % total
-	for it in pool:
-		r -= max(1, it.get("weight", 1))
-		if r < 0:
-			return it
-	return pool[0]
 
 # 应用某选项的全部后果。返回结算结果 dict。
 func apply_choice(issue: Dictionary, choice_id: String) -> Dictionary:

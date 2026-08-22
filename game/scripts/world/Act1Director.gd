@@ -20,6 +20,9 @@ func _ready():
 	add_child(vignette)
 	var well_event: Node = load("res://scripts/world/WellEvent.gd").new()
 	add_child(well_event)
+	var chengen: Node = load("res://scripts/world/ChengEnNPC.gd").new()
+	chengen.position = Vector3(18, 0, -14)
+	add_child(chengen)
 	ResourceManager.game_over.connect(_on_game_over)
 	_show_intro()
 
@@ -40,24 +43,49 @@ func _build_courtyard():
 	plane.size = Vector2(60, 60)
 	ground.mesh = plane
 	var gmat := StandardMaterial3D.new()
-	gmat.albedo_color = Color(0.35, 0.3, 0.25)
+	gmat.albedo_color = Color(0.32, 0.27, 0.22)
 	gmat.roughness = 1.0
 	ground.material_override = gmat
 	add_child(ground)
 
+	# 夯土墙（土褐）+ 瓦顶（赭石暗）
 	_wall(Vector3(0, 1, -30), Vector2(60, 1))
 	_wall(Vector3(0, 1, 30), Vector2(60, 1))
 	_wall(Vector3(-30, 1, 0), Vector2(1, 60))
 	_wall(Vector3(30, 1, 0), Vector2(1, 60))
 
-	var well := MeshInstance3D.new()
-	var wcyl := CylinderMesh.new()
-	wcyl.height = 2.0; wcyl.top_radius = 1.0; wcyl.bottom_radius = 1.0
-	well.mesh = wcyl
-	well.position = Vector3(-10, 1, 8)
+	# 四角弱暖灯（黄昏暗角感）
+	for c in [Vector3(-26, 4, -26), Vector3(26, 4, -26), Vector3(-26, 4, 26), Vector3(26, 4, 26)]:
+		var lamp := OmniLight3D.new()
+		lamp.position = c
+		lamp.light_color = Color(1.0, 0.7, 0.35)
+		lamp.light_energy = 6.0
+		lamp.omni_range = 16.0
+		add_child(lamp)
+
+	# 水井：井栏 + 辘轳
+	var well := Node3D.new()
+	well.name = "Well"
+	var wcyl := MeshInstance3D.new()
+	var cyl := CylinderMesh.new()
+	cyl.height = 1.6; cyl.top_radius = 1.1; cyl.bottom_radius = 1.1
+	wcyl.mesh = cyl
+	wcyl.position = Vector3(0, 0.8, 0)
 	var wmat := StandardMaterial3D.new()
-	wmat.albedo_color = Color(0.4, 0.4, 0.42)
-	well.material_override = wmat
+	wmat.albedo_color = Color(0.38, 0.36, 0.34)
+	wmat.roughness = 0.9
+	wcyl.material_override = wmat
+	well.add_child(wcyl)
+	var frame := MeshInstance3D.new()
+	var fm := BoxMesh.new()
+	fm.size = Vector3(2.6, 0.3, 0.3)
+	frame.mesh = fm
+	frame.position = Vector3(0, 1.9, 0)
+	var fmat := StandardMaterial3D.new()
+	fmat.albedo_color = Color(0.3, 0.22, 0.18)
+	frame.material_override = fmat
+	well.add_child(frame)
+	well.position = Vector3(-10, 0, 8)
 	add_child(well)
 
 	var positions := [Vector3(-8, 0, -8), Vector3(0, 0, -8), Vector3(8, 0, -8),
@@ -71,20 +99,35 @@ func _build_courtyard():
 	var sun := DirectionalLight3D.new()
 	sun.position = Vector3(10, 30, 10)
 	sun.rotation = Vector3(-1.0, 0, -0.6)
-	sun.light_color = Color(1.0, 0.85, 0.6)
-	sun.light_energy = 1.2
+	sun.light_color = Color(1.0, 0.82, 0.55)
+	sun.light_energy = 1.15
 	add_child(sun)
 
 func _wall(pos: Vector3, size: Vector2):
+	# 夯土墙体
 	var w := MeshInstance3D.new()
 	var box := BoxMesh.new()
 	box.size = Vector3(size.x, 2.0, size.y)
 	w.mesh = box
 	w.position = pos
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.45, 0.4, 0.35)
+	m.albedo_color = Color(0.42, 0.37, 0.31)
+	m.roughness = 1.0
 	w.material_override = m
 	add_child(w)
+	# 瓦顶（沿墙走向的扁长盒，赭石暗色）
+	var roof := MeshInstance3D.new()
+	var rb := BoxMesh.new()
+	var along := size.x if size.x > size.y else size.y
+	var thick := size.x if size.x < size.y else size.y
+	rb.size = Vector3(along + 1.0, 0.4, thick + 1.0)
+	roof.mesh = rb
+	roof.position = Vector3(pos.x, 2.2, pos.z)
+	var rm := StandardMaterial3D.new()
+	rm.albedo_color = Color(0.28, 0.2, 0.18)
+	rm.roughness = 0.95
+	roof.material_override = rm
+	add_child(roof)
 
 func _spawn_player():
 	var player: Node = load("res://scripts/player/Player.gd").new()
@@ -147,6 +190,13 @@ func _setup_night_council_hall():
 	lmat.emission_energy = 2.0
 	lantern.material_override = lmat
 	hall.add_child(lantern)
+	# 真实暖色点光（灯笼照明）
+	var lantern_light := OmniLight3D.new()
+	lantern_light.position = Vector3(0, 4.2, 3.2)
+	lantern_light.light_color = Color(1.0, 0.6, 0.2)
+	lantern_light.light_energy = 8.0
+	lantern_light.omni_range = 14.0
+	hall.add_child(lantern_light)
 	hall.position = Vector3(18, 0, -18)
 	add_child(hall)
 

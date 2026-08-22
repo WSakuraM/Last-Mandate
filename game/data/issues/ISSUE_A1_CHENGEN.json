@@ -2,6 +2,7 @@
   "id": "ISSUE_A1_CHENGEN",
   "title": "承恩夜话",
   "stage": ["A1"],
+  "order": 1,
   "weight": 30,
   "once": false,
   "summary": "夜深，太监王承恩随侍在侧。是与他闲话片刻，还是独坐批览文书。",

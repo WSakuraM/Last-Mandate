@@ -24,16 +24,26 @@ func _ready():
 
 	var c := Node3D.new()
 	c.name = "Crops"
+	# 低模菜苗：细茎 + 顶叶（圆锥），土绿
 	for k in range(5):
-		var crop := MeshInstance3D.new()
-		var cm := BoxMesh.new()
-		cm.size = Vector3(0.3, 0.8, 0.3)
-		crop.mesh = cm
-		var cmt := StandardMaterial3D.new()
-		cmt.albedo_color = Color(0.4, 0.6, 0.3)
-		crop.material_override = cmt
-		crop.position = Vector3((k % 3 - 1) * 0.8, 0.4, (k / 3 - 0.5) * 0.8)
-		c.add_child(crop)
+		var stem := MeshInstance3D.new()
+		var smesh := CylinderMesh.new()
+		smesh.top_radius = 0.04; smesh.bottom_radius = 0.06; smesh.height = 0.5
+		stem.mesh = smesh
+		var stem_mat := StandardMaterial3D.new()
+		stem_mat.albedo_color = Color(0.34, 0.42, 0.22)
+		stem.material_override = stem_mat
+		stem.position = Vector3((k % 3 - 1) * 0.8, 0.25, (k / 3 - 0.5) * 0.8)
+		c.add_child(stem)
+		var leaf := MeshInstance3D.new()
+		var lm := CylinderMesh.new()
+		lm.top_radius = 0.02; lm.bottom_radius = 0.22; lm.height = 0.5
+		leaf.mesh = lm
+		var lmt := StandardMaterial3D.new()
+		lmt.albedo_color = Color(0.46, 0.6, 0.28)
+		leaf.material_override = lmt
+		leaf.position = Vector3((k % 3 - 1) * 0.8, 0.62, (k / 3 - 0.5) * 0.8)
+		c.add_child(leaf)
 	add_child(c)
 	crops = c
 
