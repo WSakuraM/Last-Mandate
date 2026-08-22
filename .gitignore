@@ -44,3 +44,6 @@ game/assets_library/staging/
 
 # Local agent scratch
 .workbuddy/
+
+# Old 2D slice archive (kept locally for reference, not committed)
+game/_legacy_2d/

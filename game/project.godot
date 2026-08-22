@@ -1,33 +1,18 @@
-; Engine configuration file.
-; Godot 4.7 — Last Mandate M1 vertical slice
 config_version=5
 
 [application]
 config/name="末命 Last Mandate"
-config/description="悲剧定轨的明末叙事模拟。M1：信王府垂直切片。"
-run/main_scene="res://scenes/boot.tscn"
-config/features=PackedStringArray("4.7", "Forward Plus")
+config/features=PackedStringArray("4.7")
 config/icon="res://icon.svg"
+run/main_scene="res://scenes/main/Main.tscn"
 
 [autoload]
-GameState="*res://scripts/autoload/game_state.gd"
-Dialogue="*res://scripts/autoload/dialogue_bus.gd"
-WorldClock="*res://scripts/autoload/world_clock.gd"
-AssetBank="*res://scripts/autoload/asset_bank.gd"
-Sfx="*res://scripts/autoload/sfx_bus.gd"
-InkFarewell="*res://scripts/autoload/ink_farewell.gd"
-
-[display]
-window/size/viewport_width=1280
-window/size/viewport_height=720
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
-
-[layer_names]
-2d_physics/layer_1="world"
-2d_physics/layer_2="player"
-2d_physics/layer_3="interactable"
+ResourceManager="*res://scripts/managers/ResourceManager.gd"
+EventBus="*res://scripts/managers/EventBus.gd"
+SaveManager="*res://scripts/managers/SaveManager.gd"
 
 [rendering]
-textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.96, 0.93, 0.86, 1)
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="forward_plus"
+
+[input]

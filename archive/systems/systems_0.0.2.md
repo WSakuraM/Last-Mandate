@@ -1,48 +1,4 @@
-# 《末命》系统与数值设计 v0
-
-> 引擎无关设计文档；落地时以 JSON/资源表导入 Godot。  
-> 原则：五资源封顶；个人可调；**MandateDecay 不可清零**。
-
----
-
-## 一、全局存档结构（逻辑模型）
-
-```text
-SaveGame
-├── meta: version, playtime, act (1|2|3), seed
-├── traits: { diligence, mercy, suspicion, thrift, ... }  // 0–3 或布尔
-├── resources: { treasury, popular, frontier, court, resolve }
-├── mandate_decay: float 0–100
-├── rebel_pressure: float 0–100
-├── relations: { wang_cheng_en, wei, ministers... }
-├── memory_fragments: [ { id, weight, tags[], act, choice_label } ]
-├── act1: farm/workshop/inventory/year/season
-└── flags: string[]  // 剧情开关
-```
-
-统一原则：换幕后只换场景与输入，**不换** `memory_fragments` 与 `traits`。
-
----
-
-## 二、第一幕经营系统
-
-### 时间
-
-- 一年 = 春夏秋冬 4 季；每季若干行动日（建议 **6–8 行动点/季**）。
-- 默认 3 年；可在设置中缩为 2 年（跳过 Y3 日常，保留夜召）。
-
-### 资源（幕内）
-
-| 资源 | 说明 |
-|---|---|
-| **铜钱（文）** | 私囊主货币：买卖、小升级、赈济、vignette |
-| **碎银（两）** | 大额；约 1 两 = 1000 文（游戏简化）；少见 |
-| 体力 / 季行动点 | 每日或每季行动限制（建议 6–8 点/季） |
-| 作物库存 | 菜、药、鱼、酒、布、野菜 |
-| 人心（府内） | 下人态度；映射承恩好感与 Traits |
-
-**账本三分**：官银（原则上不动）／私囊铜钱（玩家主操作）／实物库存。  
-王爷亲耕与货币细则见 [`docs/09_M1经营设计.md`](09_M1经营设计.md)。
+](../../docs/09_M1经营设计.md)。
 
 ### 地块与作坊
 

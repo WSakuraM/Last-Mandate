@@ -1,17 +1,6 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 风格，版本号见 [archive/README.md](README.md)。
-
-格式：`Added` / `Changed` / `Fixed` / `Removed` / `Docs`。
-
----
-
-## [Unreleased]
-
-### Added
-
-- 风格 C **正式木框 UI**：资源条 / 目标 / 时钟 / 对白 / Toast / Tip / 抉择按钮；对白旁立绘色槽。见 `archive/ui/ui_0.0.3.md`。
-- **支线水墨下线动画**（10 角色 × 3 帧）+ `InkFarewell` 播放器。见 `archive/art_audio/ink_farewell_0.0.5.md`。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)](../README.md)](../docs/REMAKE_BLUEPRINT.md)；重写数值/系统、M1 3D 经营、3D 俯视 UI 规范；新建 Godot 4 3D 工程（俯视相机 / 王府地块 / 资源系统 / 煤山第一人称终章）；旧 2D 切片归档 `game/_legacy_2d/`。
 
 ### Changed
 

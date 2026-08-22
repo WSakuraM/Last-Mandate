@@ -14,10 +14,10 @@
 | 入口 | 说明 |
 |---|---|
 | [AGENTS.md](AGENTS.md) | 整体说明与约束（Agent 必读） |
-| [game/](game/) | **Godot 工程（M1 切片）** |
+| [game/](game) | **Godot 工程（M1 切片）** |
 | [docs/DAILY_LOG.md](docs/DAILY_LOG.md) | 每日工作日志（单文件，按日合并更新） |
 | [docs/文档索引.md](docs/文档索引.md) | 设计工作稿索引（中文文件名） |
-| [archive/](archive/) | SemVer 冻结留痕 |
+| [archive/](archive) | SemVer 冻结留痕 |
 | [docs/07_Git双远程.md](docs/07_Git双远程.md) | GitHub + Gitee |
 | [scripts/daily_backup.ps1](scripts/daily_backup.ps1) | 可选手动备份（定时任务已取消） |
 

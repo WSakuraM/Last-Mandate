@@ -27,7 +27,7 @@ flowchart TD
 | [06_act3_finale.md](06_act3_finale.md) | 破城、煤山、回忆 |
 | [07_gameplay_narrative.md](07_gameplay_narrative.md) | 系统如何讲故事 |
 
-旧场次索引仍保留在 [`../02_story_bible.md`](../02_story_bible.md)，以本目录 **0.0.2 细稿为准**。
+旧场次索引现集中于 [`../../../docs/02_故事圣经.md`](../../../docs/02_故事圣经.md)（重制版），以本目录 **0.0.2 细稿为准**。
 
 ---
 
