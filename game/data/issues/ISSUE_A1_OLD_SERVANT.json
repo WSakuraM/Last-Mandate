@@ -1,0 +1,22 @@
+{
+  "id": "ISSUE_A1_OLD_SERVANT",
+  "title": "老仆病殁",
+  "stage": ["A1"],
+  "weight": 35,
+  "once": false,
+  "summary": "自幼随侍的老仆病殁。是亲临守殓以全情分，还是遣人代祭不废政务。",
+  "choices": [
+    {
+      "id": "mourn",
+      "label": "亲临守殓",
+      "deltas": { "resolve": 5, "popular": 1, "mandate_decay": -1 },
+      "memory": "MF_A1_OLD_SERVANT",
+      "memory_weight": 6
+    },
+    {
+      "id": "proxy",
+      "label": "遣人代祭",
+      "deltas": { "resolve": -1, "court_order": 1 }
+    }
+  ]
+}

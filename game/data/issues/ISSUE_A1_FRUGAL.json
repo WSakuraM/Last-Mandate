@@ -1,0 +1,22 @@
+{
+  "id": "ISSUE_A1_FRUGAL",
+  "title": "戒奢省用",
+  "stage": ["A1"],
+  "weight": 40,
+  "once": false,
+  "summary": "府中用度渐奢。是躬行俭约以为天下先，还是王府威仪不可废。",
+  "choices": [
+    {
+      "id": "frugal",
+      "label": "躬行俭约",
+      "deltas": { "treasury": 2, "resolve": 3, "mandate_decay": -1 },
+      "memory": "MF_A1_FRUGAL",
+      "memory_weight": 4
+    },
+    {
+      "id": "usual",
+      "label": "用度如常",
+      "deltas": { "resolve": -2, "mandate_decay": 1 }
+    }
+  ]
+}

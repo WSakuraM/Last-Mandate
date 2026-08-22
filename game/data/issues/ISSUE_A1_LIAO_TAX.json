@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_A1_LIAO_TAX",
+  "title": "辽饷苗头",
+  "stage": ["A1"],
+  "weight": 65,
+  "once": false,
+  "summary": "辽东告急，有臣属请在王府封地加派辽饷。钱粮从何而来，百姓如何承受。",
+  "choices": [
+    {
+      "id": "levy",
+      "label": "加派辽饷",
+      "deltas": { "treasury": 10, "popular": -12, "mandate_decay": 6 },
+      "memory": "MF_A1_FARMER_REBEL",
+      "memory_weight": 9
+    },
+    {
+      "id": "delay",
+      "label": "暂缓加派",
+      "deltas": { "treasury": -4, "popular": 5, "mandate_decay": -2 },
+      "memory": "MF_A1_FARMER_SPARED",
+      "memory_weight": 6
+    },
+    {
+      "id": "cut",
+      "label": "裁冗费抵饷",
+      "deltas": { "treasury": 2, "court_order": -2, "mandate_decay": 1 },
+      "memory": "MF_A1_CUT_WASTE",
+      "memory_weight": 4
+    }
+  ]
+}

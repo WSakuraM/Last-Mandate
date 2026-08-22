@@ -6,6 +6,8 @@ var _env: Environment
 var _night_council_cd := 0.0
 var near_hall := false
 var _hall_area: Area3D
+var _intro_layer: CanvasLayer
+const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
 	_setup_environment()
@@ -14,7 +16,10 @@ func _ready():
 	_spawn_camera()
 	_setup_day_cycle()
 	_setup_night_council_hall()
+	var vignette: Node = load("res://scripts/world/RefugeeVignette.gd").new()
+	add_child(vignette)
 	ResourceManager.game_over.connect(_on_game_over)
+	_show_intro()
 
 func _setup_environment():
 	_env = Environment.new()
@@ -163,7 +168,7 @@ func _on_hall_exited(b):
 func _start_night_council():
 	if IssueManager.night_council_active or _ended:
 		return
-	var issue = IssueManager.draw_issue()
+	var issue = IssueManager.draw_issue(["A1"])
 	if issue.is_empty():
 		return
 	IssueManager.night_council_active = true
@@ -191,6 +196,11 @@ func _on_game_over():
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")
 
 func _process(delta):
+	if _intro_layer and (Input.is_key_pressed(KEY_E) or Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_ENTER)):
+		var l = _intro_layer
+		_intro_layer = null
+		if is_instance_valid(l):
+			l.queue_free()
 	if IssueManager.night_council_active:
 		return
 	if _night_council_cd > 0.0:
@@ -200,3 +210,50 @@ func _process(delta):
 	if Input.is_key_pressed(KEY_M) and not _ended:
 		_ended = true
 		get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")
+
+func _show_intro():
+	var layer := CanvasLayer.new()
+	add_child(layer)
+	_intro_layer = layer
+	var root := Control.new()
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(root)
+
+	var dim := ColorRect.new()
+	dim.color = Color(0.02, 0.02, 0.03, 0.85)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	root.add_child(dim)
+
+	var vb := VBoxContainer.new()
+	vb.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	vb.add_theme_constant_override("separation", 14)
+	root.add_child(vb)
+
+	var t1 := Label.new()
+	t1.text = "第一幕 · 信王府"
+	t1.add_theme_font_size_override("font_size", 40)
+	t1.add_theme_color_override("font_color", GOLD)
+	vb.add_child(t1)
+
+	var t2 := Label.new()
+	t2.text = "天启七年（1627）· 你还只是信王"
+	t2.add_theme_font_size_override("font_size", 22)
+	t2.add_theme_color_override("font_color", Color(0.8, 0.77, 0.72))
+	vb.add_child(t2)
+
+	var t3 := Label.new()
+	t3.text = "WASD 行走 · 靠近菜圃按 E 照料 · 入夜召堂听议 · 按 M 预演终章"
+	t3.add_theme_font_size_override("font_size", 16)
+	t3.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
+	vb.add_child(t3)
+
+	var t := Timer.new()
+	t.wait_time = 6.0
+	t.one_shot = true
+	t.timeout.connect(func():
+		if is_instance_valid(_intro_layer):
+			_intro_layer.queue_free()
+			_intro_layer = null
+	)
+	add_child(t)
+	t.start()

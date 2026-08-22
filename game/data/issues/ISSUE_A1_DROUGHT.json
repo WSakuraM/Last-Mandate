@@ -1,0 +1,31 @@
+{
+  "id": "ISSUE_A1_DROUGHT",
+  "title": "旱象初显",
+  "stage": ["A1"],
+  "weight": 55,
+  "once": false,
+  "summary": "封地旱象初显，田土龟裂。是祈雨斋戒、开仓平粜，还是听之任之。",
+  "choices": [
+    {
+      "id": "pray",
+      "label": "祈雨斋戒",
+      "deltas": { "resolve": 4, "popular": 2, "mandate_decay": -2 },
+      "memory": "MF_A1_FARMER_PRAY",
+      "memory_weight": 6
+    },
+    {
+      "id": "granary",
+      "label": "开仓平粜",
+      "deltas": { "treasury": -8, "popular": 10, "mandate_decay": -5 },
+      "memory": "MF_A1_OPEN_GRANARY",
+      "memory_weight": 8
+    },
+    {
+      "id": "ignore",
+      "label": "听之任之",
+      "deltas": { "popular": -8, "mandate_decay": 4 },
+      "memory": "MF_A1_WITHERED_FIELD",
+      "memory_weight": 7
+    }
+  ]
+}
