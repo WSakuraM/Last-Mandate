@@ -1,0 +1,42 @@
+{
+    "id": "DLG_A1_AEN_SEED",
+    "title": "夜谈 · 谷种",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "夜色渐浓，王承恩不知何时站在了你身后，手里捧着一只布袋。",
+            "emotion": ""
+        },
+        {
+            "speaker": "王承恩",
+            "text": "王爷，这是奴婢攒下的谷种。府中园子，总该有人种。",
+            "emotion": ""
+        },
+        {
+            "speaker": "",
+            "text": "你接过布袋，沉甸甸的。他没走，又低声说了一句——",
+            "emotion": ""
+        },
+        {
+            "speaker": "王承恩",
+            "text": "王爷，有朝一日……您若到了那高处，别忘了园子里的人。",
+            "emotion": ""
+        },
+        {
+            "speaker": "",
+            "text": "烛火微晃，他的影子很长。",
+            "emotion": "narration"
+        }
+    ],
+    "choices": [],
+    "on_complete": {
+        "memory": {
+            "id": "MF_A1_AEN_PROMISE",
+            "weight": 9,
+            "text": "阿恩夜谈递谷种：别忘了园子里的人",
+            "pillar": "Ⅰ"
+        },
+        "resource_deltas": {},
+        "flags_add": ["aen_seed_given"]
+    }
+}

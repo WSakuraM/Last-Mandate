@@ -11,6 +11,7 @@ ResourceManager="*res://scripts/managers/ResourceManager.gd"
 EventBus="*res://scripts/managers/EventBus.gd"
 SaveManager="*res://scripts/managers/SaveManager.gd"
 IssueManager="*res://scripts/managers/IssueManager.gd"
+DialogueManager="*res://scripts/managers/DialogueManager.gd"
 
 [rendering]
 renderer/rendering_method="forward_plus"

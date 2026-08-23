@@ -1,0 +1,27 @@
+{
+    "id": "DLG_A1_REFUGEE",
+    "title": "府门外",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "一位衣衫褴褛的老妪跪在雪泥里，怀中抱着枯瘦的孙儿，只是望着你。",
+            "emotion": ""
+        },
+        {
+            "speaker": "",
+            "text": "你才想起，还身为信王时，这京城之外的天下，早已千疮百孔。",
+            "emotion": "narration"
+        }
+    ],
+    "choices": [],
+    "on_complete": {
+        "memory": {
+            "id": "MF_A1_VIGNETTE_GRANNY",
+            "weight": 8,
+            "text": "府门外，流民老妪怀中枯瘦的孙儿",
+            "pillar": "Ⅲ"
+        },
+        "resource_deltas": {},
+        "flags_add": []
+    }
+}

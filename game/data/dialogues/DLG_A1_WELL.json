@@ -1,0 +1,32 @@
+{
+    "id": "DLG_A1_WELL",
+    "title": "井边",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "你挽起袖口，替怯生生的小厮打上一桶井水。",
+            "emotion": ""
+        },
+        {
+            "speaker": "信王",
+            "text": "自家的人，不必拘礼。",
+            "emotion": "warm"
+        },
+        {
+            "speaker": "",
+            "text": "——那时你还只是信王，府中岁月尚暖。",
+            "emotion": "narration"
+        }
+    ],
+    "choices": [],
+    "on_complete": {
+        "memory": {
+            "id": "MF_A1_WELL",
+            "weight": 4,
+            "text": "井边，你亲手为下人打上一桶水",
+            "pillar": "Ⅰ"
+        },
+        "resource_deltas": {"people": 1.0},
+        "flags_add": []
+    }
+}

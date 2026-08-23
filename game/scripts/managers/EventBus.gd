@@ -8,3 +8,4 @@ signal open_issue(data: Dictionary)
 signal meishan_begin()
 signal first_sow()   # M1A3：玩家首次播种 → 触发阿恩递种夜谈
 signal narration(text: String)   # 区块二：收获旁白浮字（旱象减产/丰收分邻等）
+signal dialogue_request(id: String)   # 请求播放对话（由 DialogueManager 监听）

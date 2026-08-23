@@ -1,0 +1,18 @@
+{
+    "id": "DLG_A1_CHENGEN_IDLE",
+    "title": "",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "王承恩垂手立在廊下，见你望来，微微躬身。",
+            "emotion": ""
+        },
+        {
+            "speaker": "王承恩",
+            "text": "王爷，奴婢在。有什么吩咐，您只管说。",
+            "emotion": ""
+        }
+    ],
+    "choices": [],
+    "on_complete": {}
+}
