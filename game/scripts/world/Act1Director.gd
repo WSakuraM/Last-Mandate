@@ -23,7 +23,6 @@ var _zhoushi_done := false
 var _eunuch_done := false
 var _calamity_done := false
 var _atmosphere: Node   # 氛围特效管理器（粒子系统）
-var _post_process: Node  # 风格化后处理（着色器）
 const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
@@ -56,10 +55,6 @@ func _ready():
 	# 氛围特效（粒子系统：灰尘/萤火虫/炊烟/雨雪）
 	_atmosphere = load("res://scripts/world/AtmosphereManager.gd").new()
 	add_child(_atmosphere)
-	# 风格化后处理（暗调厚涂 / 版画质感着色器）
-	# CanvasLayer 必须加到场景树根，不能挂在 Node3D 下
-	_post_process = load("res://scripts/world/StylizedPostProcess.gd").new()
-	get_tree().root.add_child(_post_process)
 	ResourceManager.game_over.connect(_on_game_over)
 	EventBus.narration.connect(_on_narration)
 	_show_intro()
@@ -307,9 +302,6 @@ func _start_night_council():
 	if _env:
 		_env.ambient_light_energy = 0.22
 		_env.background_color = Color(0.1, 0.09, 0.08)
-	# 风格化后处理切换夜召模式（加深暗角、减少色阶）
-	if _post_process and _post_process.has_method("enter_night_mode"):
-		_post_process.enter_night_mode()
 	var panel: Node = load("res://scripts/ui/DecisionPanel.gd").new()
 	get_tree().root.add_child(panel)
 	panel.choice_made.connect(_on_issue_resolved)
@@ -320,18 +312,12 @@ func _on_issue_resolved(_res):
 	if _env:
 		_env.ambient_light_energy = 0.8
 		_env.background_color = Color(0.55, 0.5, 0.45)
-	# 风格化后处理恢复日间模式
-	if _post_process and _post_process.has_method("enter_day_mode"):
-		_post_process.enter_day_mode()
 	_night_council_cd = 3.0
 
 func _on_game_over():
 	if _ended:
 		return
 	_ended = true
-	# 煤山终章：极暗后处理
-	if _post_process and _post_process.has_method("enter_meishan_mode"):
-		_post_process.enter_meishan_mode()
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")
 
 # 第一幕收束：信王入继。锁住世界、压暗、弹出收束画面。
@@ -343,8 +329,6 @@ func _start_act1_closure():
 	if _env:
 		_env.ambient_light_energy = 0.15
 		_env.background_color = Color(0.06, 0.05, 0.05)
-	if _post_process and _post_process.has_method("enter_meishan_mode"):
-		_post_process.enter_meishan_mode()
 	var closure: Node = load("res://scripts/ui/Act1Closure.gd").new()
 	get_tree().root.add_child(closure)
 	closure.show_closure()
@@ -398,7 +382,7 @@ func _show_intro():
 	vb.add_child(t2)
 
 	var t3 := Label.new()
-	t3.text = "WASD 行走 · 靠近菜圃按 E 照料 · 入夜召堂听议 · 按 M 预演终章"
+	t3.text = "WASD / 鼠标点击行走 · 靠近菜圃按 E 照料 · 入夜召堂听议 · 按 M 预演终章"
 	t3.add_theme_font_size_override("font_size", 16)
 	t3.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
 	vb.add_child(t3)
