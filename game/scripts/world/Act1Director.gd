@@ -73,7 +73,7 @@ func _setup_environment():
 	_env.fog_light_color = Color(0.5, 0.46, 0.42)
 	_env.fog_density = 0.012
 	# 风格化环境调参：ACES 色调映射有助于色彩分级；暖灯溢出光晕
-	_env.tonemap_mode = Environment.TONE_MAP_ACES
+	_env.tonemap_mode = Environment.TONE_MAPPER_ACES
 	_env.tonemap_exposure = 0.9
 	_env.tonemap_white = 1.2
 	_env.glow_enabled = true
@@ -116,7 +116,7 @@ func _build_courtyard():
 	add_child(well)
 
 	var positions := [Vector3(-8, 0, -8), Vector3(0, 0, -8), Vector3(8, 0, -8),
-	                  Vector3(-8, 0, 4), Vector3(0, 0, 4), Vector3(8, 0, 4)]
+					  Vector3(-8, 0, 4), Vector3(0, 0, 4), Vector3(8, 0, 4)]
 	for i in positions.size():
 		var p: Node = load("res://scripts/world/CourtPlot.gd").new()
 		p.plot_id = "plot_%d" % i
