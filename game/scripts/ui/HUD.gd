@@ -3,6 +3,8 @@ extends CanvasLayer
 
 var bars := {}
 var mandate_bar: ProgressBar
+var mandate_fill: StyleBoxFlat
+var mandate_warning: Label
 var info_label: Label
 var prompt_label: Label
 var memory_label: Label
@@ -38,13 +40,30 @@ func _ready():
 	mandate_bar.max_value = 100.0
 	mandate_bar.value = 12.0
 	mandate_bar.custom_minimum_size = Vector2(260, 18)
+	mandate_fill = StyleBoxFlat.new()
+	mandate_fill.bg_color = _mandate_color(12.0)
+	mandate_bar.add_theme_stylebox_override("fill", mandate_fill)
 	var mh := HBoxContainer.new()
 	var ml := Label.new()
-	ml.text = "气数(MandateDecay)"
-	ml.custom_minimum_size = Vector2(150, 0)
+	ml.text = "天命"
+	ml.custom_minimum_size = Vector2(90, 0)
 	mh.add_child(ml)
 	mh.add_child(mandate_bar)
 	vb.add_child(mh)
+
+	# 锁底指示：气数永不低于 4，此标记不可擦除
+	var lock_label := Label.new()
+	lock_label.text = "▎锁底 4 · 不可清零"
+	lock_label.add_theme_font_size_override("font_size", 11)
+	lock_label.add_theme_color_override("font_color", Color(0.5, 0.45, 0.4))
+	vb.add_child(lock_label)
+
+	# 气数高时的暗色警示
+	mandate_warning = Label.new()
+	mandate_warning.text = ""
+	mandate_warning.add_theme_color_override("font_color", Color(0.55, 0.2, 0.18))
+	mandate_warning.add_theme_font_size_override("font_size", 14)
+	vb.add_child(mandate_warning)
 
 	info_label = Label.new()
 	info_label.text = ""
@@ -76,6 +95,19 @@ func _on_res(s: Dictionary):
 
 func _on_man(v: float):
 	mandate_bar.value = v
+	mandate_fill.bg_color = _mandate_color(v)
+	if v >= 70.0:
+		mandate_warning.text = "你救不了这座江山"
+	else:
+		mandate_warning.text = ""
+
+func _mandate_color(v: float) -> Color:
+	if v < 30.0:
+		return Color(0.7, 0.6, 0.35)   # 暗金：天命尚存
+	elif v < 70.0:
+		return Color(0.8, 0.4, 0.2)    # 橙红：衰势渐显
+	else:
+		return Color(0.6, 0.15, 0.12)  # 深红：气数将尽
 
 func _on_prompt(t: String):
 	prompt_label.text = t

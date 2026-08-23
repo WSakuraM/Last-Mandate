@@ -181,26 +181,53 @@ func add_memory(id: String, weight: int, text: String, pillar: String = "Ⅰ"):
 		memories.append({"id": id, "weight": weight, "text": text, "pillar": pillar})
 	memory_added.emit(id, weight)
 
-# 终章用：人民疾苦（Ⅲ）优先，最多 5 张；再补其余高权重，直到 max_count。
-func draw_memory_texts(max_count: int = 6) -> Array:
+# 终章蒙太奇抽取：Ⅲ类（人民疾苦）严格优先填满 count 个名额，
+# 剩余再按权重抽Ⅰ/Ⅱ类。返回完整 memory dict 数组（含 id/weight/text/pillar）。
+func draw_montage(count: int = 8) -> Array:
 	if memories.is_empty():
 		return []
-	var people := []
-	var others := []
+	var people: Array = []
+	var others: Array = []
 	for m in memories:
 		if m.get("pillar", "Ⅰ") == "Ⅲ":
 			people.append(m)
 		else:
 			others.append(m)
-	people.sort_custom(func(a, b): return a["weight"] > b["weight"])
-	others.sort_custom(func(a, b): return a["weight"] > b["weight"])
-	var out := []
+	people.sort_custom(func(a, b): return int(a["weight"]) > int(b["weight"]))
+	others.sort_custom(func(a, b): return int(a["weight"]) > int(b["weight"]))
+	var out: Array = []
+	# Ⅲ类严格优先：有多少填多少，直到 count 个名额占满
 	for m in people:
-		if out.size() >= mini(max_count, 5):
+		if out.size() >= count:
 			break
-		out.append(m["text"])
+		out.append(m)
+	# 名额未满则补Ⅰ/Ⅱ类
 	for m in others:
-		if out.size() >= max_count:
+		if out.size() >= count:
 			break
+		out.append(m)
+	return out
+
+# 血诏脸谱：返回权重最高的 2-3 条Ⅲ类回忆，作为"勿伤我百姓"时浮现的具体脸。
+func draw_blood_edict_faces(count: int = 3) -> Array:
+	if memories.is_empty():
+		return []
+	var people: Array = []
+	for m in memories:
+		if m.get("pillar", "Ⅰ") == "Ⅲ":
+			people.append(m)
+	people.sort_custom(func(a, b): return int(a["weight"]) > int(b["weight"]))
+	var out: Array = []
+	for m in people:
+		if out.size() >= count:
+			break
+		out.append(m)
+	return out
+
+# 兼容旧接口：返回 text 字符串数组。
+func draw_memory_texts(max_count: int = 8) -> Array:
+	var montage := draw_montage(max_count)
+	var out: Array = []
+	for m in montage:
 		out.append(m["text"])
 	return out

@@ -37,21 +37,29 @@ func show_closure():
 	var sep := HSeparator.new()
 	vb.add_child(sep)
 
-	# 回忆碎片汇总（终章蒙太奇的数据源）
+	# 回忆碎片汇总（终章蒙太奇预览，8条，Ⅲ类优先 + 支柱着色）
 	var mem_label := Label.new()
 	var n := IssueManager.memories.size()
-	mem_label.text = "本幕拾得回忆碎片 ×%d" % n
+	mem_label.text = "本幕拾得回忆碎片 ×%d（终章蒙太奇抽 8 条）" % n
 	mem_label.add_theme_font_size_override("font_size", 18)
 	mem_label.add_theme_color_override("font_color", Color(0.85, 0.82, 0.78))
 	vb.add_child(mem_label)
 
-	var top := IssueManager.draw_memory_texts(5)
-	for mtxt in top:
+	var montage := IssueManager.draw_montage(8)
+	for m in montage:
 		var ml := Label.new()
-		ml.text = "· " + mtxt
+		ml.text = "· " + str(m.get("text", ""))
 		ml.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		ml.add_theme_font_size_override("font_size", 15)
-		ml.add_theme_color_override("font_color", Color(0.62, 0.6, 0.56))
+		# 按支柱着色：Ⅲ人民疾苦（暖红）/ Ⅱ朝堂国事（冷灰）/ Ⅰ信王个人（暗灰）
+		var pillar: String = str(m.get("pillar", "Ⅰ"))
+		match pillar:
+			"Ⅲ":
+				ml.add_theme_color_override("font_color", Color(0.65, 0.48, 0.42))
+			"Ⅱ":
+				ml.add_theme_color_override("font_color", Color(0.5, 0.55, 0.62))
+			_:
+				ml.add_theme_color_override("font_color", Color(0.62, 0.6, 0.56))
 		vb.add_child(ml)
 
 	var sep2 := HSeparator.new()
