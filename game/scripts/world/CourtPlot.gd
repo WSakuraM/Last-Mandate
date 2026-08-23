@@ -77,13 +77,25 @@ func _check_sow_hooks():
 
 # 收获：受季节与天时调制，杜绝「无成本无限刷资源」。
 # 春播高产、夏秋平、冬寒歉收；若已逢旱象旗标则再减半。
+# 区块二：加旱象减产旁白 + 丰收分邻回忆钩（纯数值经营也绑剧情）。
 func _harvest():
 	var mult: float = [1.5, 1.0, 1.25, 0.4][ResourceManager.season]   # 春夏秋冬
-	if IssueManager.flags.get("drought", false):
+	var drought_active := bool(IssueManager.flags.get("drought", false))
+	if drought_active:
 		mult *= 0.5
 	var r := randf_range(0.85, 1.15)
 	ResourceManager.add("treasury", 4.0 * mult * r)
 	ResourceManager.add("people", 1.0 * mult * r)
+	# 旱象减产旁白——天灾钩子（Ⅲ类人民疾苦，weight 6）
+	if drought_active:
+		IssueManager.add_memory("MF_A1_DROUGHT_HARVEST", 6, \
+			"旱象之下，菜畦瘦得可怜——几近颗粒无收", "Ⅲ")
+		EventBus.narration.emit("旱象连年，这畦菜瘦得可怜……")
+	# 丰收分邻——仁慈钩子（Ⅰ类信王个人，weight 4）
+	elif r > 1.1 and (ResourceManager.season == 0 or ResourceManager.season == 2):
+		IssueManager.add_memory("MF_A1_BOUNTY_SHARE", 4, \
+			"丰收时你让吴伯分些菜给街坊邻舍", "Ⅰ")
+		EventBus.narration.emit("丰收了，你让吴伯分些给街坊。")
 
 func _refresh():
 	match state:

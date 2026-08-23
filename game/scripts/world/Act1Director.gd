@@ -10,6 +10,7 @@ var _intro_layer: CanvasLayer
 var _purse_tutorial_done := false
 var _qiushui_done := false
 var _qiushui_event: Node
+var _narration_layer: CanvasLayer
 const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
@@ -31,6 +32,7 @@ func _ready():
 	chengen.position = Vector3(18, 0, -14)
 	add_child(chengen)
 	ResourceManager.game_over.connect(_on_game_over)
+	EventBus.narration.connect(_on_narration)
 	_show_intro()
 
 func _setup_environment():
@@ -231,6 +233,8 @@ func _start_night_council():
 		return
 	var issue = IssueManager.draw_issue(["A1"])
 	if issue.is_empty():
+		# 区块二：池空时触发日常小事件填充（不占决策，只填时间）
+		_start_daily_vignette()
 		return
 	IssueManager.night_council_active = true
 	EventBus.interact_hide.emit()
@@ -355,3 +359,43 @@ func _start_qiushui_letter():
 		return
 	_qiushui_done = true
 	_qiushui_event.trigger()
+
+# 区块二：夜召池空时触发日常小事件（街坊寒暄/天气/承恩随口一句）
+func _start_daily_vignette():
+	var dv: CanvasLayer = load("res://scripts/ui/DailyVignette.gd").new()
+	get_tree().root.add_child(dv)
+	dv.present()
+	dv.dismissed.connect(func():
+		_night_council_cd = 3.0
+	)
+
+# 区块二：收获旁白浮字（旱象减产/丰收分邻），屏幕底部短暂显示后消失
+func _on_narration(text: String):
+	if _narration_layer and is_instance_valid(_narration_layer):
+		_narration_layer.queue_free()
+	_narration_layer = CanvasLayer.new()
+	add_child(_narration_layer)
+	var root := Control.new()
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_narration_layer.add_child(root)
+
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	lbl.position = Vector2(0, -60)
+	lbl.size = Vector2(680, 40)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.add_theme_font_size_override("font_size", 18)
+	lbl.add_theme_color_override("font_color", Color(0.88, 0.82, 0.7))
+	root.add_child(lbl)
+
+	var t := Timer.new()
+	t.wait_time = 3.5
+	t.one_shot = true
+	t.timeout.connect(func():
+		if is_instance_valid(_narration_layer):
+			_narration_layer.queue_free()
+			_narration_layer = null
+	)
+	add_child(t)
+	t.start()

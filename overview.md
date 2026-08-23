@@ -1,46 +1,44 @@
-# M1A2 + M1A3 实现概览
+# M1A4 秋穗家书三选——实现概览
 
 ## 完成内容
 
-按设计敲定记录区块一待落地清单第 2、3 项，连续实现 M1A2（菜畦最后播种回忆钩）与 M1A3（阿恩递种夜谈）。
+按设计敲定记录区块一待落地清单第 4 项，实现 M1A4 秋穗家书三选——中段天灾段仁慈抉择。
 
 ### 新建文件
-- `game/scripts/world/AenSeedEvent.gd` — 阿恩递种夜谈事件，监听 EventBus.first_sow 信号触发
+- `game/scripts/world/QiuShuiLetterEvent.gd` — 秋穗家书三选事件，total_day>=50 由 Act1Director 触发
 
 ### 修改文件
-- `game/scripts/world/CourtPlot.gd` — tend() 新增 `_check_sow_hooks()`：首次播种 emit 信号 + 后期播种写回忆
-- `game/scripts/managers/EventBus.gd` — 新增 `first_sow()` 信号
-- `game/scripts/world/Act1Director.gd` — 创建 AenSeedEvent 实例
-- `game/scripts/ui/Act1Closure.gd` — 存档新增 `grain_seed` 显式字段
-- `docs/story/13_设计敲定记录.md` — M1A2/M1A3 状态：待落地 → 已落地
-- `docs/story/12_剧情走向总图.md` — 阿恩夜谈/最后播种状态：未落地/待接 → 已落地
+- `game/scripts/world/Act1Director.gd` — 日间循环加 elif 分支触发秋穗家书 + 创建实例
+- `game/scripts/ui/Act1Closure.gd` — 存档新增 `kind_likely` 字段 + 收束画面〔仁慈〕Trait 显示
+- `docs/story/13_设计敲定记录.md` — M1A4 状态：待落地 → 已落地
+- `docs/story/12_剧情走向总图.md` — 秋穗家书状态：未落地 → 已落地
 
-## M1A2：菜畦最后播种回忆钩
+## 三选机制
 
-CourtPlot.gd 的 `tend()` 在 fallow→tilled（播种）时调用 `_check_sow_hooks()`：
-- **首次播种**（任意菜畦）：设 `first_sow_done` flag，emit `EventBus.first_sow`（驱动 M1A3）
-- **后期播种**（total_day >= 120，约第一幕最后 30 天）：写 `MF_A1_LAST_SOW` 回忆碎片（weight=8, pillar=Ⅰ，文本"你或许看不见收成"），终章蒙太奇对照空畦/日出
+| 选择 | 私囊消耗 | 民心 | 旗标 | 回忆碎片 | 权重 |
+|------|---------|------|------|---------|------|
+| 借粮（动私囊） | -15 兩 | +5 | kind_likely=true | MF_A1_QIUSHUI_LEND | 7 |
+| 象征性给 | -3 兩 | +2 | — | MF_A1_QIUSHUI_TOKEN | 4 |
+| 婉拒 | 0 | -3 | — | MF_A1_QIUSHUI_REFUSE | 3 |
 
-## M1A3：阿恩递种夜谈
+- 借粮 = 仁慈路径：私囊代价大（直接影响 M2 国库初值），但获得 kind_likely Traits 软化 M2 开仓台词 + 民心大增
+- 象征性给 = 中间路径：小代价小回报
+- 婉拒 = 自保路径：无代价但民心下降
 
-AenSeedEvent.gd 监听 `EventBus.first_sow` 信号，触发一次性叙事卡：
-- 阿恩（王承恩）夜色中递上谷种布袋
-- 夜谈一句承诺：「王爷，有朝一日……您若到了那高处，别忘了园子里的人。」
-- 写入 `MF_A1_AEN_PROMISE` 回忆碎片（weight=9, must, pillar=Ⅰ）
-- 设 `aen_seed_given` flag（跨幕谷种道具标记，存档 flags + grain_seed 显式字段）
+## 触发条件
 
-## 触发链
+日间循环 tick 中：`not _qiushui_done and total_day >= 50` → `_start_qiushui_letter()`
+- total_day=50 对应 day=51，51%7=2（非夜召日），无冲突
+- 触发后锁住世界（night_council_active=true），完成后解锁
 
-```
-玩家靠近菜圃按 E → CourtPlot.tend() → fallow→tilled
-  ├─ 首次？ → EventBus.first_sow.emit() → AenSeedEvent 弹出夜谈卡
-  └─ 后期(total_day>=120)？ → IssueManager.add_memory(MF_A1_LAST_SOW)
-```
+## 存档
+
+ACT1_END 存档现在包含：`act` + `resources`(五资源+私囊) + `memories` + `flags` + `private_purse` + `grain_seed` + `kind_likely`
 
 ## 校验
-- Godot 4.7.2 headless 校验：0 报错，0 警告
-- 本地提交：`b850731`（8 files, +162 行）
+- Godot 4.7.2 headless 校验：0 报错
+- 本地提交：`aeff89f`（6 files, +294/-34 行）
 
 ## 待办
 - 推送至 GitHub + Gitee 双远程（需用户在已登录终端执行 `git push origin main`）
-- 后续 M1A4（秋穗家书三选议题，中段天灾段触发）
+- 主线脊柱六节点全部落地完成：M1A0~M1A5 全绿
