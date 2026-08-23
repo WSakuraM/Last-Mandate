@@ -57,7 +57,7 @@ func show_closure():
 	var sep2 := HSeparator.new()
 	vb.add_child(sep2)
 
-	# 资源盘点
+	# 资源盘点 + 私囊结余
 	var st := ResourceManager.get_state()
 	var res := "国库 %.0f · 民心 %.0f · 边军 %.0f · 朝堂 %.0f · 君心 %.0f · 气数 %.1f" % [
 		st["treasury"], st["people"], st["border_army"], st["court_order"], st["emperor_heart"], st["mandate_decay"]
@@ -68,6 +68,23 @@ func show_closure():
 	rl.add_theme_font_size_override("font_size", 15)
 	rl.add_theme_color_override("font_color", Color(0.7, 0.68, 0.64))
 	vb.add_child(rl)
+
+	# 私囊结余（跨幕转为 M2 国库初值）
+	var purse_label := Label.new()
+	purse_label.text = "私囊结余  %.0f 兩" % st["private_purse"]
+	purse_label.add_theme_font_size_override("font_size", 16)
+	purse_label.add_theme_color_override("font_color", Color(0.85, 0.75, 0.5))
+	vb.add_child(purse_label)
+
+	# ACT1_END 全量存档：Traits(待) + 五资源快照 + 回忆标记 + 旗标 + 私囊结余
+	var save_data := {
+		"act": 1,
+		"resources": st,
+		"memories": IssueManager.memories,
+		"flags": IssueManager.flags,
+		"private_purse": ResourceManager.private_purse,
+	}
+	SaveManager.save_state(save_data)
 
 	var note := Label.new()
 	note.text = "（第二幕 · 朝堂 与 第三幕 · 煤山 尚在打磨中）"

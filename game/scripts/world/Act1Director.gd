@@ -7,6 +7,7 @@ var _night_council_cd := 0.0
 var near_hall := false
 var _hall_area: Area3D
 var _intro_layer: CanvasLayer
+var _purse_tutorial_done := false
 const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
@@ -266,7 +267,7 @@ func _process(delta):
 		_intro_layer = null
 		if is_instance_valid(l):
 			l.queue_free()
-		IssueManager.night_council_active = false
+		_start_purse_tutorial()
 	if IssueManager.night_council_active:
 		return
 	if _night_council_cd > 0.0:
@@ -321,7 +322,21 @@ func _show_intro():
 		if is_instance_valid(_intro_layer):
 			_intro_layer.queue_free()
 			_intro_layer = null
-		IssueManager.night_council_active = false
+			_start_purse_tutorial()
 	)
 	add_child(t)
 	t.start()
+
+# M1A1：开场字幕后触发吴伯私囊教程（轻交互，锁住世界直到完成）
+func _start_purse_tutorial():
+	if _purse_tutorial_done:
+		IssueManager.night_council_active = false
+		return
+	_purse_tutorial_done = true
+	var tutorial: Node = load("res://scripts/ui/PrivatePurseTutorial.gd").new()
+	get_tree().root.add_child(tutorial)
+	tutorial.tutorial_completed.connect(_on_purse_tutorial_done)
+	tutorial.present()
+
+func _on_purse_tutorial_done(_private_total: float):
+	IssueManager.night_council_active = false

@@ -10,6 +10,7 @@ var r := {
 	"emperor_heart": 50.0  # 君心
 }
 var mandate_decay := 12.0   # 气数：0=天命尚存, 100=气数已尽（不可清零，最低维持4）
+var private_purse := 0.0     # 私囊结余：M1A1 教程写入，跨幕转为 M2 国库初值
 var day := 1
 var total_day := 0         # 单调递增天数，用于第一幕收束判定（day 每季归零，此值不减）
 var season := 0            # 0春 1夏 2秋 3冬
@@ -24,6 +25,7 @@ signal game_over()
 func get_state() -> Dictionary:
 	var s := r.duplicate()
 	s["mandate_decay"] = mandate_decay
+	s["private_purse"] = private_purse
 	s["day"] = day
 	s["total_day"] = total_day
 	s["season"] = season
@@ -37,6 +39,9 @@ func add(key: String, amount: float):
 
 func consume(key: String, amount: float):
 	add(key, -amount)
+
+func add_private_purse(amount: float):
+	private_purse += amount
 
 func add_mandate(amount: float):
 	mandate_decay = clampf(mandate_decay + amount, 4.0, 100.0)
