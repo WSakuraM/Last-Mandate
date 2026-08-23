@@ -17,6 +17,9 @@ uniform float grain_speed : hint_range(0.0, 2.0) = 0.5;
 uniform vec4 tint_color : source_color = vec4(0.95, 0.88, 0.78, 1.0);
 uniform float tint_strength : hint_range(0.0, 0.5) = 0.12;
 
+// 关键修复：用 hint_screen_texture 采样屏幕背后的实际渲染画面
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
 // 伪随机 hash（无纹理依赖）
 float hash(vec2 p) {
 	vec3 p3 = fract(vec3(p.xyx) * 0.1031);
@@ -25,7 +28,8 @@ float hash(vec2 p) {
 }
 
 void fragment() {
-	vec4 tex = texture(TEXTURE, UV);
+	// 用 screen_texture + SCREEN_UV 采样实际画面，而非 TEXTURE + UV（空白）
+	vec4 tex = texture(screen_texture, SCREEN_UV);
 
 	// === 色彩量化（版画 / 厚涂感） ===
 	float levels = max(color_steps, 2.0);
@@ -46,5 +50,5 @@ void fragment() {
 	grain = (grain - 0.5) * 2.0;
 	result += grain * grain_intensity;
 
-	COLOR = vec4(clamp(result, 0.0, 1.0), tex.a);
+	COLOR = vec4(clamp(result, 0.0, 1.0), 1.0);
 }
