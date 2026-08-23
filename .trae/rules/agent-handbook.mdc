@@ -1,0 +1,25 @@
+---
+description: 接手《末命》项目前先读 AGENTS.md（跨 Agent 手册）
+alwaysApply: true
+---
+
+# 接手入口（《末命》Last Mandate）
+
+做本项目前，**必须先读仓库根目录的 [`AGENTS.md`](../../AGENTS.md)**。
+
+它包含：
+
+- 项目定位、硬约束（悲剧定轨、气数锁底 4 不可清零、五资源、三幕结构）
+- 仓库地图与当前进度
+- Git 双远程（GitHub + Gitee）push 规则
+- Agent 行为 Do/Don't
+- **第一幕（M1）代码地图**（25 个 .gd 脚本职责 + EventBus 信号 + 回忆碎片键 + 议题 RES_MAP）
+
+关键决策与"为什么"（冻结→解冻、建模同名替换、锁底 4、令牌安全）见 [`docs/KEY_DECISIONS.md`](../../docs/KEY_DECISIONS.md)。
+
+## 纪律
+
+- 设计迭代必须留痕到 `docs/` 与 `archive/`（SemVer，不覆盖旧版）。
+- 提交后必须 `git push origin main` 与 `git push gitee main`。
+- 不要在聊天 / 代码 / 配置中写入明文 Git 令牌；用 credential helper 或让用户一次性注入。
+- 改 M1 玩法/代码前，先读 `game/scripts/` 现有 25 个 .gd，勿重造已有系统。
