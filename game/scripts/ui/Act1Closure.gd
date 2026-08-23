@@ -76,7 +76,15 @@ func show_closure():
 	purse_label.add_theme_color_override("font_color", Color(0.85, 0.75, 0.5))
 	vb.add_child(purse_label)
 
-	# ACT1_END 全量存档：Traits(待) + 五资源快照 + 回忆标记 + 旗标 + 私囊结余 + 谷种道具
+	# 仁慈 Trait 显示（M1A4 秋穗家书选择借粮时获得）
+	if IssueManager.flags.get("kind_likely", false):
+		var trait_label := Label.new()
+		trait_label.text = "〔仁慈〕——一幕的善念，会在二幕发芽"
+		trait_label.add_theme_font_size_override("font_size", 15)
+		trait_label.add_theme_color_override("font_color", Color(0.7, 0.82, 0.6))
+		vb.add_child(trait_label)
+
+	# ACT1_END 全量存档：Traits + 五资源快照 + 回忆标记 + 旗标 + 私囊结余 + 谷种道具
 	var save_data := {
 		"act": 1,
 		"resources": st,
@@ -84,6 +92,7 @@ func show_closure():
 		"flags": IssueManager.flags,
 		"private_purse": ResourceManager.private_purse,
 		"grain_seed": IssueManager.flags.get("aen_seed_given", false),
+		"kind_likely": IssueManager.flags.get("kind_likely", false),
 	}
 	SaveManager.save_state(save_data)
 

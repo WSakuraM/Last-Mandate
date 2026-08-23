@@ -8,6 +8,8 @@ var near_hall := false
 var _hall_area: Area3D
 var _intro_layer: CanvasLayer
 var _purse_tutorial_done := false
+var _qiushui_done := false
+var _qiushui_event: Node
 const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
@@ -23,6 +25,8 @@ func _ready():
 	add_child(well_event)
 	var aen_seed: Node = load("res://scripts/world/AenSeedEvent.gd").new()
 	add_child(aen_seed)
+	_qiushui_event = load("res://scripts/world/QiuShuiLetterEvent.gd").new()
+	add_child(_qiushui_event)
 	var chengen: Node = load("res://scripts/world/ChengEnNPC.gd").new()
 	chengen.position = Vector3(18, 0, -14)
 	add_child(chengen)
@@ -151,6 +155,8 @@ func _setup_day_cycle():
 			_start_act1_closure()
 		elif ResourceManager.day % 7 == 0:
 			_start_night_council()
+		elif not _qiushui_done and ResourceManager.total_day >= 50:
+			_start_qiushui_letter()
 	)
 	add_child(t)
 	t.start()
@@ -342,3 +348,10 @@ func _start_purse_tutorial():
 
 func _on_purse_tutorial_done(_private_total: float):
 	IssueManager.night_council_active = false
+
+# M1A4：中段天灾段（total_day>=50）触发秋穗家书三选
+func _start_qiushui_letter():
+	if _qiushui_done:
+		return
+	_qiushui_done = true
+	_qiushui_event.trigger()
