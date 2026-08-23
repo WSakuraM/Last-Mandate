@@ -10,6 +10,7 @@ var height := 20.0
 func _ready():
 	cam = Camera3D.new()
 	add_child(cam)
+	cam.make_current()   # 关键：设为活动相机，否则场景不渲染
 	var t := get_tree().get_first_node_in_group("player")
 	if t:
 		target = t
