@@ -5,32 +5,9 @@ extends Node3D
 var near := false
 
 func _ready():
-	# 暗褐长袍（圆柱身 + 略收的底座）
-	var body := MeshInstance3D.new()
-	var bm := CylinderMesh.new()
-	bm.top_radius = 0.35
-	bm.bottom_radius = 0.5
-	bm.height = 1.5
-	body.mesh = bm
-	body.position.y = 0.75
-	var bmat := StandardMaterial3D.new()
-	bmat.albedo_color = Color(0.3, 0.26, 0.22)
-	bmat.roughness = 0.9
-	body.material_override = bmat
-	add_child(body)
-
-	# 头（净面，微暗）
-	var head := MeshInstance3D.new()
-	var hm := SphereMesh.new()
-	hm.radius = 0.22
-	hm.height = 0.44
-	head.mesh = hm
-	head.position.y = 1.7
-	var hmat := StandardMaterial3D.new()
-	hmat.albedo_color = Color(0.6, 0.52, 0.45)
-	hmat.roughness = 0.85
-	head.material_override = hmat
-	add_child(head)
+	# 王承恩占位模型（规范资产，后续可换精模不改代码）
+	var ph: Node3D = preload("res://assets/models/characters/aen.tscn").instantiate()
+	add_child(ph)
 
 	# 触发区
 	var area := Area3D.new()

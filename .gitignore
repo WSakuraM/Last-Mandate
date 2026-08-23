@@ -47,3 +47,5 @@ game/assets_library/staging/
 
 # Old 2D slice archive (kept locally for reference, not committed)
 game/_legacy_2d/
+*.uid
+# Godot UID cache

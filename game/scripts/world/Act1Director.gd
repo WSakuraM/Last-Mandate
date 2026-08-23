@@ -63,28 +63,11 @@ func _build_courtyard():
 		lamp.omni_range = 16.0
 		add_child(lamp)
 
-	# 水井：井栏 + 辘轳
+	# 水井：引用规范占位资产（后续可换精模不改代码）
 	var well := Node3D.new()
 	well.name = "Well"
-	var wcyl := MeshInstance3D.new()
-	var cyl := CylinderMesh.new()
-	cyl.height = 1.6; cyl.top_radius = 1.1; cyl.bottom_radius = 1.1
-	wcyl.mesh = cyl
-	wcyl.position = Vector3(0, 0.8, 0)
-	var wmat := StandardMaterial3D.new()
-	wmat.albedo_color = Color(0.38, 0.36, 0.34)
-	wmat.roughness = 0.9
-	wcyl.material_override = wmat
-	well.add_child(wcyl)
-	var frame := MeshInstance3D.new()
-	var fm := BoxMesh.new()
-	fm.size = Vector3(2.6, 0.3, 0.3)
-	frame.mesh = fm
-	frame.position = Vector3(0, 1.9, 0)
-	var fmat := StandardMaterial3D.new()
-	fmat.albedo_color = Color(0.3, 0.22, 0.18)
-	frame.material_override = fmat
-	well.add_child(frame)
+	var well_model: Node3D = preload("res://assets/models/props/well.tscn").instantiate()
+	well.add_child(well_model)
 	well.position = Vector3(-10, 0, 8)
 	add_child(well)
 
@@ -102,6 +85,18 @@ func _build_courtyard():
 	sun.light_color = Color(1.0, 0.82, 0.55)
 	sun.light_energy = 1.15
 	add_child(sun)
+
+	# 第一幕核心占位角色与建筑（规范资产，后续可换精模不改代码）
+	var wubo: Node3D = preload("res://assets/models/characters/wubo.tscn").instantiate()
+	wubo.position = Vector3(14, 0, 10)
+	add_child(wubo)
+	var qiushui: Node3D = preload("res://assets/models/characters/qiushui.tscn").instantiate()
+	qiushui.position = Vector3(-14, 0, 12)
+	add_child(qiushui)
+	var gate: Node3D = preload("res://assets/models/buildings/mansion_gate.tscn").instantiate()
+	gate.position = Vector3(0, 0, 26)
+	gate.rotation_degrees = Vector3(0, 180, 0)
+	add_child(gate)
 
 func _wall(pos: Vector3, size: Vector2):
 	# 夯土墙体

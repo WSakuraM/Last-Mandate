@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tcxtv"]
+albedo_color = Color(0.3529412, 0.27450982, 0.19607843, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_xj8uc"]
+size = Vector3(3, 0.3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8k6bh"]
+albedo_color = Color(0.2901961, 0.41960785, 0.22745098, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ruxt"]
+size = Vector3(2.8, 0.45, 2.8)
+
+[node name="" type="Node3D" unique_id=489743293]
+
+[node name="Soil" type="MeshInstance3D" parent="." unique_id=1759263298]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+material_override = SubResource("StandardMaterial3D_tcxtv")
+mesh = SubResource("BoxMesh_xj8uc")
+
+[node name="Crops" type="MeshInstance3D" parent="." unique_id=2026481793]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+material_override = SubResource("StandardMaterial3D_8k6bh")
+mesh = SubResource("BoxMesh_4ruxt")
