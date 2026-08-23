@@ -84,7 +84,20 @@ func show_closure():
 		trait_label.add_theme_color_override("font_color", Color(0.7, 0.82, 0.6))
 		vb.add_child(trait_label)
 
-	# ACT1_END 全量存档：Traits + 五资源快照 + 回忆标记 + 旗标 + 私囊结余 + 谷种道具
+	# 区块三·支线完成汇总
+	var sl_b1 := "✓" if IssueManager.flags.get("shenliu_b1_done", false) else "—"
+	var sl_b2 := "✓" if IssueManager.flags.get("shenliu_b2_done", false) else "—"
+	var sl_b3 := "✓" if IssueManager.flags.get("shenliu_b3_done", false) else "—"
+	var zs := "✓" if IssueManager.flags.get("zhoushi_met_act1", false) else "—"
+	var eu := "✓" if (IssueManager.flags.get("eunuch_complied", false) or IssueManager.flags.get("eunuch_refused", false)) else "—"
+	var cal := "✓" if IssueManager.flags.get("calamity_triggered", false) else "—"
+	var ss_label := Label.new()
+	ss_label.text = "支线 · 沈柳[%s%s%s] · 周氏[%s] · 中使[%s] · 天灾[%s]" % [sl_b1, sl_b2, sl_b3, zs, eu, cal]
+	ss_label.add_theme_font_size_override("font_size", 14)
+	ss_label.add_theme_color_override("font_color", Color(0.65, 0.63, 0.6))
+	vb.add_child(ss_label)
+
+	# ACT1_END 全量存档：Traits + 五资源快照 + 回忆标记 + 旗标 + 私囊结余 + 谷种道具 + 支线进度
 	var save_data := {
 		"act": 1,
 		"resources": st,
@@ -93,6 +106,13 @@ func show_closure():
 		"private_purse": ResourceManager.private_purse,
 		"grain_seed": IssueManager.flags.get("aen_seed_given", false),
 		"kind_likely": IssueManager.flags.get("kind_likely", false),
+		"shenliu_progress": {
+			"b1": IssueManager.flags.get("shenliu_b1_done", false),
+			"b2": IssueManager.flags.get("shenliu_b2_done", false),
+			"b3": IssueManager.flags.get("shenliu_b3_done", false),
+		},
+		"eunuch_refused": IssueManager.flags.get("eunuch_refused", false),
+		"calamity": IssueManager.flags.get("calamity_triggered", false),
 	}
 	SaveManager.save_state(save_data)
 

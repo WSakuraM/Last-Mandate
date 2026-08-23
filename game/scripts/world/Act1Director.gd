@@ -11,6 +11,17 @@ var _purse_tutorial_done := false
 var _qiushui_done := false
 var _qiushui_event: Node
 var _narration_layer: CanvasLayer
+# 区块三·支线实例与标志
+var _shenliu: Node
+var _zhoushi: Node
+var _eunuch: Node
+var _calamity: Node
+var _shenliu_b1_done := false
+var _shenliu_b2_done := false
+var _shenliu_b3_done := false
+var _zhoushi_done := false
+var _eunuch_done := false
+var _calamity_done := false
 const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
@@ -28,6 +39,15 @@ func _ready():
 	add_child(aen_seed)
 	_qiushui_event = load("res://scripts/world/QiuShuiLetterEvent.gd").new()
 	add_child(_qiushui_event)
+	# 区块三·支线实例
+	_shenliu = load("res://scripts/world/ShenLiuStoryline.gd").new()
+	add_child(_shenliu)
+	_zhoushi = load("res://scripts/world/ZhouShiGarden.gd").new()
+	add_child(_zhoushi)
+	_eunuch = load("res://scripts/world/EunuchFruitEvent.gd").new()
+	add_child(_eunuch)
+	_calamity = load("res://scripts/world/CalamityEvent.gd").new()
+	add_child(_calamity)
 	var chengen: Node = load("res://scripts/world/ChengEnNPC.gd").new()
 	chengen.position = Vector3(18, 0, -14)
 	add_child(chengen)
@@ -157,8 +177,20 @@ func _setup_day_cycle():
 			_start_act1_closure()
 		elif ResourceManager.day % 7 == 0:
 			_start_night_council()
+		elif not _shenliu_b1_done and ResourceManager.total_day >= 15:
+			_start_shenliu_b1()
+		elif not _zhoushi_done and ResourceManager.total_day >= 30:
+			_start_zhoushi()
+		elif not _shenliu_b2_done and ResourceManager.total_day >= 40:
+			_start_shenliu_b2()
 		elif not _qiushui_done and ResourceManager.total_day >= 50:
 			_start_qiushui_letter()
+		elif not _eunuch_done and ResourceManager.total_day >= 60:
+			_start_eunuch_fruit()
+		elif not _calamity_done and ResourceManager.total_day >= 75:
+			_start_calamity()
+		elif not _shenliu_b3_done and ResourceManager.total_day >= 105:
+			_start_shenliu_b3()
 	)
 	add_child(t)
 	t.start()
@@ -359,6 +391,34 @@ func _start_qiushui_letter():
 		return
 	_qiushui_done = true
 	_qiushui_event.trigger()
+
+# 区块三·沈柳鸳鸯线第一幕三拍
+func _start_shenliu_b1():
+	_shenliu_b1_done = true
+	_shenliu.trigger("b1")
+
+func _start_shenliu_b2():
+	_shenliu_b2_done = true
+	_shenliu.trigger("b2")
+
+func _start_shenliu_b3():
+	_shenliu_b3_done = true
+	_shenliu.trigger("b3")
+
+# 区块三·周氏园中"人不是折子"回声
+func _start_zhoushi():
+	_zhoushi_done = true
+	_zhoushi.trigger()
+
+# 区块三·中使借果（可选 S2）
+func _start_eunuch_fruit():
+	_eunuch_done = true
+	_eunuch.trigger()
+
+# 区块三·蝗旱涝（可选 S2）
+func _start_calamity():
+	_calamity_done = true
+	_calamity.trigger()
 
 # 区块二：夜召池空时触发日常小事件（街坊寒暄/天气/承恩随口一句）
 func _start_daily_vignette():

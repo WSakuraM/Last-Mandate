@@ -1,44 +1,58 @@
-# M1A4 秋穗家书三选——实现概览
+# 区块二 落地概览——日常小事件填充 + 种收回忆钩
 
 ## 完成内容
 
-按设计敲定记录区块一待落地清单第 4 项，实现 M1A4 秋穗家书三选——中段天灾段仁慈抉择。
+按设计敲定记录区块二（第一幕玩法循环比重与节奏）两大待落地项，全部实现完毕。
 
 ### 新建文件
-- `game/scripts/world/QiuShuiLetterEvent.gd` — 秋穗家书三选事件，total_day>=50 由 Act1Director 触发
+- `game/scripts/ui/DailyVignette.gd` — 夜召空窗期日常小事件（8 条街坊/天气/市井片段）
 
 ### 修改文件
-- `game/scripts/world/Act1Director.gd` — 日间循环加 elif 分支触发秋穗家书 + 创建实例
-- `game/scripts/ui/Act1Closure.gd` — 存档新增 `kind_likely` 字段 + 收束画面〔仁慈〕Trait 显示
-- `docs/story/13_设计敲定记录.md` — M1A4 状态：待落地 → 已落地
-- `docs/story/12_剧情走向总图.md` — 秋穗家书状态：未落地 → 已落地
+- `game/scripts/managers/EventBus.gd` — 新增 `narration(text)` 信号
+- `game/scripts/world/CourtPlot.gd` — `_harvest()` 加旱象减产 + 丰收分邻回忆钩
+- `game/scripts/world/Act1Director.gd` — 池空触发日常小事件 + 监听 narration 显示浮字
+- `docs/story/13_设计敲定记录.md` — 区块二落地状态更新
+- `docs/story/12_剧情走向总图.md` — 新增日常小事件 + 收获钩子两行
 
-## 三选机制
+## 日常小事件填充
 
-| 选择 | 私囊消耗 | 民心 | 旗标 | 回忆碎片 | 权重 |
-|------|---------|------|------|---------|------|
-| 借粮（动私囊） | -15 兩 | +5 | kind_likely=true | MF_A1_QIUSHUI_LEND | 7 |
-| 象征性给 | -3 兩 | +2 | — | MF_A1_QIUSHUI_TOKEN | 4 |
-| 婉拒 | 0 | -3 | — | MF_A1_QIUSHUI_REFUSE | 3 |
+夜召池空时（6 次空窗期），`Act1Director._start_night_council()` 调用 `_start_daily_vignette()` 代替直接 return。弹出轻量叙事卡：
 
-- 借粮 = 仁慈路径：私囊代价大（直接影响 M2 国库初值），但获得 kind_likely Traits 软化 M2 开仓台词 + 民心大增
-- 象征性给 = 中间路径：小代价小回报
-- 婉拒 = 自保路径：无代价但民心下降
+| # | 标题 | 内容摘要 |
+|---|------|----------|
+| 1 | 夜·无议 | 无人报事，承恩添灯油劝歇 |
+| 2 | 天象 | 厚云压天，像要落雨终究没下 |
+| 3 | 市井 | 吴伯叹米价涨三成，城中已有抢米 |
+| 4 | 街坊 | 张屠户送肉谢去年帮衬 |
+| 5 | 秋声 | 枣树落叶一地，日子过得慢 |
+| 6 | 旧学 | 忆幼时先生讲「民为邦本」 |
+| 7 | 邸报 | 辽东在打，陕西报旱 |
+| 8 | 灯下 | 夜静，烛芯爆响，好歹有人守着 |
 
-## 触发条件
+不占决策、不抢戏——E 键或 6 秒自动消失，世界恢复运转。
 
-日间循环 tick 中：`not _qiushui_done and total_day >= 50` → `_start_qiushui_letter()`
-- total_day=50 对应 day=51，51%7=2（非夜召日），无冲突
-- 触发后锁住世界（night_council_active=true），完成后解锁
+## 种收回忆钩
 
-## 存档
+`CourtPlot._harvest()` 在原有数值结算后，新增两条回忆钩：
 
-ACT1_END 存档现在包含：`act` + `resources`(五资源+私囊) + `memories` + `flags` + `private_purse` + `grain_seed` + `kind_likely`
+| 条件 | 回忆碎片 | 权重 | 支柱 | 旁白浮字 |
+|------|---------|------|------|----------|
+| drought flag = true | MF_A1_DROUGHT_HARVEST | 6 | Ⅲ（人民疾苦） | 「旱象连年，这畦菜瘦得可怜……」 |
+| 收获丰收(r>1.1) 且春/秋 | MF_A1_BOUNTY_SHARE | 4 | Ⅰ（信王个人） | 「丰收了，你让吴伯分些给街坊。」 |
+
+- `EventBus.narration(text)` 信号驱动 `Act1Director._on_narration()` 在屏幕底部显示 3.5 秒浮字
+- 回忆碎片由 `IssueManager.add_memory()` 自动去重（同 ID 留高 weight），无需额外防重
 
 ## 校验
 - Godot 4.7.2 headless 校验：0 报错
-- 本地提交：`aeff89f`（6 files, +294/-34 行）
+- 本地提交：`568ab4b`（7 files, +214/-31 行）
+- 推送：沙箱限制，需用户在已登录终端 `git push origin main`
 
-## 待办
-- 推送至 GitHub + Gitee 双远程（需用户在已登录终端执行 `git push origin main`）
-- 主线脊柱六节点全部落地完成：M1A0~M1A5 全绿
+## 总体进度
+
+| 区块 | 状态 |
+|------|------|
+| 区块一：主线脊柱 M1A0~M1A5 | ✅ 全部落地 |
+| 区块二：玩法循环比重与节奏 | ✅ 全部落地 |
+| 区块三：支线清单与串联 | 待落地 |
+| 区块四：跨幕回忆回收 | 待落地 |
