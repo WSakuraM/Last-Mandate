@@ -57,8 +57,9 @@ func _ready():
 	_atmosphere = load("res://scripts/world/AtmosphereManager.gd").new()
 	add_child(_atmosphere)
 	# 风格化后处理（暗调厚涂 / 版画质感着色器）
+	# CanvasLayer 必须加到场景树根，不能挂在 Node3D 下
 	_post_process = load("res://scripts/world/StylizedPostProcess.gd").new()
-	add_child(_post_process)
+	get_tree().root.add_child(_post_process)
 	ResourceManager.game_over.connect(_on_game_over)
 	EventBus.narration.connect(_on_narration)
 	_show_intro()

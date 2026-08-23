@@ -7,7 +7,14 @@ var _overlay: ColorRect
 var _material: ShaderMaterial
 
 func _ready():
-	layer = 128   # 确保在所有 UI 之上
+	layer = 10   # 在 3D 场景之上、UI 之下，让 UI 正常显示
+	# 根节点：全屏 Control，不拦截鼠标
+	var root := Control.new()
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.name = "StylizedRoot"
+	add_child(root)
+
 	_overlay = ColorRect.new()
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE   # 不拦截点击
@@ -24,7 +31,7 @@ func _ready():
 	_material.set_shader_parameter("tint_color", Color(0.95, 0.88, 0.78))
 	_material.set_shader_parameter("tint_strength", 0.12)
 	_overlay.material = _material
-	add_child(_overlay)
+	root.add_child(_overlay)
 
 # ── 运行时可调参数（供 Act1Director / 夜召 / 煤山 调用） ──
 
