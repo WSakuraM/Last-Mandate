@@ -78,7 +78,7 @@ func _create_dust_motes() -> GPUParticles3D:
 	p.lifetime = 8.0
 	p.explosiveness = 0.0
 	p.particle_randomness_ratio = 1.0
-	p.visibility_rect = AABB(Vector3(-30, 0, -30), Vector3(60, 5, 60))
+	p.visibility_aabb = AABB(Vector3(-30, -2, -30), Vector3(60, 7, 60))
 
 	var mat := ParticleProcessMaterial.new()
 	mat.direction = Vector3(0, 1, 0)
@@ -106,7 +106,7 @@ func _create_fireflies() -> GPUParticles3D:
 	p.lifetime = 6.0
 	p.explosiveness = 0.0
 	p.particle_randomness_ratio = 1.0
-	p.visibility_rect = AABB(Vector3(-30, 0, -30), Vector3(60, 6, 60))
+	p.visibility_aabb = AABB(Vector3(-30, 0, -30), Vector3(60, 6, 60))
 
 	var mat := ParticleProcessMaterial.new()
 	mat.direction = Vector3(0, 1, 0)
@@ -169,7 +169,7 @@ func _create_rain() -> GPUParticles3D:
 	p.lifetime = 1.5
 	p.explosiveness = 0.0
 	p.particle_randomness_ratio = 1.0
-	p.visibility_rect = AABB(Vector3(-35, 0, -35), Vector3(70, 20, 70))
+	p.visibility_aabb = AABB(Vector3(-35, 0, -35), Vector3(70, 20, 70))
 
 	var mat := ParticleProcessMaterial.new()
 	mat.direction = Vector3(0, -1, 0)
@@ -197,7 +197,7 @@ func _create_snow() -> GPUParticles3D:
 	p.lifetime = 6.0
 	p.explosiveness = 0.0
 	p.particle_randomness_ratio = 1.0
-	p.visibility_rect = AABB(Vector3(-35, 0, -35), Vector3(70, 20, 70))
+	p.visibility_aabb = AABB(Vector3(-35, 0, -35), Vector3(70, 20, 70))
 
 	var mat := ParticleProcessMaterial.new()
 	mat.direction = Vector3(0, -1, 0)
