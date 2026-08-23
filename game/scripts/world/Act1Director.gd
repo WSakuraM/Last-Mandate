@@ -352,7 +352,8 @@ func _process(delta):
 
 func _show_intro():
 	var layer := CanvasLayer.new()
-	get_tree().root.add_child(layer)
+	# _ready 期间父节点正在装配子节点，直接 add 到 root 会失败，需延迟
+	get_tree().root.add_child.call_deferred(layer)
 	_intro_layer = layer
 	IssueManager.night_council_active = true   # 开场字幕期间锁住世界输入
 	var root := Control.new()

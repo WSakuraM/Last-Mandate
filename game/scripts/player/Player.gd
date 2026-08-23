@@ -39,7 +39,7 @@ func _physics_process(delta):
 
 	# 鼠标左键点击地面 → 设置移动目标
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		var ground_pos := _get_ground_click()
+		var ground_pos: Variant = _get_ground_click()
 		if ground_pos != null:
 			_move_target = ground_pos
 			_has_target = true
@@ -81,8 +81,8 @@ func _physics_process(delta):
 	else:
 		_visual.position.y = lerp(_visual.position.y, 0.0, delta * 8.0)
 
-# 从鼠标位置射线检测地面点击点
-func _get_ground_click() -> Vector3:
+# 从鼠标位置射线检测地面点击点（返回 Vector3 或 null）
+func _get_ground_click():
 	var cam := get_viewport().get_camera_3d()
 	if not cam:
 		return null
