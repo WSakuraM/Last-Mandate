@@ -352,7 +352,7 @@ func _process(delta):
 
 func _show_intro():
 	var layer := CanvasLayer.new()
-	add_child(layer)
+	get_tree().root.add_child(layer)
 	_intro_layer = layer
 	IssueManager.night_council_active = true   # 开场字幕期间锁住世界输入
 	var root := Control.new()
@@ -462,7 +462,7 @@ func _on_narration(text: String):
 	if _narration_layer and is_instance_valid(_narration_layer):
 		_narration_layer.queue_free()
 	_narration_layer = CanvasLayer.new()
-	add_child(_narration_layer)
+	get_tree().root.add_child(_narration_layer)
 	var root := Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_narration_layer.add_child(root)
