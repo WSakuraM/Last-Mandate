@@ -76,13 +76,14 @@ func show_closure():
 	purse_label.add_theme_color_override("font_color", Color(0.85, 0.75, 0.5))
 	vb.add_child(purse_label)
 
-	# ACT1_END 全量存档：Traits(待) + 五资源快照 + 回忆标记 + 旗标 + 私囊结余
+	# ACT1_END 全量存档：Traits(待) + 五资源快照 + 回忆标记 + 旗标 + 私囊结余 + 谷种道具
 	var save_data := {
 		"act": 1,
 		"resources": st,
 		"memories": IssueManager.memories,
 		"flags": IssueManager.flags,
 		"private_purse": ResourceManager.private_purse,
+		"grain_seed": IssueManager.flags.get("aen_seed_given", false),
 	}
 	SaveManager.save_state(save_data)
 

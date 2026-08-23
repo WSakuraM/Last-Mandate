@@ -21,6 +21,8 @@ func _ready():
 	add_child(vignette)
 	var well_event: Node = load("res://scripts/world/WellEvent.gd").new()
 	add_child(well_event)
+	var aen_seed: Node = load("res://scripts/world/AenSeedEvent.gd").new()
+	add_child(aen_seed)
 	var chengen: Node = load("res://scripts/world/ChengEnNPC.gd").new()
 	chengen.position = Vector3(18, 0, -14)
 	add_child(chengen)

@@ -53,6 +53,7 @@ func tend():
 		"fallow":
 			state = "tilled"
 			ResourceManager.add("treasury", -0.5)   # 种子与人力之费
+			_check_sow_hooks()
 		"tilled":
 			state = "growing"
 		"growing":
@@ -62,6 +63,17 @@ func tend():
 			_harvest()
 	_refresh()
 	EventBus.interact_prompt.emit("按 E 照料菜圃（%s）" % _zh(state))
+
+# M1A3：首次播种 → 通知阿恩递种夜谈（仅触发一次）
+# M1A2：后期播种 → 写入「最后的播种」回忆碎片（终章对照空畦/日出）
+func _check_sow_hooks():
+	if not IssueManager.flags.get("first_sow_done", false):
+		IssueManager.flags["first_sow_done"] = true
+		EventBus.first_sow.emit()
+	if ResourceManager.total_day >= 120 and not IssueManager.flags.get("last_sow_done", false):
+		IssueManager.flags["last_sow_done"] = true
+		IssueManager.add_memory("MF_A1_LAST_SOW", 8, \
+			"最后的播种——旁白：你或许看不见收成", "Ⅰ")
 
 # 收获：受季节与天时调制，杜绝「无成本无限刷资源」。
 # 春播高产、夏秋平、冬寒歉收；若已逢旱象旗标则再减半。
