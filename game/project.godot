@@ -1,12 +1,22 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
 
 [application]
+
 config/name="末命 Last Mandate"
+run/main_scene="res://scenes/main/Main.tscn"
 config/features=PackedStringArray("4.7")
 config/icon="res://icon.svg"
-run/main_scene="res://scenes/main/Main.tscn"
 
 [autoload]
+
 ResourceManager="*res://scripts/managers/ResourceManager.gd"
 EventBus="*res://scripts/managers/EventBus.gd"
 SaveManager="*res://scripts/managers/SaveManager.gd"
@@ -14,7 +24,5 @@ IssueManager="*res://scripts/managers/IssueManager.gd"
 DialogueManager="*res://scripts/managers/DialogueManager.gd"
 
 [rendering]
-renderer/rendering_method="forward_plus"
-renderer/rendering_method.mobile="forward_plus"
 
-[input]
+renderer/rendering_method.mobile="forward_plus"
