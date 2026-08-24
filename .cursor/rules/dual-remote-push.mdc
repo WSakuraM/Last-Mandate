@@ -8,17 +8,16 @@ alwaysApply: true
 当用户说「提交代码」「commit」「push」「推送」或同类意思时：
 
 1. 按用户要求做本地 `git add` / `git commit`（作者用 Sakura / 1124114910@qq.com，可用 `git -c user.name=... -c user.email=...`，勿改全局 git config）。
-2. **必须同时推送到两个远程**，不要只推其中一个：
-   - `origin` → GitHub：`https://github.com/WSakuraM/Last-Mandate.git`
-   - `gitee` → Gitee：`https://gitee.com/WSakuraM/last-mandate.git`
-3. 推荐推送命令：
+2. **必须同时推送到两个远程**（origin 已配 GitHub+Gitee 双 pushurl，一条命令即双推），不要只推其中一个：
+   - `origin` → GitHub：`git@github.com:WSakuraM/Last-Mandate.git`
+   - `gitee` → Gitee：`git@gitee.com:WSakuraM/last-mandate.git`
+3. 推荐推送命令（**仅 SSH，勿用 https**）：
 
 ```powershell
 git push origin main
-git push gitee main
 ```
 
-若已配置 `all` 远程的双 push URL，可用 `git push all main`，但仍须确认两个网站都更新成功。
+> `git push origin main` 已自动同时推 GitHub + Gitee（双 pushurl）。WorkBuddy 沙箱出不了 https/443，只能用 SSH（22 端口）；公钥已加到两站，私钥 `D:\GameTool\.ssh_keys\id_ed25519`（仓库级 `core.sshCommand` 已指向）。
 
 4. 任一端失败时：报告失败端，不要假装两边都成功；已成功的一端保留，修好后再补推失败端。
 5. 未经用户明确要求，不要 `push --force` 到 main。
