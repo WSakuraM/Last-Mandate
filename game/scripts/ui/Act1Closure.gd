@@ -28,7 +28,7 @@ func show_closure():
 	vb.add_child(t1)
 
 	var t2 := Label.new()
-	t2.text = "天启七年，你还只是信王。这一程的园子、夜召与门外的人，都已收进回忆。"
+	t2.text = "天启七年冬。你走出信王府的那一夜，园子、夜召与门外的人，都已收进回忆。"
 	t2.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	t2.add_theme_font_size_override("font_size", 17)
 	t2.add_theme_color_override("font_color", Color(0.8, 0.77, 0.72))
@@ -77,12 +77,22 @@ func show_closure():
 	rl.add_theme_color_override("font_color", Color(0.7, 0.68, 0.64))
 	vb.add_child(rl)
 
-	# 私囊结余（跨幕转为 M2 国库初值）
+	# 私囊结余 → 第二幕登基国库种子
+	var act2_seed: float = ResourceManager.finalize_act1_treasury_seed()
 	var purse_label := Label.new()
-	purse_label.text = "私囊结余  %.0f 兩" % st["private_purse"]
+	var kind_note := ""
+	if IssueManager.flags.get("kind_likely", false):
+		kind_note = "（含〔仁慈〕+%.0f）" % ResourceManager.KIND_TRAIT_SEED_BONUS
+	purse_label.text = "私囊结余  %.0f 兩 · 登基充入国库  +%.1f%s" % [st["private_purse"], act2_seed, kind_note]
 	purse_label.add_theme_font_size_override("font_size", 16)
 	purse_label.add_theme_color_override("font_color", Color(0.85, 0.75, 0.5))
 	vb.add_child(purse_label)
+
+	var seed_note := Label.new()
+	seed_note.text = "（第二幕起始国库将叠加此笔信王积蓄，上限 %.0f）" % ResourceManager.ACT2_TREASURY_SEED_CAP
+	seed_note.add_theme_font_size_override("font_size", 13)
+	seed_note.add_theme_color_override("font_color", Color(0.62, 0.58, 0.50))
+	vb.add_child(seed_note)
 
 	# 仁慈 Trait 显示（M1A4 秋穗家书选择借粮时获得）
 	if IssueManager.flags.get("kind_likely", false):
@@ -99,8 +109,11 @@ func show_closure():
 	var zs := "✓" if IssueManager.flags.get("zhoushi_met_act1", false) else "—"
 	var eu := "✓" if (IssueManager.flags.get("eunuch_complied", false) or IssueManager.flags.get("eunuch_refused", false)) else "—"
 	var cal := "✓" if IssueManager.flags.get("calamity_triggered", false) else "—"
+	var br1 := "✓" if IssueManager.flags.get("brother_b1_done", false) else "—"
+	var br2 := "✓" if IssueManager.flags.get("brother_b2_done", false) else "—"
+	var br3 := "✓" if IssueManager.flags.get("brother_b3_done", false) else "—"
 	var ss_label := Label.new()
-	ss_label.text = "支线 · 沈柳[%s%s%s] · 周氏[%s] · 中使[%s] · 天灾[%s]" % [sl_b1, sl_b2, sl_b3, zs, eu, cal]
+	ss_label.text = "支线 · 沈柳[%s%s%s] · 周氏[%s] · 中使[%s] · 天灾[%s] · 兄弟[%s%s%s]" % [sl_b1, sl_b2, sl_b3, zs, eu, cal, br1, br2, br3]
 	ss_label.add_theme_font_size_override("font_size", 14)
 	ss_label.add_theme_color_override("font_color", Color(0.65, 0.63, 0.6))
 	vb.add_child(ss_label)
@@ -112,6 +125,7 @@ func show_closure():
 		"memories": IssueManager.memories,
 		"flags": IssueManager.flags,
 		"private_purse": ResourceManager.private_purse,
+		"act2_treasury_seed": act2_seed,
 		"grain_seed": IssueManager.flags.get("aen_seed_given", false),
 		"kind_likely": IssueManager.flags.get("kind_likely", false),
 		"shenliu_progress": {
@@ -121,6 +135,11 @@ func show_closure():
 		},
 		"eunuch_refused": IssueManager.flags.get("eunuch_refused", false),
 		"calamity": IssueManager.flags.get("calamity_triggered", false),
+		"brother_progress": {
+			"b1": IssueManager.flags.get("brother_b1_done", false),
+			"b2": IssueManager.flags.get("brother_b2_done", false),
+			"b3": IssueManager.flags.get("brother_b3_done", false),
+		},
 	}
 	SaveManager.save_state(save_data)
 

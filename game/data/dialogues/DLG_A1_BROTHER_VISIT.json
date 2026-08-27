@@ -1,0 +1,111 @@
+{
+    "id": "DLG_A1_BROTHER_VISIT",
+    "title": "御驾 · 至府",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "府门外的嘈杂忽然低了下去。吴伯带着全府下人跪在道旁，你迎出月洞门时，兄长已站在井台边，龙袍下还沾着一点锯末。",
+            "emotion": ""
+        },
+        {
+            "speaker": "朱由校",
+            "text": "五弟，别跪。朕今日不是来摆驾仪的——朕来看看，你信里说的那个园子，究竟长什么样。",
+            "emotion": ""
+        },
+        {
+            "speaker": "",
+            "text": "他蹲在你的菜畦边，指尖碰了碰土，动作竟像在掂量木料的纹理。远处沈戍把棍提得笔直，吴伯大气不敢出。",
+            "emotion": ""
+        },
+        {
+            "speaker": "朱由校",
+            "text": "朕在宫里做东西，你在府里种菜。外头说朕荒废朝政……可朕的儿子，一个个都没留住。",
+            "emotion": ""
+        },
+        {
+            "speaker": "朱由校",
+            "text": "这大明的位子，朕夜里想来想去，除了你，还能给谁？不是朕偏心——祖制在此：无皇子，则弟继。诸王之中，你最长，又最肯读书、最知民间疾苦。",
+            "emotion": ""
+        },
+        {
+            "speaker": "",
+            "text": "他说到「弟继」时，声音压得很低，像怕惊动畦里的苗。风从府门吹进来，把御前的黄绫吹得猎猎。",
+            "emotion": "narration"
+        }
+    ],
+    "choices": [
+        {
+            "id": "advise_rest",
+            "label": "劝皇兄保重龙体，少近木工",
+            "lines_after": [
+                {
+                    "speaker": "信王",
+                    "text": "皇兄，天下事可托给内阁，龙体却不能再生。请少近养心殿那些木作。",
+                    "emotion": ""
+                },
+                {
+                    "speaker": "朱由校",
+                    "text": "……你倒是第一个敢在朕自家门口拦朕做木匠的。好，朕听你的。",
+                    "emotion": ""
+                }
+            ],
+            "deltas": { "emperor_heart": 3.0 },
+            "flags_add": ["brother_advised_rest"],
+            "memory": {
+                "id": "MF_A1_BROTHER_VISIT",
+                "weight": 8,
+                "text": "御驾至府——天启说：无皇子，弟继，只能是你",
+                "pillar": "Ⅰ"
+            }
+        },
+        {
+            "id": "share_quiet",
+            "label": "陪皇兄在园子里走走，只话家常",
+            "lines_after": [
+                {
+                    "speaker": "信王",
+                    "text": "皇兄若不嫌弃，随臣弟去井台边坐坐。今日新收了一畦春菜，晚上臣弟亲自下厨。",
+                    "emotion": ""
+                },
+                {
+                    "speaker": "朱由校",
+                    "text": "好。朕记下了。……五弟，有你在，朕心里踏实些。",
+                    "emotion": ""
+                }
+            ],
+            "deltas": { "emperor_heart": 5.0, "people": 1.0 },
+            "flags_add": ["brother_bond_warm"],
+            "memory": {
+                "id": "MF_A1_BROTHER_VISIT",
+                "weight": 8,
+                "text": "御驾至府——天启说：有你在，朕心里踏实些",
+                "pillar": "Ⅰ"
+            }
+        },
+        {
+            "id": "warn_crisis",
+            "label": "指着菜畦与府门，直陈辽饷与流民",
+            "lines_after": [
+                {
+                    "speaker": "信王",
+                    "text": "皇兄，这畦菜救的是一府的人。可府门外那些流民，辽东那些饷银，臣弟在封地都看见了。",
+                    "emotion": ""
+                },
+                {
+                    "speaker": "朱由校",
+                    "text": "……朕知道。朕不如你会算账。可若有一日真要你来，别学朕把折子当锯木。",
+                    "emotion": ""
+                }
+            ],
+            "deltas": { "court_order": 2.0, "emperor_heart": 2.0 },
+            "flags_add": ["brother_warned_crisis"],
+            "memory": {
+                "id": "MF_A1_BROTHER_VISIT",
+                "weight": 8,
+                "text": "御驾至府直陈时局——天启：别学朕把折子当锯木",
+                "pillar": "Ⅰ"
+            }
+        }
+    ],
+    "on_complete": {}
+}

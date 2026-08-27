@@ -1,6 +1,12 @@
-# 议题卡索引 v0
+﻿# 议题卡索引 v0
 
-本目录共 **24** 张可玩议题（另含 `_schema.json` 与本索引），达到计划「25–40 张」目标的可运行下限集；后续可按同 schema 追加至 40。
+本目录为**设计参考**；Godot 运行时读取 `game/data/issues/`（须同步维护）。
+
+---
+
+## 第二幕 · B 系列（24 张）
+
+达到全案「25–40 张」可运行下限；可按 `_schema.json` 追加至 40。
 
 | ID | 标题 | 阶段 | once |
 |---|---|---|---|
@@ -29,4 +35,30 @@
 | ISSUE_WINTER_SURVIVE | 又撑过一冬 | B3–B5 | no |
 | ISSUE_PRINCESS_ESCAPE | 后宫安危 | B6 | yes |
 
-数值均为 v0 草案，以 `docs/03_数值系统.md` 调参表为准做平衡迭代。
+---
+
+## 第一幕 · A1 系列（15 张，在 `game/data/issues/`）
+
+| order | ID | 标题 | unlock_day |
+|---|---|---|---|
+| 1 | ISSUE_A1_CHENGEN | 承恩夜话 | 1 |
+| 2 | ISSUE_A1_NIGHT_STUDY | 书房夜读 | 10 |
+| 3 | ISSUE_A1_FRUGAL | 戒奢省用 | 15 |
+| 4 | ISSUE_A1_OLD_SERVANT | 老仆病殁 | 35 |
+| 5 | ISSUE_A1_NEW_YEAR | 府中岁时 | 45 |
+| 6 | ISSUE_A1_DROUGHT | 旱象初显 | 55 |
+| 7 | ISSUE_A1_RELIEF_REFUGEE | 府门外流民 | 65 |
+| 8 | ISSUE_A1_WELL_CHILD | 水井童殇 | 80 |
+| 9 | ISSUE_A1_NEIGHBOR_FAMINE | 邻县告饥 | 90 |
+| 10 | ISSUE_A1_BITTER_COLD | 冬日奇寒 | 105 |
+| 11 | ISSUE_A1_BORDER_INTEL | 边关谍报 | 110 |
+| 12 | ISSUE_A1_LIAO_TAX | 辽饷苗头 | 120 |
+| 13 | ISSUE_A1_COURT_RIVALRY | 朝臣倾轧 | 130 |
+| 14 | ISSUE_A1_REBEL_SPARK | 流寇初现 | 138 |
+| 15 | ISSUE_A1_EVE_OF_ACCESSION | 入继前夜 | 145 |
+
+机制：按 `order` 升序 + `unlock_day` 分段解锁 + 线性消耗（各演 1 次）。详见 `docs/15_M1经营设计.md` §4b。
+
+---
+
+数值均为 v0 草案，以 `docs/08_数值系统.md` 调参表为准做平衡迭代。

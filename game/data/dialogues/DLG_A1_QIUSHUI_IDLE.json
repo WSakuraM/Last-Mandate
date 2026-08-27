@@ -1,0 +1,18 @@
+{
+    "id": "DLG_A1_QIUSHUI_IDLE",
+    "title": "",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "秋穗在蔬果铺后整理筐子，指尖沾着泥。",
+            "emotion": ""
+        },
+        {
+            "speaker": "秋穗",
+            "text": "王爷今日也来看菜？家里来信还早，您先顾府里的畦。",
+            "emotion": ""
+        }
+    ],
+    "choices": [],
+    "on_complete": {}
+}

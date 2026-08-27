@@ -1,4 +1,4 @@
-# AGENTS.md — 《末命》Last Mandate 跨机器 / 跨 Agent 接手手册
+﻿# AGENTS.md — 《末命》Last Mandate 跨机器 / 跨 Agent 接手手册
 
 > **任何新 Agent 或新电脑：先读完本文，再改代码或设计。**  
 > 人类快速入口也可从 [README.md](README.md) 进来。
@@ -39,15 +39,15 @@ git remote -v
 | 顺序 | 文件 | 目的 |
 |---|---|---|
 | 1 | **本文件 AGENTS.md** | 约束与地图 |
-| 1.5 | [docs/REMAKE_BLUEPRINT.md](docs/REMAKE_BLUEPRINT.md) | **3D 重制总纲（单一事实源）** |
+| 1.5 | [docs/04_重制总纲.md](docs/04_重制总纲.md) | **3D 重制总纲（单一事实源）** |
 | 2 | [docs/story/00_剧本总览.md](docs/story/00_剧本总览.md) | 剧本细稿总览（重制中） |
 | 3 | [archive/index.md](archive/index.md) | 当前生效设计版本 |
 | 4 | [archive/VERSION](archive/VERSION) | 产品版本号 |
-| 5 | [docs/01_定位愿景.md](docs/01_定位愿景.md) | 主题与定位 |
-| 5b | [docs/09_M1经营设计.md](docs/09_M1经营设计.md) | M1 经营/货币/小故事（改玩法必读） |
+| 5 | [docs/06_定位愿景.md](docs/06_定位愿景.md) | 主题与定位 |
+| 5b | [docs/15_M1经营设计.md](docs/15_M1经营设计.md) | M1 经营/货币/小故事（改玩法必读） |
 | 6 | [docs/story/11_剧情总流程.md](docs/story/11_剧情总流程.md) | 剧情总流程与跨度（讲故事一张图） |
-| 7 | [docs/05_里程碑.md](docs/05_里程碑.md) | 做到哪、不做什么 |
-| 7.5 | [docs/KEY_DECISIONS.md](docs/KEY_DECISIONS.md) | **关键决策与"为什么"**（冻结→解冻、建模替换、锁底4、令牌安全） |
+| 7 | [docs/11_里程碑.md](docs/11_里程碑.md) | 做到哪、不做什么 |
+| 7.5 | [docs/05_关键决策.md](docs/05_关键决策.md) | **关键决策与"为什么"**（冻结→解冻、建模替换、锁底4、令牌安全） |
 | 7.6 | 本文件 §3.5 | **改 M1 代码前必读**：25 脚本职责 + EventBus 信号 + 回忆碎片键 + RES_MAP |
 
 Cursor 规则（克隆后自动可用）：
@@ -61,7 +61,7 @@ Cursor 规则（克隆后自动可用）：
 
 | 项 | 状态 |
 |---|---|
-| 产品版本 | **0.1.0（3D 重制）** 蓝图 + **M1 3D 俯视切片**（`game/`）· 总纲见 [`docs/REMAKE_BLUEPRINT.md`](docs/REMAKE_BLUEPRINT.md) |
+| 产品版本 | **0.1.0（3D 重制）** 蓝图 + **M1 3D 俯视切片**（`game/`）· 总纲见 [`docs/04_重制总纲.md`](docs/04_重制总纲.md) |
 | 第一幕进度 | **四区块全部落地**（主线 M1A0~M1A5 / 玩法循环 / 支线 6/12 / 跨幕回忆回收），本地提交 `caf07a0`；代码地图见 §3.5 |
 | 剧本入口 | [`docs/story/00_剧本总览.md`](docs/story/00_剧本总览.md)（重制中） |
 | 美术 | **3D 风格化低模明末**（暗调厚涂/版画质感；土褐·赭石·褪青·暗金；雾气暗角） |
@@ -71,7 +71,7 @@ Cursor 规则（克隆后自动可用）：
 | 结局 | **悲剧定轨煤山第一人称**（含回忆蒙太奇）；无「真·中兴通关」 |
 | 不做 | AI 诏书、纯 2D 呈现、大地图实时征战、开放世界 3D 北京、次世代写实人脸（见 milestones） |
 
-下一里程碑：**M1** — 第一幕最小循环 + 夜召演出（见 `docs/05_里程碑.md`）。
+下一里程碑：**M1** — 第一幕最小循环 + 夜召演出（见 `docs/11_里程碑.md`）。
 
 ---
 
@@ -81,22 +81,13 @@ Cursor 规则（克隆后自动可用）：
 Last-Mandate/
 ├── AGENTS.md                 ← 你在这里（跨 Agent 手册）
 ├── README.md                 ← 人类短入口
-├── docs/                     ← 工作稿（可改写；中文文件名）
-│   ├── 文档索引.md           ← 本目录索引
-│   ├── DAILY_LOG.md          ← 每日工作日志（单文件按日改）
-│   ├── REMAKE_BLUEPRINT.md   ← **3D 重制总纲（单一事实源）**
-│   ├── 01_定位愿景.md
-│   ├── 02_故事圣经.md         ← 重制中
-│   ├── 03_数值系统.md         ← 已重制（3D 俯视）
-│   ├── 04_美术音频.md         ← 重制中（3D 低模明末）
-│   ├── 05_里程碑.md
-│   ├── 06_回忆碎片.md         ← 重制中（人民疾苦权重）
-│   ├── 07_Git双远程.md
-│   ├── 08_双机交叉开发.md   ← 双电脑交叉开发流程
-│   ├── 09_M1经营设计.md      ← 已重制（3D 俯视）
-│   ├── UI_3D_spec.md         ← 新建（3D 俯视 UI/UX 规范）
-│   ├── art_characters.md     ← 新建（人物建模规范，重制中）
-│   └── story/                ← 剧本细稿（重制中）
+├── docs/                     ← 工作稿（NN_中文主题.md）
+│   ├── 01_每日工作日志.md    ← 每日修改记录（单文件按日改）
+│   ├── 02_文档索引.md        ← 本目录索引
+│   ├── 04_重制总纲.md        ← 3D 重制单一事实源
+│   ├── 06_定位愿景.md … 16_天气天灾与活物.md  ← 核心设计
+│   ├── 17_UI三维规范.md … 23_画面风格选项.md  ← M1 工程/资产
+│   └── story/                ← 剧本细稿
 ├── archive/                  ← 版本化冻结稿（SemVer，不覆盖旧版）
 │   ├── VERSION / CHANGELOG.md / index.md
 │   ├── vision|story|systems|ui|tech|plan|art_audio/
@@ -117,7 +108,7 @@ Last-Mandate/
 
 ## 3.5 第一幕（M1）代码地图（实际落地架构）
 
-> 本段描述 [`game/scripts/`](game/scripts) 下 **25 个已落地 .gd** 的真实职责。**改 M1 前先读对应文件**，勿重造已有系统。详见 [`docs/KEY_DECISIONS.md`](docs/KEY_DECISIONS.md)。
+> 本段描述 [`game/scripts/`](game/scripts) 下已落地 .gd 的真实职责。**改 M1 前先读对应文件**，勿重造已有系统。摆放坐标见 `CourtyardLayout.gd`。详见 [`docs/05_关键决策.md`](docs/05_关键决策.md)。
 
 ### 脚本职责总表
 
@@ -143,6 +134,9 @@ Last-Mandate/
 | 文件 | 职责 |
 |---|---|
 | `world/Act1Director.gd` | 第一幕导演：时序 tick、按天触发(15/30/40/50/60/75/105)、装配所有事件实例、监听 narration 浮字 |
+| `world/CourtyardLayout.gd` | 院落分区坐标单一事实源（+Z 南府门 / -Z 北正堂）；改摆放只改这里 |
+| `world/CourtyardVisuals.gd` | 程序地面分区 + toon 材质 + 暖天空 |
+| `world/CourtyardProps.gd` | 程序化正堂/府门/井/铺/畜栏/树池等（可被同名精模替换） |
 | `world/CourtPlot.gd` | 菜畦状态机（fallow→tilled→sown→grown→harvest）；首次播种 emit `first_sow`；种收写回忆钩 |
 | `world/ChengEnNPC.gd` | 王承恩随侍 NPC |
 | `world/AenSeedEvent.gd` | M1A3 阿恩递种夜谈（监听 `first_sow`） |
@@ -151,8 +145,12 @@ Last-Mandate/
 | `world/ZhouShiGarden.gd` | 周氏"人不是折子"(day≈30) |
 | `world/EunuchFruitEvent.gd` | 中使借果二选(day≈60) |
 | `world/CalamityEvent.gd` | 蝗旱涝三选(day≈75)，设 drought flag |
-| `world/RefugeeVignette.gd` | 流民 vignette（MF_A1_VIGNETTE_* 家族） |
-| `world/WellEvent.gd` | 井边打水事件 |
+| `world/WellEvent.gd` | 井边打水事件（位置 `CourtyardLayout.WELL`） |
+| `world/RefugeeVignette.gd` | 流民 vignette（府门内侧 `CourtyardLayout.REFUGEE`） |
+| `world/AtmosphereManager.gd` | 灰尘/萤火虫/炊烟/雨雪/蝶/落叶/鸟；灯笼呼吸 |
+| `world/IdlePresence.gd` | NPC 起伏与看向玩家 |
+| `world/WanderCritter.gd` | 畜栏小鸡踱步 |
+| `world/ZoneSense.gd` | 走过分区时报地名 |
 | `world/MeishanDirector.gd` | 煤山终章四阶段（雪夜独白→血诏脸谱→回忆蒙太奇→渐黑） |
 
 **UI（ui/）**
@@ -218,7 +216,7 @@ court→court_order, resolve→emperor_heart, mandate_decay→mandate_decay
 
 ### 关键历史决策（必读，避免重蹈）
 
-- **冻结→解冻**：2026-08-22 用户冻结 `game/` 代码（玩法/主线/支线敲定前禁改）；2026-08-23 用户明确指令"从 M1A1 开始写玩法"等，**解冻并落地四区块**（caf07a0）。详见 [`docs/KEY_DECISIONS.md`](docs/KEY_DECISIONS.md)。在用户未明确推翻前，按已敲定设计继续实现即可。
+- **冻结→解冻**：2026-08-22 用户冻结 `game/` 代码（玩法/主线/支线敲定前禁改）；2026-08-23 用户明确指令"从 M1A1 开始写玩法"等，**解冻并落地四区块**（caf07a0）。详见 [`docs/05_关键决策.md`](docs/05_关键决策.md)。在用户未明确推翻前，按已敲定设计继续实现即可。
 - **建模可替换**：`game/` 下 12 个占位 `.tscn` 为灰盒，**按同名文件覆盖即换精模、不改代码**；菜畦需保留 `Soil`/`Crops` 节点名。
 - **气数锁底 4.0**：`mandate_decay` 永不低于 4，无"真·中兴通关"。
 - **Godot 4.7 严格类型**：`var x := <Variant返回>` 推断失败处需 `: Type =` 或 `Type(...)` 显式注解（如 `:= bool(...)`、`var cal: Dictionary =`）。
@@ -248,7 +246,7 @@ court→court_order, resolve→emperor_heart, mandate_decay→mandate_decay
 
 ### 公司电脑 ↔ 家里电脑
 
-**开工前必须 pull，收工必须 push 两边**，否则另一台会丢改动或冲突。详见 [docs/08_双机交叉开发.md](docs/08_双机交叉开发.md)。
+**开工前必须 pull，收工必须 push 两边**，否则另一台会丢改动或冲突。详见 [docs/14_双机交叉开发.md](docs/14_双机交叉开发.md)。
 
 简版：
 
@@ -281,7 +279,7 @@ git push gitee main
 - 改设计 → 更新 `docs/`，重要定稿写入 `archive/` 新版本号  
 - 改议题 → 维护 `data/issues/*.json` 与 README 索引  
 - 提交 → 双远程；作者 Sakura / 上述邮箱  
-- 不确定范围 → 先读 `docs/05_里程碑.md` 的「不做清单」  
+- 不确定范围 → 先读 `docs/11_里程碑.md` 的「不做清单」  
 - 改 M1 玩法/代码 → **先读 [`game/scripts/`](game/scripts) 现有 25 个 .gd**（代码地图见 §3.5），勿重造已存在的系统或偏离命名约定
 
 ### Don’t
@@ -298,12 +296,12 @@ git push gitee main
 
 | 任务 | 必读 |
 |---|---|
-| 改剧情 / 场次 | `docs/02_故事圣经.md` + `archive/story/*` + `docs/06_回忆碎片.md` |
-| 改数值 / 议题 | `docs/03_数值系统.md` + `docs/09_M1经营设计.md` + `data/issues/` |
-| 改 UI | `archive/ui/ui_*.md` + `docs/04_美术音频.md` |
-| 开 Godot / M1 | `archive/tech/tech_*.md` + `docs/05_里程碑.md` M1 |
-| **接手 / 改 M1 代码** | **本文件 §3.5 + [`docs/KEY_DECISIONS.md`](docs/KEY_DECISIONS.md)** |
-| 只同步双机 | `docs/08_双机交叉开发.md` |
+| 改剧情 / 场次 | `docs/07_故事圣经.md` + `archive/story/*` + `docs/12_回忆碎片.md` |
+| 改数值 / 议题 | `docs/08_数值系统.md` + `docs/15_M1经营设计.md` + `data/issues/` |
+| 改 UI | `archive/ui/ui_*.md` + `docs/09_美术音频.md` |
+| 开 Godot / M1 | `archive/tech/tech_*.md` + `docs/11_里程碑.md` M1 |
+| **接手 / 改 M1 代码** | **本文件 §3.5 + [`docs/05_关键决策.md`](docs/05_关键决策.md)** |
+| 只同步双机 | `docs/14_双机交叉开发.md` |
 
 ---
 

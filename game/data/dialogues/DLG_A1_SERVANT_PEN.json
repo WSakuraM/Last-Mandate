@@ -1,0 +1,18 @@
+{
+    "id": "DLG_A1_SERVANT_PEN",
+    "title": "",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "饲牲的汉子靠在栏边，手里还捏着一把草。",
+            "emotion": ""
+        },
+        {
+            "speaker": "饲牲",
+            "text": "牛倒还安稳。王爷若嫌院里吵，傍晚把鸡赶回栏就是。",
+            "emotion": ""
+        }
+    ],
+    "choices": [],
+    "on_complete": {}
+}

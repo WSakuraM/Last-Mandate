@@ -1,0 +1,18 @@
+{
+    "id": "DLG_A1_SERVANT_KITCHEN",
+    "title": "",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "灶房小厮抱着空筐，看见你连忙侧身让路。",
+            "emotion": ""
+        },
+        {
+            "speaker": "小厮",
+            "text": "王爷万安。吴伯吩咐去井边打水，奴才这便去。",
+            "emotion": ""
+        }
+    ],
+    "choices": [],
+    "on_complete": {}
+}

@@ -76,6 +76,7 @@ func _show_card():
 		"周氏园中递粥：人不是折子，折子写不完的，人是活的", "Ⅰ")
 	# 设旗标供跨幕交叉台词检查
 	IssueManager.flags["zhoushi_met_act1"] = true
+	IssueManager.flags["farm_growth_boost"] = true
 
 	# 超时自动关闭（兜底）
 	var t := Timer.new()
@@ -95,4 +96,7 @@ func _dismiss():
 		overlay.queue_free()
 		overlay = null
 	IssueManager.night_council_active = false
+	if IssueManager.flags.get("farm_growth_boost", false) and not IssueManager.flags.get("farm_growth_boost_announced", false):
+		IssueManager.flags["farm_growth_boost_announced"] = true
+		EventBus.narration.emit("周氏的话记在心里——菜圃生长略快了些")
 	set_process(false)

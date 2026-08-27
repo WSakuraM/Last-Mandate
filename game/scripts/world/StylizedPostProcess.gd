@@ -7,7 +7,7 @@ var _overlay: ColorRect
 var _material: ShaderMaterial
 
 func _ready():
-	layer = 10   # 在 3D 场景之上、UI 之下，让 UI 正常显示
+	layer = 5   # 3D 之上、HUD 之下
 	# 根节点：全屏 Control，不拦截鼠标
 	var root := Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -22,14 +22,14 @@ func _ready():
 	_material = ShaderMaterial.new()
 	_material.shader = load("res://shaders/stylized_post.gdshader")
 	# 默认参数：暗调厚涂基调
-	_material.set_shader_parameter("color_steps", 4.0)
-	_material.set_shader_parameter("posterize_strength", 0.6)
-	_material.set_shader_parameter("vignette_intensity", 0.4)
-	_material.set_shader_parameter("vignette_opacity", 0.35)
-	_material.set_shader_parameter("grain_intensity", 0.06)
-	_material.set_shader_parameter("grain_speed", 0.5)
-	_material.set_shader_parameter("tint_color", Color(0.95, 0.88, 0.78))
-	_material.set_shader_parameter("tint_strength", 0.12)
+	_material.set_shader_parameter("color_steps", 5.0)
+	_material.set_shader_parameter("posterize_strength", 0.12)
+	_material.set_shader_parameter("vignette_intensity", 0.22)
+	_material.set_shader_parameter("vignette_opacity", 0.16)
+	_material.set_shader_parameter("grain_intensity", 0.0)
+	_material.set_shader_parameter("grain_speed", 0.4)
+	_material.set_shader_parameter("tint_color", Color(0.98, 0.93, 0.82))
+	_material.set_shader_parameter("tint_strength", 0.10)
 	_overlay.material = _material
 	root.add_child(_overlay)
 
@@ -52,17 +52,23 @@ func set_vignette(intensity: float, opacity: float):
 		_material.set_shader_parameter("vignette_intensity", intensity)
 		_material.set_shader_parameter("vignette_opacity", opacity)
 
+func set_tint(color: Color, strength: float) -> void:
+	if _material:
+		_material.set_shader_parameter("tint_color", color)
+		_material.set_shader_parameter("tint_strength", strength)
+
 # 夜召模式：加深暗角、减少色阶、增加颗粒（烛光聚焦感）
 func enter_night_mode():
 	set_vignette(0.7, 0.55)
 	set_color_steps(3.0)
 	set_grain(0.1)
 
-# 日间模式：恢复默认
+# 日间模式：恢复默认（对齐 M1 暖亮参考）
 func enter_day_mode():
-	set_vignette(0.4, 0.35)
-	set_color_steps(4.0)
-	set_grain(0.06)
+	set_vignette(0.28, 0.22)
+	set_color_steps(5.0)
+	set_grain(0.035)
+	set_posterize(0.28)
 
 # 煤山终章：极暗、强暗角、高颗粒
 func enter_meishan_mode():

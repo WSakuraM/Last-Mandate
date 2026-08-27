@@ -1,4 +1,4 @@
----
+﻿---
 description: 接手《末命》项目前先读 AGENTS.md（跨 Agent 手册）
 alwaysApply: true
 ---
@@ -15,7 +15,7 @@ alwaysApply: true
 - Agent 行为 Do/Don't
 - **第一幕（M1）代码地图**（25 个 .gd 脚本职责 + EventBus 信号 + 回忆碎片键 + 议题 RES_MAP）
 
-关键决策与"为什么"（冻结→解冻、建模同名替换、锁底 4、令牌安全）见 [`docs/KEY_DECISIONS.md`](../../docs/KEY_DECISIONS.md)。
+关键决策与"为什么"（冻结→解冻、建模同名替换、锁底 4、令牌安全）见 [`docs/05_关键决策.md`](../../docs/05_关键决策.md)。
 
 ## 纪律
 

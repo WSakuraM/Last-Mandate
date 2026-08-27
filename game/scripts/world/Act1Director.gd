@@ -16,13 +16,21 @@ var _shenliu: Node
 var _zhoushi: Node
 var _eunuch: Node
 var _calamity: Node
+var _accession: Node
+var _brother: Node
 var _shenliu_b1_done := false
 var _shenliu_b2_done := false
 var _shenliu_b3_done := false
 var _zhoushi_done := false
 var _eunuch_done := false
 var _calamity_done := false
+var _brother_b1_done := false
+var _brother_b2_done := false
+var _brother_b3_done := false
 var _atmosphere: Node   # 氛围特效管理器（粒子系统）
+var _sun: DirectionalLight3D
+var _post: Node
+var _last_season := -1
 const GOLD := Color(0.95, 0.8, 0.4)
 
 func _ready():
@@ -49,108 +57,97 @@ func _ready():
 	add_child(_eunuch)
 	_calamity = load("res://scripts/world/CalamityEvent.gd").new()
 	add_child(_calamity)
+	_accession = load("res://scripts/world/AccessionEvent.gd").new()
+	add_child(_accession)
+	_brother = load("res://scripts/world/BrotherStoryline.gd").new()
+	add_child(_brother)
 	var chengen: Node = load("res://scripts/world/ChengEnNPC.gd").new()
-	chengen.position = Vector3(18, 0, -14)
+	chengen.position = CourtyardLayout.CHENGEN
 	add_child(chengen)
 	# 氛围特效（粒子系统：灰尘/萤火虫/炊烟/雨雪）
 	_atmosphere = load("res://scripts/world/AtmosphereManager.gd").new()
 	add_child(_atmosphere)
+	_post = load("res://scripts/world/StylizedPostProcess.gd").new()
+	add_child(_post)
+	add_child(load("res://scripts/world/ZoneSense.gd").new())
+	_last_season = ResourceManager.season
+	CourtyardVisuals.apply_season(self, _env, _last_season)
+	ResourceManager.day_passed.connect(_on_day_passed)
 	ResourceManager.game_over.connect(_on_game_over)
 	EventBus.narration.connect(_on_narration)
 	_show_intro()
 
 func _setup_environment():
 	_env = Environment.new()
-	_env.background_mode = Environment.BG_COLOR
-	_env.background_color = Color(0.55, 0.5, 0.45)
-	_env.ambient_light_color = Color(0.5, 0.45, 0.4)
-	_env.ambient_light_energy = 0.8
+	CourtyardVisuals.setup_warm_sky(_env)
+	_env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	_env.ambient_light_color = Color(0.62, 0.58, 0.52)
+	_env.ambient_light_energy = 0.62
 	_env.fog_enabled = true
-	_env.fog_light_color = Color(0.5, 0.46, 0.42)
-	_env.fog_density = 0.012
-	# 风格化环境调参：ACES 色调映射有助于色彩分级；暖灯溢出光晕
+	_env.fog_light_color = Color(0.82, 0.86, 0.90)
+	_env.fog_density = 0.0022
 	_env.tonemap_mode = Environment.TONE_MAPPER_ACES
-	_env.tonemap_exposure = 0.9
-	_env.tonemap_white = 1.2
-	_env.glow_enabled = true
-	_env.glow_intensity = 0.4
-	_env.glow_bloom = 0.15
+	_env.tonemap_exposure = 1.12
+	_env.tonemap_white = 1.15
+	_env.glow_enabled = false
 	get_viewport().world_3d.environment = _env
 
 func _build_courtyard():
-	var ground := MeshInstance3D.new()
-	var plane := PlaneMesh.new()
-	plane.size = Vector2(60, 60)
-	ground.mesh = plane
-	var gmat := StandardMaterial3D.new()
-	gmat.albedo_color = Color(0.32, 0.27, 0.22)
-	gmat.roughness = 1.0
-	ground.material_override = gmat
-	add_child(ground)
+	CourtyardVisuals.build_ground(self)
 
-	# 夯土墙（土褐）+ 瓦顶（赭石暗）
+	# 夯土墙（土褐）+ 瓦顶；南墙在府门处开口
 	_wall(Vector3(0, 1, -30), Vector2(60, 1))
-	_wall(Vector3(0, 1, 30), Vector2(60, 1))
+	_wall(Vector3(-18, 1, 30), Vector2(24, 1))
+	_wall(Vector3(18, 1, 30), Vector2(24, 1))
 	_wall(Vector3(-30, 1, 0), Vector2(1, 60))
 	_wall(Vector3(30, 1, 0), Vector2(1, 60))
 
-	# 四角弱暖灯（黄昏暗角感）
-	for c in [Vector3(-26, 4, -26), Vector3(26, 4, -26), Vector3(-26, 4, 26), Vector3(26, 4, 26)]:
-		var lamp := OmniLight3D.new()
-		lamp.position = c
-		lamp.light_color = Color(1.0, 0.7, 0.35)
-		lamp.light_energy = 6.0
-		lamp.omni_range = 16.0
-		add_child(lamp)
+	var sun := DirectionalLight3D.new()
+	sun.name = "Sun"
+	sun.rotation_degrees = Vector3(-52, 35, 0)
+	sun.light_color = Color(1.0, 0.94, 0.82)
+	sun.light_energy = 1.32
+	sun.shadow_enabled = false
+	add_child(sun)
+	_sun = sun
 
-	# 水井：引用规范占位资产（后续可换精模不改代码）
-	var well := Node3D.new()
-	well.name = "Well"
-	var well_model: Node3D = preload("res://assets/models/props/well.tscn").instantiate()
-	well.add_child(well_model)
-	well.position = Vector3(-10, 0, 8)
-	add_child(well)
+	CourtyardProps.build_decorations(self)
+	add_child(CourtyardProps.spawn_well(CourtyardLayout.WELL))
 
-	var positions := [Vector3(-8, 0, -8), Vector3(0, 0, -8), Vector3(8, 0, -8),
-					  Vector3(-8, 0, 4), Vector3(0, 0, 4), Vector3(8, 0, 4)]
-	for i in positions.size():
+	var positions: Array[Vector3] = CourtyardLayout.plot_positions()
+	for i: int in positions.size():
 		var p: Node = load("res://scripts/world/CourtPlot.gd").new()
 		p.plot_id = "plot_%d" % i
 		p.position = positions[i]
 		add_child(p)
 
-	var sun := DirectionalLight3D.new()
-	sun.position = Vector3(10, 30, 10)
-	sun.rotation = Vector3(-1.0, 0, -0.6)
-	sun.light_color = Color(1.0, 0.82, 0.55)
-	sun.light_energy = 1.15
-	add_child(sun)
-
-	# 第一幕核心占位角色与建筑（规范资产，后续可换精模不改代码）
+	# 核心占位角色（规范资产，后续可换精模不改代码）
 	var wubo: Node3D = preload("res://assets/models/characters/wubo.tscn").instantiate()
-	wubo.position = Vector3(14, 0, 10)
+	wubo.position = CourtyardLayout.WUBO
+	CourtyardProps.setup_character(wubo, 35.0)
 	add_child(wubo)
+	InteractMark.bind(wubo, "DLG_A1_WUBO_IDLE", 2.05)
 	var qiushui: Node3D = preload("res://assets/models/characters/qiushui.tscn").instantiate()
-	qiushui.position = Vector3(-14, 0, 12)
+	qiushui.position = CourtyardLayout.QIUSHUI
+	CourtyardProps.setup_character(qiushui, -120.0)
 	add_child(qiushui)
-	var gate: Node3D = preload("res://assets/models/buildings/mansion_gate.tscn").instantiate()
-	gate.position = Vector3(0, 0, 26)
-	gate.rotation_degrees = Vector3(0, 180, 0)
-	add_child(gate)
+	InteractMark.bind(qiushui, "DLG_A1_QIUSHUI_IDLE", 1.98)
+	var cook: Node3D = CourtyardProps.make_servant(CourtyardLayout.SERVANT_KITCHEN, Color(0.55, 0.42, 0.32), 25.0)
+	add_child(cook)
+	InteractMark.bind(cook, "DLG_A1_SERVANT_KITCHEN", 1.95)
+	var herder: Node3D = CourtyardProps.make_servant(CourtyardLayout.SERVANT_PEN, Color(0.48, 0.44, 0.38), 70.0)
+	add_child(herder)
+	InteractMark.bind(herder, "DLG_A1_SERVANT_PEN", 1.95)
 
 func _wall(pos: Vector3, size: Vector2):
-	# 夯土墙体
 	var w := MeshInstance3D.new()
 	var box := BoxMesh.new()
 	box.size = Vector3(size.x, 2.0, size.y)
 	w.mesh = box
 	w.position = pos
-	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.42, 0.37, 0.31)
-	m.roughness = 1.0
-	w.material_override = m
+	CourtyardVisuals.apply_toon(w, Color(0.58, 0.48, 0.38))
+	w.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	add_child(w)
-	# 瓦顶（沿墙走向的扁长盒，赭石暗色）
 	var roof := MeshInstance3D.new()
 	var rb := BoxMesh.new()
 	var along := size.x if size.x > size.y else size.y
@@ -158,15 +155,13 @@ func _wall(pos: Vector3, size: Vector2):
 	rb.size = Vector3(along + 1.0, 0.4, thick + 1.0)
 	roof.mesh = rb
 	roof.position = Vector3(pos.x, 2.2, pos.z)
-	var rm := StandardMaterial3D.new()
-	rm.albedo_color = Color(0.28, 0.2, 0.18)
-	rm.roughness = 0.95
-	roof.material_override = rm
+	CourtyardVisuals.apply_toon(roof, Color(0.42, 0.34, 0.30), Color(0.28, 0.22, 0.20))
+	roof.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	add_child(roof)
 
 func _spawn_player():
 	var player: Node = load("res://scripts/player/Player.gd").new()
-	player.position = Vector3(0, 1, 0)
+	player.position = CourtyardLayout.PLAYER_SPAWN
 	player.add_to_group("player")
 	add_child(player)
 
@@ -186,21 +181,27 @@ func _setup_day_cycle():
 			return
 		# 第一幕收束：信王时期走满跨度，触发入继事件（而非无限循环或被强制拖入煤山）
 		if ResourceManager.total_day >= ResourceManager.ACT1_SPAN_DAYS:
-			_start_act1_closure()
+			_start_accession_then_closure()
 		elif ResourceManager.day % 7 == 0:
 			_start_night_council()
 		elif not _shenliu_b1_done and ResourceManager.total_day >= 15:
 			_start_shenliu_b1()
+		elif not _brother_b1_done and ResourceManager.total_day >= 18:
+			_start_brother_b1()
 		elif not _zhoushi_done and ResourceManager.total_day >= 30:
 			_start_zhoushi()
 		elif not _shenliu_b2_done and ResourceManager.total_day >= 40:
 			_start_shenliu_b2()
-		elif not _qiushui_done and ResourceManager.total_day >= 50:
+		elif not _brother_b2_done and ResourceManager.total_day >= 42:
+			_start_brother_b2()
+		elif not _qiushui_done and ResourceManager.total_day >= 50 and _qiushui_prereq_met():
 			_start_qiushui_letter()
 		elif not _eunuch_done and ResourceManager.total_day >= 60:
 			_start_eunuch_fruit()
 		elif not _calamity_done and ResourceManager.total_day >= 75:
 			_start_calamity()
+		elif not _brother_b3_done and ResourceManager.total_day >= 98:
+			_start_brother_b3()
 		elif not _shenliu_b3_done and ResourceManager.total_day >= 105:
 			_start_shenliu_b3()
 	)
@@ -210,6 +211,9 @@ func _setup_day_cycle():
 # 天气随机：按季节概率切换雨/雪/晴，驱动 AtmosphereManager
 func _roll_weather():
 	if not _atmosphere:
+		return
+	# 约每 12 游戏日才掷一次，避免走路时天气/明暗乱跳
+	if ResourceManager.total_day % 12 != 0:
 		return
 	var roll := randf()
 	var season: int = ResourceManager.season
@@ -223,48 +227,46 @@ func _roll_weather():
 		3:  # 冬：20% 雪
 			_atmosphere.set_weather(2 if roll < 0.20 else 0)
 
+func _on_day_passed(_day: int, season: int, _year: int) -> void:
+	if season != _last_season:
+		_last_season = season
+		CourtyardVisuals.apply_season(self, _env, season)
+		if _atmosphere:
+			_atmosphere.refresh()
+		if _post:
+			match season:
+				0:
+					_post.set_tint(Color(0.98, 0.95, 0.88), 0.08)
+				1:
+					_post.set_tint(Color(1.0, 0.96, 0.82), 0.10)
+				2:
+					_post.set_tint(Color(0.98, 0.86, 0.70), 0.14)
+				3:
+					_post.set_tint(Color(0.88, 0.92, 0.98), 0.12)
+
+func _apply_day_light() -> void:
+	if _sun == null or _env == null:
+		return
+	_sun.rotation_degrees = Vector3(-52, 35, 0)
+	_sun.light_energy = 1.32
+	_sun.light_color = Color(1.0, 0.94, 0.82)
+	_env.ambient_light_energy = 0.62
+	_env.ambient_light_color = Color(0.66, 0.62, 0.56)
+
 func _setup_night_council_hall():
-	# 夜召堂：简易低模屋 + 进入触发区
-	var hall := Node3D.new()
-	hall.name = "NightCouncilHall"
-	var body := MeshInstance3D.new()
-	var bm := BoxMesh.new()
-	bm.size = Vector3(8, 5, 6)
-	body.mesh = bm
-	var bmat := StandardMaterial3D.new()
-	bmat.albedo_color = Color(0.4, 0.32, 0.28)
-	body.material_override = bmat
-	body.position.y = 2.5
-	hall.add_child(body)
-	var roof := MeshInstance3D.new()
-	var rm := BoxMesh.new()
-	rm.size = Vector3(9.4, 0.6, 7.4)
-	roof.mesh = rm
-	var rmat := StandardMaterial3D.new()
-	rmat.albedo_color = Color(0.3, 0.22, 0.2)
-	roof.material_override = rmat
-	roof.position.y = 5.3
-	hall.add_child(roof)
-	var lantern := MeshInstance3D.new()
-	var lm := SphereMesh.new()
-	lm.radius = 0.3
-	lantern.mesh = lm
-	lantern.position = Vector3(0, 4.2, 3.2)
-	var lmat := StandardMaterial3D.new()
-	lmat.emission_enabled = true
-	lmat.emission = Color(1.0, 0.6, 0.2)
-	lmat.emission_energy = 2.0
-	lantern.material_override = lmat
-	hall.add_child(lantern)
-	# 真实暖色点光（灯笼照明）
-	var lantern_light := OmniLight3D.new()
-	lantern_light.position = Vector3(0, 4.2, 3.2)
-	lantern_light.light_color = Color(1.0, 0.6, 0.2)
-	lantern_light.light_energy = 8.0
-	lantern_light.omni_range = 14.0
-	hall.add_child(lantern_light)
-	hall.position = Vector3(18, 0, -18)
+	var nh := CourtyardLayout.NIGHT_HALL
+	var hall := CourtyardProps.make_chinese_building("NightCouncilHall", nh, 8.0, 6.0, 5.0, "夜召堂", 90.0)
 	add_child(hall)
+	var hall_mark := InteractMark.bind(hall, "", 3.5, false, 2.8)
+	hall_mark.activated.connect(_on_hall_clicked)
+
+	var lantern_light := OmniLight3D.new()
+	lantern_light.position = Vector3(nh.x - 2.5, 4.5, nh.z)
+	lantern_light.light_color = Color(1.0, 0.6, 0.2)
+	lantern_light.light_energy = 2.2
+	lantern_light.omni_range = 8.0
+	lantern_light.shadow_enabled = false
+	add_child(lantern_light)
 
 	_hall_area = Area3D.new()
 	_hall_area.name = "EnterZone"
@@ -273,7 +275,7 @@ func _setup_night_council_hall():
 	shape.size = Vector3(11, 6, 9)
 	col.shape = shape
 	_hall_area.add_child(col)
-	_hall_area.position = Vector3(18, 3, -18)
+	_hall_area.position = Vector3(nh.x, 3, nh.z)
 	_hall_area.body_entered.connect(_on_hall_entered)
 	_hall_area.body_exited.connect(_on_hall_exited)
 	add_child(_hall_area)
@@ -281,12 +283,17 @@ func _setup_night_council_hall():
 func _on_hall_entered(b):
 	if b.is_in_group("player"):
 		near_hall = true
-		EventBus.interact_prompt.emit("进入夜召堂（按 E 召议）")
+		EventBus.interact_prompt.emit("点击问号进入夜召堂（召议）")
 
 func _on_hall_exited(b):
 	if b.is_in_group("player"):
 		near_hall = false
 		EventBus.interact_hide.emit()
+
+func _on_hall_clicked() -> void:
+	if _night_council_cd > 0.0:
+		return
+	_start_night_council()
 
 func _start_night_council():
 	if IssueManager.night_council_active or _ended:
@@ -301,7 +308,10 @@ func _start_night_council():
 	# 压暗环境（烛光聚焦前奏）
 	if _env:
 		_env.ambient_light_energy = 0.22
-		_env.background_color = Color(0.1, 0.09, 0.08)
+	if _sun:
+		_sun.light_energy = 0.35
+	if _post:
+		_post.enter_night_mode()
 	var panel: Node = load("res://scripts/ui/DecisionPanel.gd").new()
 	get_tree().root.add_child(panel)
 	panel.choice_made.connect(_on_issue_resolved)
@@ -309,9 +319,9 @@ func _start_night_council():
 
 func _on_issue_resolved(_res):
 	IssueManager.night_council_active = false
-	if _env:
-		_env.ambient_light_energy = 0.8
-		_env.background_color = Color(0.55, 0.5, 0.45)
+	if _post:
+		_post.enter_day_mode()
+	_apply_day_light()
 	_night_council_cd = 3.0
 
 func _on_game_over():
@@ -320,15 +330,32 @@ func _on_game_over():
 	_ended = true
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/Meishan.tscn")
 
-# 第一幕收束：信王入继。锁住世界、压暗、弹出收束画面。
-func _start_act1_closure():
+# M1A5：夜召入继演出 → 收束统计（两段式，先戏后表）
+func _start_accession_then_closure() -> void:
 	if _ended:
 		return
 	_ended = true
 	IssueManager.night_council_active = true
 	if _env:
-		_env.ambient_light_energy = 0.15
-		_env.background_color = Color(0.06, 0.05, 0.05)
+		_env.ambient_light_energy = 0.28
+	if _sun:
+		_sun.light_energy = 0.4
+	if _post:
+		_post.enter_night_mode()
+	_accession.accession_finished.connect(_start_act1_closure, CONNECT_ONE_SHOT)
+	_accession.trigger()
+
+func _qiushui_prereq_met() -> bool:
+	## 主线钉：先完成 M1A3 谷种（或至少首畦播种），再推 M1A4 秋穗，避免「未种先赈」的叙事断裂
+	return IssueManager.flags.get("aen_seed_given", false) or IssueManager.flags.get("first_sow_done", false)
+
+# 第一幕收束：入继演出后弹出回忆/资源盘点（ACT1_END 存档）
+func _start_act1_closure() -> void:
+	IssueManager.night_council_active = true
+	if _env:
+		_env.ambient_light_energy = 0.12
+	if _sun:
+		_sun.light_energy = 0.2
 	var closure: Node = load("res://scripts/ui/Act1Closure.gd").new()
 	get_tree().root.add_child(closure)
 	closure.show_closure()
@@ -377,13 +404,19 @@ func _show_intro():
 	vb.add_child(t1)
 
 	var t2 := Label.new()
-	t2.text = "天启七年（1627）· 你还只是信王"
-	t2.add_theme_font_size_override("font_size", 22)
-	t2.add_theme_color_override("font_color", Color(0.8, 0.77, 0.72))
+	t2.text = "大明很大。府门很小。"
+	t2.add_theme_font_size_override("font_size", 26)
+	t2.add_theme_color_override("font_color", Color(0.88, 0.84, 0.76))
 	vb.add_child(t2)
 
+	var t2b := Label.new()
+	t2b.text = "天启七年（1627）· 你还只是信王"
+	t2b.add_theme_font_size_override("font_size", 20)
+	t2b.add_theme_color_override("font_color", Color(0.72, 0.68, 0.62))
+	vb.add_child(t2b)
+
 	var t3 := Label.new()
-	t3.text = "WASD / 鼠标点击行走 · 靠近菜圃按 E 照料 · 入夜召堂听议 · 按 M 预演终章"
+	t3.text = "WASD 点地行走 · 点问号交谈/照料 · 播种后需等数日成熟 · 滚轮拉远 · R 复位"
 	t3.add_theme_font_size_override("font_size", 16)
 	t3.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
 	vb.add_child(t3)
@@ -413,6 +446,7 @@ func _start_purse_tutorial():
 
 func _on_purse_tutorial_done(_private_total: float):
 	IssueManager.night_council_active = false
+	ResourceManager.pay_season_stipend()
 
 # M1A4：中段天灾段（total_day>=50）触发秋穗家书三选
 func _start_qiushui_letter():
@@ -448,6 +482,19 @@ func _start_eunuch_fruit():
 func _start_calamity():
 	_calamity_done = true
 	_calamity.trigger()
+
+# 兄弟线：朱由检 × 朱由校（天启）三拍
+func _start_brother_b1():
+	_brother_b1_done = true
+	_brother.trigger("b1")
+
+func _start_brother_b2():
+	_brother_b2_done = true
+	_brother.trigger("b2")
+
+func _start_brother_b3():
+	_brother_b3_done = true
+	_brother.trigger("b3")
 
 # 区块二：夜召池空时触发日常小事件（街坊寒暄/天气/承恩随口一句）
 func _start_daily_vignette():

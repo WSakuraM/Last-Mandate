@@ -29,6 +29,7 @@ var _choices := [
 		"memory_id": "MF_A1_QIUSHUI_LEND",
 		"memory_weight": 7,
 		"memory_text": "秋穗家书——你从私囊取银借粮，给了活路",
+		"memory_pillar": "Ⅲ",
 	},
 	{
 		"id": "token",
@@ -41,6 +42,7 @@ var _choices := [
 		"memory_id": "MF_A1_QIUSHUI_TOKEN",
 		"memory_weight": 4,
 		"memory_text": "秋穗家书——你给了些碎银，聊表心意",
+		"memory_pillar": "Ⅲ",
 	},
 	{
 		"id": "refuse",
@@ -53,6 +55,7 @@ var _choices := [
 		"memory_id": "MF_A1_QIUSHUI_REFUSE",
 		"memory_weight": 3,
 		"memory_text": "秋穗家书——你婉言回绝了她的请求",
+		"memory_pillar": "Ⅲ",
 	},
 ]
 
@@ -118,7 +121,7 @@ func _build_letter():
 	_vb.add_child(HSeparator.new())
 
 	var txt := Label.new()
-	txt.text = "秋穗跪在你面前，递上一封皱巴巴的家书。\n\n信是她父亲写的，字迹歪斜：「大旱连年，颗粒无收。老母已去，幼弟嗷嗷。只盼女儿在王府讨些活路……」\n\n秋穗低着头，不敢看你。烛火映在纸上，那几个字像是在抖。"
+	txt.text = "秋穗跪在你面前，递上一封皱巴巴的家书。\n\n信是她父亲写的，字迹歪斜：「大旱连年，颗粒无收。老母已去，幼弟嗷嗷。只盼女儿在王府讨些活路……」\n\n秋穗低着头，不敢看你。烛火映在纸上，那几个字像是在抖。\n\n——吴伯教过你：私囊是你家的，官银是天下人的。这一笔，若出，只能出自私囊。"
 	txt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	txt.add_theme_font_size_override("font_size", 16)
 	txt.add_theme_color_override("font_color", Color(0.85, 0.82, 0.78))
@@ -199,7 +202,7 @@ func _on_choice(idx: int):
 		ResourceManager.add("people", float(c["people_delta"]))
 	if c["flag"] != "":
 		IssueManager.flags[c["flag"]] = true
-	IssueManager.add_memory(c["memory_id"], int(c["memory_weight"]), c["memory_text"], "Ⅰ")
+	IssueManager.add_memory(c["memory_id"], int(c["memory_weight"]), c["memory_text"], c.get("memory_pillar", "Ⅲ"))
 	_phase = "feedback"
 	_rebuild()
 

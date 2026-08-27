@@ -37,6 +37,10 @@ credentials.json
 # Asset download cache (vendor/ extracted copies are tracked)
 game/assets_library/staging/
 
+# Paid Fab downloads — keep local; do not push to public GitHub/Gitee
+game/assets/fab/**
+!game/assets/fab/README.md
+
 # Cursor / local agent
 .cursor/*
 !.cursor/rules/

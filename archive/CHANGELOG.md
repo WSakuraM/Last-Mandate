@@ -1,10 +1,24 @@
-# Changelog
+﻿# Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)](../README.md)](../docs/REMAKE_BLUEPRINT.md)；重写数值/系统、M1 3D 经营、3D 俯视 UI 规范；新建 Godot 4 3D 工程（俯视相机 / 王府地块 / 资源系统 / 煤山第一人称终章）；旧 2D 切片归档 `game/_legacy_2d/`。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 风格，版本号见 [archive/README.md](README.md)。
+
+格式：`Added` / `Changed` / `Fixed` / `Removed` / `Docs`。
+
+---
+
+## [Unreleased]
+
+### Added
+
+- 风格 C **正式木框 UI**：资源条 / 目标 / 时钟 / 对白 / Toast / Tip / 抉择按钮。见 `archive/ui/ui_0.0.3.md`。
+- **支线水墨下线动画**（10 角色 × 3 帧）+ `InkFarewell` 播放器。见 `archive/art_audio/ink_farewell_0.0.5.md`。
+- **M1 剧情连贯性优化**：M1A5 夜召入继演出（`AccessionEvent.gd`）、M1A4 门控、故事圣经/第一幕剧本重写。见 `archive/story/story_0.0.6.md`。
+- **三大幕完整规划落地（M0）**：场次表/定位/故事圣经/第三幕终章/数值/美术一页纸/里程碑 · `archive/plan/plan_0.0.7.md`。
 
 ### Changed
 
 - 取消 Windows 计划任务 `LastMandate-DailyBackup-1600`；不再每日 16:00 自动备份。
+- 修复 `archive/index.md`、`archive/CHANGELOG.md` 历史 Markdown 损坏。
 
 ---
 
@@ -12,7 +26,7 @@
 
 ### Docs
 
-- 画面定案 **风格 C 赛璐璐**：`docs/画面风格定案_C.md` → `archive/art_audio/art_style_C_0.0.5.md`。
+- 画面定案 **风格 C 赛璐璐**：`docs/22_画面风格定案_C.md` → `archive/art_audio/art_style_C_0.0.5.md`。
 
 ### Added
 
@@ -31,7 +45,7 @@
 ### Docs
 
 - 工作稿中文命名：`docs/`、`docs/story/`（`game/` 程序路径仍英文）。
-- 天气/天灾/活物设计：`docs/10_天气天灾与活物.md` → `archive/systems/weather_life_0.0.4.md`。
+- 天气/天灾/活物设计：`docs/16_天气天灾与活物.md` → `archive/systems/weather_life_0.0.4.md`。
 
 ### Added
 
@@ -51,7 +65,7 @@
 - 剧情总流程图与七种跨度：`docs/story/11_剧情总流程.md` → `archive/story/plot_flow_0.0.3.md`
 ### Added
 
-- `docs/09_M1经营设计.md` → archive `plan/plan_0.0.2.md`
+- `docs/15_M1经营设计.md` → archive `plan/plan_0.0.2.md`
 - `archive/systems/systems_0.0.2.md`
 
 ---

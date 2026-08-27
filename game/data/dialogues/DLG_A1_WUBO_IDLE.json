@@ -1,0 +1,18 @@
+{
+    "id": "DLG_A1_WUBO_IDLE",
+    "title": "",
+    "lines": [
+        {
+            "speaker": "",
+            "text": "吴伯蹲在灶房廊下择菜，见你过来，把袖口往上一挽。",
+            "emotion": ""
+        },
+        {
+            "speaker": "吴伯",
+            "text": "王爷，灶上还剩昨日的余粮。府里这点日子，总算还过得去。",
+            "emotion": ""
+        }
+    ],
+    "choices": [],
+    "on_complete": {}
+}

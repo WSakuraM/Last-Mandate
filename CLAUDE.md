@@ -1,4 +1,4 @@
-# CLAUDE.md — 给 Claude Code 的接手入口
+﻿# CLAUDE.md — 给 Claude Code 的接手入口
 
 本项目是《末命》Last Mandate：Godot 4 3D 俯视角、简体中文、**悲剧定轨**历史叙事模拟经营游戏（崇祯朱由检）。
 
@@ -18,7 +18,7 @@
 
 ## 关键决策与"为什么"
 
-见 [`docs/KEY_DECISIONS.md`](docs/KEY_DECISIONS.md)（冻结→解冻、建模同名替换、锁底 4、令牌安全等）。
+见 [`docs/05_关键决策.md`](docs/05_关键决策.md)（冻结→解冻、建模同名替换、锁底 4、令牌安全等）。
 
 ## 提交纪律
 

@@ -1,7 +1,7 @@
-extends SceneTree
+﻿extends SceneTree
 # 《末命》占位模型生成器（程序化 blockout）
 # 运行：godot --headless --path <项目根> --script res://scripts/tools/gen_placeholders.gd
-# 按 docs/art_characters.md 的 id 与配色生成 PrimitiveMesh 占位 .tscn，命名规范、后续可换精模不改代码。
+# 按 docs/18_人物建模规范.md 的 id 与配色生成 PrimitiveMesh 占位 .tscn，命名规范、后续可换精模不改代码。
 
 func _initialize():
 	print("=== 占位模型生成器启动 ===")
@@ -86,7 +86,7 @@ func humanoid(path, body_hex, head_hex, height, radius, with_staff):
 
 func gen_characters():
 	print("-- 人物 --")
-	# 信王 M1：黛青常服 #3B4654 / 暖肤 #E8C9A0（art_characters.md §1.1）
+	# 信王 M1：黛青常服 #3B4654 / 暖肤 #E8C9A0（人物建模规范.md §1.1）
 	humanoid("res://assets/models/characters/xinwang_m1.tscn", "#3B4654", "#E8C9A0", 1.8, 0.3, false)
 	# 王承恩(阿恩)：褐衣 #6E4A2E / 暖肤 #E2C49C（§2）
 	humanoid("res://assets/models/characters/aen.tscn", "#6E4A2E", "#E2C49C", 1.6, 0.28, false)
