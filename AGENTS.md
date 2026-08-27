@@ -18,9 +18,9 @@ PC Steam、简体中文、**悲剧定轨**历史叙事**3D 俯视角模拟经营
 
 ```powershell
 # 任选其一（公司网慢 GitHub 时优先 Gitee）
-git clone https://gitee.com/WSakuraM/last-mandate.git
+git clone git@gitee.com:WSakuraM/last-mandate.git
 # 或
-git clone https://github.com/WSakuraM/Last-Mandate.git
+git clone git@github.com:WSakuraM/Last-Mandate.git
 
 cd last-mandate   # 或 Last-Mandate
 
@@ -29,9 +29,13 @@ git config user.name "Sakura"
 git config user.email "1124114910@qq.com"
 
 # 若只 clone 了一个远程，把另一个也加上
-git remote add origin https://github.com/WSakuraM/Last-Mandate.git   # 若缺
-git remote add gitee  https://gitee.com/WSakuraM/last-mandate.git  # 若缺
+git remote add origin git@github.com:WSakuraM/Last-Mandate.git   # 若缺
+git remote add gitee  git@gitee.com:WSakuraM/last-mandate.git  # 若缺
 git remote -v
+
+# ⚠️ 本仓库只走 SSH（22 端口），勿用 https。WorkBuddy 沙箱出不了 https/443，
+# 必须 SSH + 公钥。公钥已加到 GitHub/Gitee；私钥在 D:\GameTool\.ssh_keys\id_ed25519
+# （仓库级 core.sshCommand 已指向，详见 §5）。
 ```
 
 然后按顺序阅读：
@@ -237,26 +241,29 @@ court→court_order, resolve→emperor_heart, mandate_decay→mandate_decay
 
 ## 5. Git：双远程与交叉开发
 
-| 远程 | URL |
+| 远程 | URL（**仅 SSH，勿用 https**） |
 |---|---|
-| `origin`（GitHub） | https://github.com/WSakuraM/Last-Mandate.git |
-| `gitee` | https://gitee.com/WSakuraM/last-mandate.git |
+| `origin`（GitHub，已配双 pushurl） | git@github.com:WSakuraM/Last-Mandate.git |
+| `gitee` | git@gitee.com:WSakuraM/last-mandate.git |
 
-用户说「提交代码」⇒ `commit` + **两边都 push**。禁止未经要求的 `push --force` 到 main。
+> ⚠️ **只走 SSH（22 端口）**。WorkBuddy 沙箱出不了 https/443，https + token 方案在其内部必败。
+> 公钥已加到 GitHub/Gitee；私钥 `D:\GameTool\.ssh_keys\id_ed25519`，仓库级 `core.sshCommand` 已指向它。
+> 本机有网可用 SSH 或 token 自行推，但**沙箱内自动化只认 SSH**。
+
+用户说「提交代码」⇒ `commit` + 一条 **`git push origin main` 即自动双推**（origin 已配 GitHub+Gitee 双 pushurl）。禁止未经要求的 `push --force` 到 main。
 
 ### 公司电脑 ↔ 家里电脑
 
 **开工前必须 pull，收工必须 push 两边**，否则另一台会丢改动或冲突。详见 [docs/14_双机交叉开发.md](docs/14_双机交叉开发.md)。
 
-简版：
+简版（SSH，一条 push 双推）：
 
 ```powershell
 git pull origin main
 # …开发…
 git add -A
 git commit -m "说明为什么改"
-git push origin main
-git push gitee main
+git push origin main     # 自动同时推 GitHub + Gitee
 ```
 
 网络到不了 GitHub 时：先 `git push gitee main`，回家再补 `git push origin main`（并如实告知用户哪边失败）。
@@ -267,7 +274,7 @@ git push gitee main
 
 **每日 16:00 计划任务已取消**（原名 `LastMandate-DailyBackup-1600`）。  
 
-请在收工或用户说「提交代码」时：`commit` + `push origin` + `push gitee`。  
+请在收工或用户说「提交代码」时：`commit` + 一条 `git push origin main`（已自动双推 GitHub+Gitee，走 SSH）。  
 `scripts/daily_backup.ps1` 仅作可选手动工具，**不要再注册定时任务**，除非用户重新要求。
 
 ---
