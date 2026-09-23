@@ -1,0 +1,10 @@
+{
+    "id": "DLG_A1_WUBO_IDLE_TAX",
+    "title": "",
+    "lines": [
+        {"speaker": "", "text": "吴伯把一本薄账册合上，眉头拧着。", "emotion": ""},
+        {"speaker": "吴伯", "text": "王爷，纳赋的旨下来了。往后菜收、季例，都得先割一刀给户部。咱们得把账算细些。", "emotion": ""}
+    ],
+    "choices": [],
+    "on_complete": {}
+}

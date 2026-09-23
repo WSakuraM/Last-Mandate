@@ -3,7 +3,7 @@ extends CanvasLayer
 # 展示本幕回忆碎片汇总与资源盘点，给出「重玩第一幕」与「预演煤山终章」两个去向。
 # 第二幕（朝堂）与第三幕（煤山）在别处打磨，此处仅留占位说明。
 
-const GOLD := Color(0.95, 0.8, 0.4)
+# 第一幕收束：纸色回忆册
 
 func show_closure():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -12,30 +12,39 @@ func show_closure():
 	add_child(root)
 
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.02, 0.03, 0.92)
+	dim.color = Act1Theme.NIGHT_DIM
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(dim)
 
+	var card := PanelContainer.new()
+	card.set_anchors_preset(Control.PRESET_CENTER)
+	card.anchor_left = 0.5
+	card.anchor_top = 0.5
+	card.anchor_right = 0.5
+	card.anchor_bottom = 0.5
+	card.offset_left = -340
+	card.offset_right = 340
+	card.offset_top = -280
+	card.offset_bottom = 280
+	card.add_theme_stylebox_override("panel", Act1Theme.night_card())
+	root.add_child(card)
+
 	var vb := VBoxContainer.new()
-	vb.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	vb.add_theme_constant_override("separation", 14)
-	root.add_child(vb)
+	vb.add_theme_constant_override("separation", 10)
+	card.add_child(vb)
 
 	var t1 := Label.new()
 	t1.text = "第一幕 · 信王府 · 终"
-	t1.add_theme_font_size_override("font_size", 38)
-	t1.add_theme_color_override("font_color", GOLD)
+	Act1Theme.apply_label(t1, 26, Act1Theme.VERMILLION)
 	vb.add_child(t1)
 
 	var t2 := Label.new()
 	t2.text = "天启七年冬。你走出信王府的那一夜，园子、夜召与门外的人，都已收进回忆。"
 	t2.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	t2.add_theme_font_size_override("font_size", 17)
-	t2.add_theme_color_override("font_color", Color(0.8, 0.77, 0.72))
+	Act1Theme.apply_label(t2, Act1Theme.FONT_BODY, Act1Theme.INK_MUTED)
 	vb.add_child(t2)
 
-	var sep := HSeparator.new()
-	vb.add_child(sep)
+	vb.add_child(Act1Theme.separator())
 
 	# 回忆碎片汇总（终章蒙太奇预览，8条，Ⅲ类优先 + 支柱着色）
 	var mem_label := Label.new()
@@ -156,6 +165,7 @@ func show_closure():
 	var b_replay := Button.new()
 	b_replay.text = "重玩第一幕"
 	b_replay.custom_minimum_size = Vector2(160, 44)
+	Act1Theme.apply_choice_button(b_replay)
 	b_replay.pressed.connect(func():
 		get_tree().change_scene_to_file("res://scenes/main/Main.tscn")
 	)
@@ -164,6 +174,7 @@ func show_closure():
 	var b_meishan := Button.new()
 	b_meishan.text = "预演煤山终章"
 	b_meishan.custom_minimum_size = Vector2(160, 44)
+	Act1Theme.apply_choice_button(b_meishan)
 	b_meishan.pressed.connect(func():
 		get_tree().change_scene_to_file("res://scenes/world/Meishan.tscn")
 	)

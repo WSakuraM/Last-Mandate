@@ -1,7 +1,5 @@
 extends CanvasLayer
-# 夜召议题抉择面板（3D 俯视 UI 规范 §4）
-# 用法：caller 调用 present(issue) 显示；玩家用 ↑↓ / W S / 1-9 / 鼠标 选择，
-# Space / Enter 确认。确认后回调 IssueManager.apply_choice，并 emit choice_made。
+# 夜召议题抉择面板 — 纸色折子 + 朱批高亮
 
 signal choice_made(result: Dictionary)
 
@@ -12,10 +10,12 @@ var panel_root: Control
 var active := false
 
 const ZH := {
-	"treasury": "国库", "popular": "民心", "frontier": "边军",
-	"court": "朝堂", "resolve": "君心", "mandate_decay": "气数", "rebel_pressure": "民变",
+	"treasury": "国库", "popular": "民心", "people": "民心",
+	"frontier": "边军", "border_army": "边军",
+	"court": "朝堂", "court_order": "朝堂",
+	"resolve": "君心", "emperor_heart": "君心",
+	"mandate_decay": "气数", "rebel_pressure": "民变",
 }
-const GOLD := Color(0.95, 0.8, 0.4)   # 暗金朱批高亮
 
 func present(p_issue: Dictionary):
 	issue = p_issue
@@ -35,49 +35,40 @@ func _build():
 	panel_root.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(panel_root)
 
-	# 压暗背景（夜召烛光聚焦前的暗场）
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.02, 0.03, 0.72)
+	dim.color = Act1Theme.NIGHT_DIM
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel_root.add_child(dim)
 
-	# 议题卡
 	var card := PanelContainer.new()
-	card.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	card.custom_minimum_size = Vector2(580, 440)
-	var cs := StyleBoxFlat.new()
-	cs.bg_color = Color(0.16, 0.13, 0.11, 0.96)
-	cs.border_color = GOLD
-	cs.border_width_left = 2; cs.border_width_top = 2
-	cs.border_width_right = 2; cs.border_width_bottom = 2
-	cs.corner_radius_top_left = 6; cs.corner_radius_top_right = 6
-	cs.corner_radius_bottom_left = 6; cs.corner_radius_bottom_right = 6
-	card.add_theme_stylebox_override("panel", cs)
+	card.set_anchors_preset(Control.PRESET_CENTER)
+	card.anchor_left = 0.5
+	card.anchor_top = 0.5
+	card.anchor_right = 0.5
+	card.anchor_bottom = 0.5
+	card.offset_left = -300
+	card.offset_right = 300
+	card.offset_top = -220
+	card.offset_bottom = 220
+	card.add_theme_stylebox_override("panel", Act1Theme.night_card())
 	panel_root.add_child(card)
 
 	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 12)
-	vb.add_theme_constant_override("margin_left", 20)
-	vb.add_theme_constant_override("margin_top", 20)
-	vb.add_theme_constant_override("margin_right", 20)
-	vb.add_theme_constant_override("margin_bottom", 20)
+	vb.add_theme_constant_override("separation", 10)
 	card.add_child(vb)
 
 	var title := Label.new()
 	title.text = "夜召 · " + issue.get("title", "")
-	title.add_theme_font_size_override("font_size", 28)
-	title.add_theme_color_override("font_color", GOLD)
+	Act1Theme.apply_label(title, Act1Theme.FONT_TITLE + 2, Act1Theme.VERMILLION)
 	vb.add_child(title)
 
 	var sum := Label.new()
 	sum.text = issue.get("summary", "")
 	sum.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	sum.add_theme_font_size_override("font_size", 18)
-	sum.add_theme_color_override("font_color", Color(0.85, 0.82, 0.78))
+	Act1Theme.apply_label(sum, Act1Theme.FONT_BODY, Act1Theme.INK_MUTED)
 	vb.add_child(sum)
 
-	var sep := HSeparator.new()
-	vb.add_child(sep)
+	vb.add_child(Act1Theme.separator())
 
 	choice_buttons.clear()
 	var chs: Array = issue.get("choices", [])
@@ -85,40 +76,34 @@ func _build():
 		var btn := Button.new()
 		btn.text = _format(c)
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		btn.custom_minimum_size = Vector2(540, 56)
-		btn.add_theme_font_size_override("font_size", 19)
+		btn.custom_minimum_size = Vector2(0, 48)
+		btn.add_theme_font_size_override("font_size", Act1Theme.FONT_BODY)
+		Act1Theme.apply_choice_button(btn)
 		btn.pressed.connect(_on_click.bind(c["id"]))
 		vb.add_child(btn)
 		choice_buttons.append(btn)
 
 	var hint := Label.new()
-	hint.text = "↑↓ / W S 选择 · Space 朱批 · 鼠标亦可"
-	hint.add_theme_font_size_override("font_size", 14)
-	hint.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
+	hint.text = "↑↓ 择项 · 空格 朱批"
+	Act1Theme.apply_label(hint, Act1Theme.FONT_HINT, Act1Theme.INK_FAINT)
 	vb.add_child(hint)
 
 	_refresh()
 
 func _format(c: Dictionary) -> String:
 	var s: String = c.get("label", "")
-	var d: Dictionary = c.get("deltas", {})
-	var parts := []
-	for k in d.keys():
-		var zh: String = ZH.get(k, k)
-		var v = d[k]
-		var arrow := "↑" if v > 0 else ("↓" if v < 0 else "·")
-		parts.append("%s%s%d" % [zh, arrow, v])
-	if parts.size() > 0:
-		s += "    [ " + ", ".join(parts) + " ]"
-	return s
+	var delta_line := Act1Theme.format_delta_line(c.get("deltas", {}), ZH)
+	return s + delta_line
 
 func _refresh():
 	for i in choice_buttons.size():
 		var b: Button = choice_buttons[i]
 		if i == selected:
-			b.add_theme_color_override("font_color", GOLD)
+			b.add_theme_stylebox_override("normal", Act1Theme.choice_button_selected())
+			b.add_theme_color_override("font_color", Act1Theme.VERMILLION)
 		else:
-			b.remove_theme_color_override("font_color")
+			b.add_theme_stylebox_override("normal", Act1Theme.choice_button_normal())
+			b.add_theme_color_override("font_color", Act1Theme.INK)
 
 func _on_click(cid: String):
 	_confirm(cid)

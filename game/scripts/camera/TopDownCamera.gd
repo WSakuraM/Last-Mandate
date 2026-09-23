@@ -1,6 +1,6 @@
 extends Node3D
 # 等距 3D 经营相机：固定 45° 机位 + 平滑跟随 + 滚轮缩放。
-# Shift+←/→ 才转视角，避免误触把等距感转乱。
+# ←/→ 转视角（Shift 下略快）；避免误触把等距感转乱时可按 R 复位。
 
 var cam: Camera3D
 var target: Node3D
@@ -37,11 +37,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _process(delta: float) -> void:
-	if Input.is_key_pressed(KEY_SHIFT):
-		if Input.is_key_pressed(KEY_LEFT):
-			yaw += delta * 1.0
-		if Input.is_key_pressed(KEY_RIGHT):
-			yaw -= delta * 1.0
+	if IssueManager.night_council_active:
+		return
+	var rot_speed := 1.15 if Input.is_key_pressed(KEY_SHIFT) else 0.85
+	if Input.is_key_pressed(KEY_LEFT):
+		yaw += delta * rot_speed
+	if Input.is_key_pressed(KEY_RIGHT):
+		yaw -= delta * rot_speed
 
 func _physics_process(delta: float) -> void:
 	if not target:
@@ -49,7 +51,8 @@ func _physics_process(delta: float) -> void:
 	_dist_cur = lerpf(_dist_cur, dist, 1.0 - exp(-8.0 * delta))
 	var look := target.global_position + Vector3(0, 1.0, 0)
 	var desired := _desired_position_at(target.global_position)
-	_smooth_pos = _smooth_pos.lerp(desired, 1.0 - exp(-9.0 * delta))
+	# 跟随时略更跟手，减少「人动镜头拖」造成的走路发飘/发卡
+	_smooth_pos = _smooth_pos.lerp(desired, 1.0 - exp(-14.0 * delta))
 	cam.global_position = _smooth_pos
 	cam.look_at(look, Vector3.UP)
 

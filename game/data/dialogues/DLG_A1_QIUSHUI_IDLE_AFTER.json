@@ -1,0 +1,10 @@
+{
+    "id": "DLG_A1_QIUSHUI_IDLE_AFTER",
+    "title": "",
+    "lines": [
+        {"speaker": "", "text": "秋穗在蔬果铺后整理筐子，见你来了，停下手里的活。", "emotion": ""},
+        {"speaker": "秋穗", "text": "王爷……那封家书的事，民女记一辈子。您府上的菜，民女也会多留一份心。", "emotion": ""}
+    ],
+    "choices": [],
+    "on_complete": {}
+}

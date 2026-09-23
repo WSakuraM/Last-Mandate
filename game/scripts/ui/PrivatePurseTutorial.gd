@@ -1,15 +1,10 @@
 extends CanvasLayer
-# M1A1 吴伯私囊教程：开场即触发的轻交互。
-# 玩家将数笔银两归类为「私囊」或「官银」，吴伯逐一反馈。
-# 私囊结余存入 ResourceManager.private_purse，跨幕转为 M2 国库初值。
-# 教："私囊是你家的，官银是天下人的。"
+# M1A1 吴伯私囊教程 — 纸色笺面
 
 signal tutorial_completed(private_total: float)
 
-const GOLD := Color(0.95, 0.8, 0.4)
-const SCALE_TREASURY := 0.1  # 官银→国库缩放（兩→0-100 资源体系）
+const SCALE_TREASURY := 0.1
 
-# 4 笔银两：source=来源, amount=兩数, correct=正确归类(si/gong)
 var _items := [
 	{"source": "王府月例银", "amount": 12.0, "correct": "si",
 	 "ok": "正是。这是王府的月例，该入私囊。",
@@ -26,7 +21,7 @@ var _items := [
 ]
 
 var _step := 0
-var _phase := "item"   # item / feedback / summary
+var _phase := "item"
 var _private_total := 0.0
 var _public_total := 0.0
 var _last_correct := false
@@ -47,29 +42,23 @@ func _build_base():
 	add_child(root)
 
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.02, 0.03, 0.82)
+	dim.color = Act1Theme.NIGHT_DIM
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(dim)
 
 	_card = PanelContainer.new()
-	_card.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	_card.custom_minimum_size = Vector2(520, 0)
-	var cs := StyleBoxFlat.new()
-	cs.bg_color = Color(0.15, 0.12, 0.1, 0.97)
-	cs.border_color = GOLD
-	cs.border_width_left = 2; cs.border_width_top = 2
-	cs.border_width_right = 2; cs.border_width_bottom = 2
-	cs.corner_radius_top_left = 6; cs.corner_radius_top_right = 6
-	cs.corner_radius_bottom_left = 6; cs.corner_radius_bottom_right = 6
-	_card.add_theme_stylebox_override("panel", cs)
+	_card.set_anchors_preset(Control.PRESET_CENTER)
+	_card.anchor_left = 0.5
+	_card.anchor_top = 0.5
+	_card.anchor_right = 0.5
+	_card.anchor_bottom = 0.5
+	_card.offset_left = -268
+	_card.offset_right = 268
+	_card.add_theme_stylebox_override("panel", Act1Theme.night_card())
 	root.add_child(_card)
 
 	_vb = VBoxContainer.new()
-	_vb.add_theme_constant_override("separation", 12)
-	_vb.add_theme_constant_override("margin_left", 24)
-	_vb.add_theme_constant_override("margin_top", 24)
-	_vb.add_theme_constant_override("margin_right", 24)
-	_vb.add_theme_constant_override("margin_bottom", 24)
+	_vb.add_theme_constant_override("separation", 10)
 	_card.add_child(_vb)
 
 func _rebuild():
@@ -85,102 +74,81 @@ func _rebuild():
 
 func _build_item_phase():
 	var title := Label.new()
-	title.text = "吴伯 · 私囊"
-	title.add_theme_font_size_override("font_size", 26)
-	title.add_theme_color_override("font_color", GOLD)
+	title.text = "吴伯 · 分银"
+	Act1Theme.apply_label(title, Act1Theme.FONT_TITLE + 2, Act1Theme.VERMILLION)
 	_vb.add_child(title)
 
 	if _step == 0:
 		var intro := Label.new()
-		intro.text = "王爷，老奴今日有几笔银子要请您过目。您分一分，哪些该入私囊，哪些该归公账。"
+		intro.text = "王爷，老奴今日有几笔银子要请您过目。哪些该入私囊，哪些该归公账？"
 		intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		intro.add_theme_font_size_override("font_size", 15)
-		intro.add_theme_color_override("font_color", Color(0.75, 0.72, 0.68))
+		Act1Theme.apply_label(intro, Act1Theme.FONT_BODY, Act1Theme.INK_MUTED)
 		_vb.add_child(intro)
 
-	_vb.add_child(HSeparator.new())
+	_vb.add_child(Act1Theme.separator())
 
 	var item: Dictionary = _items[_step]
 	var src := Label.new()
 	src.text = "%s · %d 兩" % [item["source"], int(item["amount"])]
-	src.add_theme_font_size_override("font_size", 20)
-	src.add_theme_color_override("font_color", Color(0.9, 0.85, 0.7))
+	Act1Theme.apply_label(src, Act1Theme.FONT_BODY, Act1Theme.INK)
 	_vb.add_child(src)
 
-	var hint := Label.new()
-	hint.text = "归类为："
-	hint.add_theme_font_size_override("font_size", 14)
-	hint.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
-	_vb.add_child(hint)
-
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 16)
+	row.add_theme_constant_override("separation", 12)
 	_vb.add_child(row)
 
 	var b_si := Button.new()
 	b_si.text = "私囊（1）"
-	b_si.custom_minimum_size = Vector2(160, 44)
+	b_si.custom_minimum_size = Vector2(148, 44)
+	Act1Theme.apply_choice_button(b_si)
 	b_si.pressed.connect(func(): _on_choice(true))
 	row.add_child(b_si)
 
 	var b_gong := Button.new()
 	b_gong.text = "官银（2）"
-	b_gong.custom_minimum_size = Vector2(160, 44)
+	b_gong.custom_minimum_size = Vector2(148, 44)
+	Act1Theme.apply_choice_button(b_gong)
 	b_gong.pressed.connect(func(): _on_choice(false))
 	row.add_child(b_gong)
 
 func _build_feedback_phase():
 	var item: Dictionary = _items[_step]
 	var fb := Label.new()
-	if _last_correct:
-		fb.text = item["ok"]
-	else:
-		fb.text = item["err"]
+	fb.text = item["ok"] if _last_correct else item["err"]
 	fb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	fb.add_theme_font_size_override("font_size", 17)
-	fb.add_theme_color_override("font_color", Color(0.85, 0.82, 0.78))
+	Act1Theme.apply_label(fb, Act1Theme.FONT_BODY, Act1Theme.INK)
 	_vb.add_child(fb)
-
 	var hint := Label.new()
-	hint.text = "（按 E 继续）"
-	hint.add_theme_font_size_override("font_size", 14)
-	hint.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
+	hint.text = "按 E 继续"
+	Act1Theme.apply_label(hint, Act1Theme.FONT_HINT, Act1Theme.INK_FAINT)
 	_vb.add_child(hint)
 
 func _build_summary_phase():
 	var title := Label.new()
 	title.text = "私囊归档"
-	title.add_theme_font_size_override("font_size", 26)
-	title.add_theme_color_override("font_color", GOLD)
+	Act1Theme.apply_label(title, Act1Theme.FONT_TITLE + 2, Act1Theme.VERMILLION)
 	_vb.add_child(title)
-
-	_vb.add_child(HSeparator.new())
+	_vb.add_child(Act1Theme.separator())
 
 	var si_label := Label.new()
 	si_label.text = "私囊结余  %d 兩" % int(_private_total)
-	si_label.add_theme_font_size_override("font_size", 18)
-	si_label.add_theme_color_override("font_color", Color(0.9, 0.85, 0.7))
+	Act1Theme.apply_label(si_label, Act1Theme.FONT_BODY, Act1Theme.INK)
 	_vb.add_child(si_label)
 
 	var gong_label := Label.new()
 	gong_label.text = "官银入公账  %d 兩" % int(_public_total)
-	gong_label.add_theme_font_size_override("font_size", 18)
-	gong_label.add_theme_color_override("font_color", Color(0.75, 0.72, 0.68))
+	Act1Theme.apply_label(gong_label, Act1Theme.FONT_SMALL, Act1Theme.INK_MUTED)
 	_vb.add_child(gong_label)
-
-	_vb.add_child(HSeparator.new())
 
 	var moral := Label.new()
 	moral.text = "私囊是你家的，官银是天下人的。\n这天下的账，迟早要算的。"
 	moral.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	moral.add_theme_font_size_override("font_size", 16)
-	moral.add_theme_color_override("font_color", Color(0.8, 0.77, 0.72))
+	Act1Theme.apply_label(moral, Act1Theme.FONT_SMALL, Act1Theme.INK_MUTED)
 	_vb.add_child(moral)
 
 	var hint := Label.new()
-	hint.text = "（按 E 继续）"
-	hint.add_theme_font_size_override("font_size", 14)
-	hint.add_theme_color_override("font_color", Color(0.6, 0.58, 0.55))
+	hint.text = "按 E 继续"
+	Act1Theme.apply_label(hint, Act1Theme.FONT_HINT, Act1Theme.INK_FAINT)
 	_vb.add_child(hint)
 
 func _on_choice(si: bool):
@@ -205,14 +173,13 @@ func _process(delta):
 		elif Input.is_key_pressed(KEY_2):
 			_key_cd = 0.3
 			_on_choice(false)
-	elif _phase == "feedback":
+	elif _phase == "feedback" or _phase == "summary":
 		if Input.is_key_pressed(KEY_E) or Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_ENTER):
 			_key_cd = 0.3
-			_advance()
-	elif _phase == "summary":
-		if Input.is_key_pressed(KEY_E) or Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_ENTER):
-			_key_cd = 0.3
-			_dismiss()
+			if _phase == "summary":
+				_dismiss()
+			else:
+				_advance()
 
 func _advance():
 	_step += 1
@@ -225,7 +192,7 @@ func _advance():
 
 func _finish_tutorial():
 	ResourceManager.add_private_purse(_private_total)
-	IssueManager.add_memory("MF_A1_PURSE_TUTORIAL", 3, \
+	IssueManager.add_memory("MF_A1_PURSE_TUTORIAL", 3,
 		"吴伯教你分银：私囊是你家的，官银是天下人的", "Ⅰ")
 
 func _dismiss():

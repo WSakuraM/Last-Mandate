@@ -1,0 +1,21 @@
+{
+    "id": "DLG_A1_SHENLIU_B2",
+    "title": "灶口 · 半块糖",
+    "lines": [
+        {"speaker": "", "text": "夜里你去厨房取水，灶口蹲着两个人影——是沈戍和厨娘柳筝。", "emotion": ""},
+        {"speaker": "", "text": "柳筝手里攥着什么东西，红了脸要藏，沈戍只是憨笑。你退了一步，没出声。", "emotion": ""},
+        {"speaker": "柳筝", "text": "你连刀都换了，还不许人给你块糖？", "emotion": ""},
+        {"speaker": "沈戍", "text": "丫头，这糖金贵，你留着。", "emotion": ""},
+        {"speaker": "", "text": "你悄悄退回去。院子里的风很凉，但灶口那点光，比灯亮。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["shenliu_b2_done"],
+        "memory": {
+            "id": "MF_LOVERS_SUGAR",
+            "weight": 9,
+            "text": "灶口定情——沈戍与柳筝的半块糖，院子里的一点暖",
+            "pillar": "Ⅰ"
+        }
+    }
+}

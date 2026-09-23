@@ -6,4 +6,4 @@ func _ready():
 	var ph: Node3D = preload("res://assets/models/characters/aen.tscn").instantiate()
 	CourtyardProps.setup_character(ph, -90.0)
 	add_child(ph)
-	InteractMark.bind(self, "DLG_A1_CHENGEN_IDLE", 2.05)
+	InteractMark.bind(self, "DLG_A1_CHENGEN_IDLE", 2.05, false, 0.55, "near", false)

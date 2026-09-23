@@ -72,7 +72,7 @@ func _refresh_visibility():
 	# 季节 → 天气粒子（0春/1夏/2秋/3冬）
 	var season: int = ResourceManager.season
 	if _rain:
-		_rain.emitting = (season == 1 and _current_weather == Weather.RAIN)
+		_rain.emitting = (_current_weather == Weather.RAIN and season in [0, 1, 2])
 	if _snow:
 		_snow.emitting = (season == 3 and _current_weather == Weather.SNOW)
 	# 昼夜 → 氛围粒子

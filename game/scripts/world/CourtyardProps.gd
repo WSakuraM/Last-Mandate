@@ -171,11 +171,18 @@ static func make_chinese_building(build_name: String, pos: Vector3, width: float
 
 	# 门（朱漆，朝院心 / 本地 +Z）
 	hall.add_child(_box(Vector3(width * 0.35, height * 0.55, 0.2), Vector3(0, base_y + height * 0.42, hz + 0.05), RED))
+	_add_lattice(hall, width * 0.28, height * 0.42, Vector3(0, base_y + height * 0.42, hz + 0.12))
 
-	# 屋顶（歇山简化为两层）
+	# 屋顶（硬山：主面 + 正脊）
 	var roof_y := base_y + height
-	hall.add_child(_box(Vector3(width + 0.6, 0.35, depth + 0.5), Vector3(0, roof_y, 0), TILE))
-	hall.add_child(_box(Vector3(width + 1.8, 0.28, depth + 1.6), Vector3(0, roof_y + 0.32, 0), TILE_DARK))
+	var ridge := _box(Vector3(width + 1.8, 0.28, depth + 1.6), Vector3(0, roof_y + 0.32, 0), TILE_DARK)
+	hall.add_child(ridge)
+	var slope_z := _box(Vector3(width + 0.4, 0.12, depth * 0.52), Vector3(0, roof_y + 0.12, depth * 0.22), TILE)
+	slope_z.rotation_degrees.x = -22.0
+	hall.add_child(slope_z)
+	var slope_z2 := _box(Vector3(width + 0.4, 0.12, depth * 0.52), Vector3(0, roof_y + 0.12, -depth * 0.22), TILE)
+	slope_z2.rotation_degrees.x = 22.0
+	hall.add_child(slope_z2)
 	hall.add_child(_box(Vector3(0.5, 0.45, depth + 1.8), Vector3(0, roof_y + 0.55, 0), TILE_DARK))
 
 	# 匾额
@@ -188,6 +195,7 @@ static func make_chinese_building(build_name: String, pos: Vector3, width: float
 		hall.add_child(make_hanging_lantern(Vector3(lx, roof_y - 0.5, hz - 0.5)))
 
 	add_blob_shadow(hall, width * 0.45)
+	# 建筑仅视觉，不挡走路（俯视经营标准；边界墙在 Act1Director._wall 单独碰撞）
 	return hall
 
 static func make_gate_pavilion(pos: Vector3) -> Node3D:
@@ -462,6 +470,28 @@ static func make_moon_gate(pos: Vector3) -> Node3D:
 		var px: float = side * 3.4
 		gate.add_child(_box(Vector3(2.2, 2.4, 0.4), Vector3(px, 1.2, 0), WALL))
 		gate.add_child(_box(Vector3(2.4, 0.22, 0.7), Vector3(px, 2.45, 0), TILE_DARK))
+	# 圆形月洞（薄环 + 暗洞）
+	var ring := MeshInstance3D.new()
+	var torus := TorusMesh.new()
+	torus.inner_radius = 0.82
+	torus.outer_radius = 1.02
+	torus.rings = 12
+	torus.ring_segments = 18
+	ring.mesh = torus
+	ring.rotation_degrees = Vector3(90, 0, 0)
+	ring.position = Vector3(0, 1.35, 0)
+	CourtyardVisuals.apply_toon(ring, WALL)
+	gate.add_child(ring)
+	var void_mesh := MeshInstance3D.new()
+	var hole := CylinderMesh.new()
+	hole.top_radius = 0.78
+	hole.bottom_radius = 0.78
+	hole.height = 0.08
+	void_mesh.mesh = hole
+	void_mesh.rotation_degrees = Vector3(90, 0, 0)
+	void_mesh.position = Vector3(0, 1.35, 0)
+	CourtyardVisuals.apply_toon(void_mesh, Color(0.12, 0.10, 0.08))
+	gate.add_child(void_mesh)
 	gate.add_child(_box(Vector3(1.2, 0.28, 0.45), Vector3(0, 2.55, 0), TILE))
 	gate.add_child(_box(Vector3(0.18, 2.2, 0.18), Vector3(-2.2, 1.1, 0), WOOD_DARK))
 	gate.add_child(_box(Vector3(0.18, 2.2, 0.18), Vector3(2.2, 1.1, 0), WOOD_DARK))
@@ -825,6 +855,31 @@ static func add_blob_shadow(parent: Node3D, radius: float) -> void:
 	parent.add_child(shadow)
 
 # ── 内部拼装 ──
+
+static func _add_building_collision(parent: Node3D, size: Vector3, pos: Vector3) -> void:
+	var body := StaticBody3D.new()
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var col := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = size
+	col.shape = shape
+	col.position = pos
+	body.add_child(col)
+	parent.add_child(body)
+
+static func _add_lattice(parent: Node3D, width: float, height: float, pos: Vector3) -> void:
+	var grid := Node3D.new()
+	grid.name = "Lattice"
+	grid.position = pos
+	var bar_c := Color(0.48, 0.22, 0.16)
+	for i in 4:
+		var t := float(i) / 3.0
+		grid.add_child(_box(Vector3(width, 0.04, 0.04), Vector3(0, height * (t - 0.5), 0), bar_c))
+	for i in 3:
+		var t := float(i) / 2.0 - 0.5
+		grid.add_child(_box(Vector3(0.04, height, 0.04), Vector3(width * t, 0, 0), bar_c))
+	parent.add_child(grid)
 
 static func _box(size: Vector3, pos: Vector3, albedo: Color, shadow: Color = Color(0.38, 0.32, 0.26)) -> MeshInstance3D:
 	var m := MeshInstance3D.new()

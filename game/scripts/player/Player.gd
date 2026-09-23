@@ -10,12 +10,15 @@ var is_click_moving := false
 var _marker: MeshInstance3D
 var _dust: GPUParticles3D
 
-const ARRIVE_DIST := 0.42
-const SLOW_DIST := 1.7
+const ARRIVE_DIST := 0.45
+const WALL_COLLISION_LAYER := 1
+const MOVE_ACCEL := 22.0
 
 func _ready():
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	floor_stop_on_slope = false
+	collision_layer = 2
+	collision_mask = WALL_COLLISION_LAYER
 	var col := CollisionShape3D.new()
 	var shape := CapsuleShape3D.new()
 	shape.radius = 0.5
@@ -95,18 +98,17 @@ func _make_dust() -> GPUParticles3D:
 	return p
 
 func _make_marker() -> MeshInstance3D:
+	# 点地落点环（俯视是淡色圆环，不是箭头；走近后自动淡出）
 	var m := MeshInstance3D.new()
 	m.name = "ClickMarker"
-	var torus := TorusMesh.new()
-	torus.inner_radius = 0.32
-	torus.outer_radius = 0.46
-	torus.rings = 8
-	torus.ring_segments = 8
-	m.mesh = torus
-	m.rotation_degrees = Vector3(90, 0, 0)
+	var disc := CylinderMesh.new()
+	disc.top_radius = 0.36
+	disc.bottom_radius = 0.36
+	disc.height = 0.025
+	m.mesh = disc
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_color = Color(0.95, 0.82, 0.42, 0.0)
+	mat.albedo_color = Color(0.72, 0.88, 0.76, 0.0)
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.material_override = mat
 	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -124,6 +126,7 @@ func _physics_process(delta):
 		return
 
 	var wish := Vector3.ZERO
+	var target_vel := Vector3.ZERO
 	if Input.is_key_pressed(KEY_W):
 		wish.z -= 1.0
 	if Input.is_key_pressed(KEY_S):
@@ -135,45 +138,47 @@ func _physics_process(delta):
 
 	# 鼠标点地改由 _unhandled_input 一次一令，避免按住拖行 + 镜头跟随把目标拖飞。
 
-	# WASD 相对屏幕：W=画面上方（远离相机），S=画面下方。与相机 yaw 无关。
+	# WASD：用相机 basis 取水平方向（比「人→相机」向量稳，镜头跟随不会扯动移动轴）
 	if wish.length() > 0.01:
 		_cancel_click_move()
 		var cam := get_viewport().get_camera_3d()
 		if cam:
-			velocity = _screen_move_dir(cam, wish) * speed
+			target_vel = _screen_move_dir(cam, wish) * speed
 		else:
-			velocity = Vector3(wish.x, 0.0, wish.z).normalized() * speed
+			target_vel = Vector3(wish.x, 0.0, wish.z).normalized() * speed
 	elif _has_target:
 		var to_target := _move_target - global_position
 		to_target.y = 0.0
 		var dist := to_target.length()
 		if dist <= ARRIVE_DIST:
 			_cancel_click_move()
-			velocity = Vector3.ZERO
+			target_vel = Vector3.ZERO
 		else:
-			var pace: float = speed
-			if dist < SLOW_DIST:
-				pace = speed * clampf(dist / SLOW_DIST, 0.22, 1.0)
-			velocity = to_target / dist * pace
+			# 全程匀速，不做贴目标减速（减速易抖）
+			target_vel = to_target / dist * speed
 	else:
-		velocity = Vector3.ZERO
+		target_vel = Vector3.ZERO
 
+	velocity = velocity.lerp(target_vel, 1.0 - exp(-MOVE_ACCEL * delta))
 	velocity.y = 0.0
 	move_and_slide()
 
-	var moving := velocity.length() > 0.1
+	var moving := velocity.length() > 0.2
 	if moving:
 		var yaw := atan2(velocity.x, velocity.z)
-		rotation.y = lerp_angle(rotation.y, yaw, 1.0 - exp(-12.0 * delta))
-		_bob_t += delta * 9.0
-		_visual.position.y = sin(_bob_t) * 0.06
+		rotation.y = lerp_angle(rotation.y, yaw, 1.0 - exp(-14.0 * delta))
+		_bob_t += delta * 7.0
+		_visual.position.y = sin(_bob_t) * 0.03
 	else:
-		_visual.position.y = lerp(_visual.position.y, 0.0, delta * 8.0)
+		_visual.position.y = lerp(_visual.position.y, 0.0, delta * 10.0)
 
-	if _has_target and _marker:
-		_marker.visible = true
-		(_marker.material_override as StandardMaterial3D).albedo_color.a = 0.55 + 0.2 * sin(Time.get_ticks_msec() * 0.006)
-		_marker.scale = Vector3.ONE * (1.0 + 0.06 * sin(Time.get_ticks_msec() * 0.008))
+	if _has_target and _marker and _marker.visible:
+		var to_m := _move_target - global_position
+		to_m.y = 0.0
+		var fade := clampf(to_m.length() / 2.2, 0.0, 1.0)
+		var mat := _marker.material_override as StandardMaterial3D
+		mat.albedo_color.a = 0.15 + 0.35 * fade
+		_marker.global_position = Vector3(_move_target.x, 0.04, _move_target.z)
 
 func _cancel_click_move() -> void:
 	_has_target = false
@@ -182,9 +187,9 @@ func _cancel_click_move() -> void:
 		_marker.visible = false
 
 func _show_marker(pos: Vector3) -> void:
-	_marker.global_position = Vector3(pos.x, 0.05, pos.z)
+	_marker.global_position = Vector3(pos.x, 0.04, pos.z)
 	_marker.visible = true
-	(_marker.material_override as StandardMaterial3D).albedo_color.a = 0.75
+	(_marker.material_override as StandardMaterial3D).albedo_color.a = 0.5
 
 ## 先打 layer 2 的问号碰撞；点中则触发对话/照料，不走路。
 func _try_click_talk() -> bool:
@@ -197,8 +202,8 @@ func _try_click_talk() -> bool:
 	var space := get_world_3d().direct_space_state
 	var q := PhysicsRayQueryParameters3D.create(origin, origin + dir * 120.0)
 	q.collision_mask = InteractMark.CLICK_LAYER
-	q.collide_with_bodies = true
-	q.collide_with_areas = false
+	q.collide_with_bodies = false
+	q.collide_with_areas = true
 	var hit: Dictionary = space.intersect_ray(q)
 	if hit.is_empty():
 		return false
@@ -238,14 +243,20 @@ func _get_ground_click():
 		hit.y = 0.0
 	return hit
 
-## 屏幕方向 → 地面方向。W/S 用画面上下，不是世界 ±Z。
+## 屏幕方向 → 地面方向：取相机水平 basis，与镜头平滑解耦。
 func _screen_move_dir(cam: Camera3D, wish: Vector3) -> Vector3:
-	var to_cam := cam.global_position - global_position
-	to_cam.y = 0.0
-	var down_on_screen := to_cam.normalized() if to_cam.length_squared() > 0.0001 else Vector3(0, 0, 1)
-	var right_on_screen := Vector3.UP.cross(down_on_screen).normalized()
-	var up_on_screen := -down_on_screen
-	var dir := up_on_screen * (-wish.z) + right_on_screen * wish.x
+	var basis := cam.global_transform.basis
+	var right := Vector3(basis.x.x, 0.0, basis.x.z)
+	var forward := Vector3(-basis.z.x, 0.0, -basis.z.z)
+	if right.length_squared() < 0.0001:
+		right = Vector3.RIGHT
+	else:
+		right = right.normalized()
+	if forward.length_squared() < 0.0001:
+		forward = Vector3(0, 0, -1)
+	else:
+		forward = forward.normalized()
+	var dir := forward * (-wish.z) + right * wish.x
 	if dir.length_squared() < 0.0001:
 		return Vector3.ZERO
 	return dir.normalized()

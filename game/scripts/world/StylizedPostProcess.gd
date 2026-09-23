@@ -32,6 +32,7 @@ func _ready():
 	_material.set_shader_parameter("tint_strength", 0.10)
 	_overlay.material = _material
 	root.add_child(_overlay)
+	enter_day_mode()
 
 # ── 运行时可调参数（供 Act1Director / 夜召 / 煤山 调用） ──
 

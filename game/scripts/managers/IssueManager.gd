@@ -7,9 +7,13 @@ extends Node
 const RES_MAP := {
 	"treasury": "treasury",
 	"popular": "people",
+	"people": "people",
 	"frontier": "border_army",
+	"border_army": "border_army",
 	"court": "court_order",
+	"court_order": "court_order",
 	"resolve": "emperor_heart",
+	"emperor_heart": "emperor_heart",
 	"mandate_decay": "mandate_decay",
 }
 
@@ -47,6 +51,14 @@ func _load_issues():
 	dir.list_dir_end()
 	issue_pool_ready.emit(issues.size())
 	print("IssueManager: 载入议题 %d 条" % issues.size())
+
+func reset_for_new_act1() -> void:
+	flags = {}
+	used_once = {}
+	memories = []
+	rebel_pressure = 0.0
+	night_council_active = false
+	_seq_cursor = 0
 
 # 返回当前可抽取的议题列表（过滤 once / 旗标前置条件 / 可选 stage 过滤）
 func eligible(stage_filter: Array = []) -> Array:
@@ -119,11 +131,16 @@ func apply_choice(issue: Dictionary, choice_id: String) -> Dictionary:
 	if choice.is_empty():
 		return {}
 
-	# 1) 五资源 + 气数结算（键名翻译）
+	# 1) 五资源 + 气数结算（键名翻译；兼容 JSON 别名与 ResourceManager 直键）
 	var d: Dictionary = choice.get("deltas", {})
 	for k in d.keys():
-		var rm_key = RES_MAP.get(k, "")
+		if k == "rebel_pressure":
+			continue
+		var rm_key: String = RES_MAP.get(k, "")
+		if rm_key == "" and ResourceManager.r.has(k):
+			rm_key = k
 		if rm_key == "":
+			push_warning("IssueManager: 未知资源键 %s（议题 %s）" % [k, issue.get("id", "?")])
 			continue
 		if rm_key == "mandate_decay":
 			ResourceManager.add_mandate(float(d[k]))

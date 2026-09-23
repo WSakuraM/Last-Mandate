@@ -41,6 +41,25 @@ signal mandate_changed(value: float)
 signal day_passed(day: int, season: int, year: int)
 signal game_over()
 
+const DEFAULT_RESOURCES := {
+	"treasury": 50.0,
+	"people": 50.0,
+	"border_army": 50.0,
+	"court_order": 50.0,
+	"emperor_heart": 50.0,
+}
+
+func reset_for_new_act1() -> void:
+	r = DEFAULT_RESOURCES.duplicate()
+	mandate_decay = 12.0
+	private_purse = 0.0
+	day = 1
+	total_day = 0
+	season = 0
+	year = 1627
+	mandate_changed.emit(mandate_decay)
+	resources_changed.emit(get_state())
+
 func get_state() -> Dictionary:
 	var s := r.duplicate()
 	s["mandate_decay"] = mandate_decay

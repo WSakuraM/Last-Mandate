@@ -1,0 +1,22 @@
+{
+    "id": "DLG_A1_ZHOUSHI",
+    "title": "园中 · 谷风",
+    "lines": [
+        {"speaker": "", "text": "你蹲在菜畦边翻土，身后忽然多了一片影子。是信王妃周氏。", "emotion": ""},
+        {"speaker": "周氏", "text": "别光顾着这些菜。你也该吃。", "emotion": ""},
+        {"speaker": "", "text": "你接过碗，粥还烫。她看着那几畦菜，忽然说了一句：", "emotion": ""},
+        {"speaker": "周氏", "text": "殿下，这园子里种的是菜，不是折子。折子写不完的，人是活的。", "emotion": ""},
+        {"speaker": "", "text": "风过枣树梢，叶子沙沙响。她没再说什么，转身走了。那碗粥你喝了，很暖。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["zhoushi_met_act1", "farm_growth_boost"],
+        "memory": {
+            "id": "MF_A1_ZHOU_NOT_MEMORIAL",
+            "weight": 5,
+            "text": "周氏园中递粥：人不是折子，折子写不完的，人是活的",
+            "pillar": "Ⅰ"
+        },
+        "narration": "周氏的话记在心里——菜圃生长略快了些"
+    }
+}

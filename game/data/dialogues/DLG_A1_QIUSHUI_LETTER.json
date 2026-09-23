@@ -1,0 +1,49 @@
+{
+    "id": "DLG_A1_QIUSHUI_LETTER",
+    "title": "秋穗家书",
+    "show_purse": true,
+    "lines": [
+        {"speaker": "", "text": "秋穗跪在你面前，递上一封皱巴巴的家书。", "emotion": ""},
+        {"speaker": "", "text": "信是她父亲写的，字迹歪斜：「大旱连年，颗粒无收。老母已去，幼弟嗷嗷。只盼女儿在王府讨些活路……」", "emotion": ""},
+        {"speaker": "", "text": "秋穗低着头，不敢看你。烛火映在纸上，那几个字像是在抖。", "emotion": ""},
+        {"speaker": "", "text": "——吴伯教过你：私囊是你家的，官银是天下人的。这一笔，若出，只能出自私囊。", "emotion": "narration"}
+    ],
+    "choices": [
+        {
+            "id": "lend",
+            "label": "借粮——动私囊十五兩",
+            "min_purse": 15,
+            "insufficient_msg": "私囊不足十五两，无力借粮。",
+            "lines_after": [
+                {"speaker": "", "text": "秋穗跪地叩首，泪如雨下。", "emotion": ""},
+                {"speaker": "", "text": "你看着她的背影，想起门外那些跪在雪泥里的人。——这一笔银子，是你自己的。", "emotion": "narration"}
+            ],
+            "deltas": {"purse": -15, "people": 5},
+            "flags_add": ["kind_likely", "qiushui_letter_done"],
+            "memory": {"id": "MF_A1_QIUSHUI_LEND", "weight": 7, "text": "秋穗家书——你从私囊取银借粮，给了活路", "pillar": "Ⅲ"}
+        },
+        {
+            "id": "token",
+            "label": "象征性给——碎银三兩",
+            "min_purse": 3,
+            "insufficient_msg": "私囊不足三两。",
+            "lines_after": [
+                {"speaker": "", "text": "秋穗接过碎银，低了头。你知道这点银子救不了命，可你也只能做到这一步。", "emotion": "narration"}
+            ],
+            "deltas": {"purse": -3, "people": 2},
+            "flags_add": ["qiushui_letter_done"],
+            "memory": {"id": "MF_A1_QIUSHUI_TOKEN", "weight": 4, "text": "秋穗家书——你给了些碎银，聊表心意", "pillar": "Ⅲ"}
+        },
+        {
+            "id": "refuse",
+            "label": "婉拒——府中不宽裕",
+            "lines_after": [
+                {"speaker": "", "text": "秋穗怔了一瞬，随即叩首告退。她的背影很安静，安静得让人不安。", "emotion": "narration"}
+            ],
+            "deltas": {"people": -3},
+            "flags_add": ["qiushui_letter_done"],
+            "memory": {"id": "MF_A1_QIUSHUI_REFUSE", "weight": 3, "text": "秋穗家书——你婉言回绝了她的请求", "pillar": "Ⅲ"}
+        }
+    ],
+    "on_complete": {}
+}

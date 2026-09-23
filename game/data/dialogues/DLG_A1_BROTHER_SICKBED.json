@@ -1,0 +1,22 @@
+{
+    "id": "DLG_A1_BROTHER_SICKBED",
+    "title": "病榻 · 托付",
+    "lines": [
+        {"speaker": "", "text": "这一次不是信，是急召。你入乾清宫时，殿里药气很苦。", "emotion": ""},
+        {"speaker": "朱由校", "text": "五弟来了？……朕知道你在怕什么。诸弟之中，朕从未想过把江山交给旁人。", "emotion": ""},
+        {"speaker": "朱由校", "text": "皇子……都早夭了。祖制在此，朕崩之后，当由你入继。不是朕赐，是大明只剩下这条路。", "emotion": ""},
+        {"speaker": "朱由校", "text": "魏阉在侧，你须小心。可你……比朕更像一个皇帝。朕只会做木匠。你把天下……接稳了。", "emotion": ""},
+        {"speaker": "朱由校", "text": "去。回府。把园子里的菜种好。朕……还想再吃你府上送的一次春菜。", "emotion": ""},
+        {"speaker": "", "text": "那是你最后一次听见他叫你的名字。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["brother_b3_done"],
+        "memory": {
+            "id": "MF_A1_BROTHER_WORSE",
+            "weight": 9,
+            "text": "病榻托付——「皇子早夭，祖制只剩你这条路」",
+            "pillar": "Ⅰ"
+        }
+    }
+}

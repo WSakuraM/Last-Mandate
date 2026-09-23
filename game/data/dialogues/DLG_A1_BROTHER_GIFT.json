@@ -1,0 +1,20 @@
+{
+    "id": "DLG_A1_BROTHER_GIFT",
+    "title": "御信 · 木样小雀",
+    "lines": [
+        {"speaker": "", "text": "府门前来的是内廷司礼监的牌子，不是中使，是送东西的。", "emotion": ""},
+        {"speaker": "", "text": "漆盒里卧着一只木雕小雀，翅纹是按着御制木样刻的——毛羽不齐，刀口却极细。", "emotion": ""},
+        {"speaker": "朱由校", "text": "五弟：朕在养心殿又刻坏了一只。这只给你。你在府里种你的菜，别学朕把天下当榫卯。——校", "emotion": ""},
+        {"speaker": "吴伯", "text": "……皇上还惦记您。", "emotion": ""}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["brother_b1_done"],
+        "memory": {
+            "id": "MF_A1_BROTHER_GIFT",
+            "weight": 6,
+            "text": "兄长按木样雕的小雀——「别学朕把天下当榫卯」",
+            "pillar": "Ⅰ"
+        }
+    }
+}

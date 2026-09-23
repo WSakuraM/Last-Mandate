@@ -1,11 +1,7 @@
 extends CanvasLayer
-# 区块二·日常小事件：夜召池空时（6 次空窗期）的轻量填充。
-# 不占决策、不抢戏，只填时间——街坊寒暄/天气/承恩随口一句/市井见闻。
-# 玩家按 E 或 5 秒后自动消失，世界恢复运转。
+# 夜召池空时的日常小事件 — 纸色夜话笺
 
 signal dismissed()
-
-const GOLD := Color(0.95, 0.8, 0.4)
 
 var overlay: CanvasLayer
 var _vignettes := [
@@ -43,9 +39,6 @@ var _vignettes := [
 	},
 ]
 
-func _ready():
-	pass
-
 func present():
 	IssueManager.night_council_active = true
 	_show_vignette(_vignettes[randi() % _vignettes.size()])
@@ -58,53 +51,45 @@ func _show_vignette(v: Dictionary):
 	overlay.add_child(root)
 
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.02, 0.03, 0.72)
+	dim.color = Act1Theme.NIGHT_DIM
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(dim)
 
 	var card := PanelContainer.new()
-	card.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	card.custom_minimum_size = Vector2(520, 200)
-	var cs := StyleBoxFlat.new()
-	cs.bg_color = Color(0.14, 0.11, 0.09, 0.96)
-	cs.border_color = GOLD
-	cs.border_width_left = 1; cs.border_width_top = 1
-	cs.border_width_right = 1; cs.border_width_bottom = 1
-	cs.corner_radius_top_left = 6; cs.corner_radius_top_right = 6
-	cs.corner_radius_bottom_left = 6; cs.corner_radius_bottom_right = 6
-	card.add_theme_stylebox_override("panel", cs)
+	card.set_anchors_preset(Control.PRESET_CENTER)
+	card.anchor_left = 0.5
+	card.anchor_top = 0.5
+	card.anchor_right = 0.5
+	card.anchor_bottom = 0.5
+	card.offset_left = -280
+	card.offset_right = 280
+	card.offset_top = -160
+	card.offset_bottom = 160
+	card.add_theme_stylebox_override("panel", Act1Theme.night_card())
 	root.add_child(card)
 
 	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 10)
-	vb.add_theme_constant_override("margin_left", 22)
-	vb.add_theme_constant_override("margin_top", 20)
-	vb.add_theme_constant_override("margin_right", 22)
-	vb.add_theme_constant_override("margin_bottom", 20)
+	vb.add_theme_constant_override("separation", 8)
 	card.add_child(vb)
 
 	var title := Label.new()
 	title.text = v.get("title", "夜")
-	title.add_theme_font_size_override("font_size", 24)
-	title.add_theme_color_override("font_color", GOLD)
+	Act1Theme.apply_label(title, Act1Theme.FONT_TITLE, Act1Theme.GOLD)
 	vb.add_child(title)
 
-	vb.add_child(HSeparator.new())
+	vb.add_child(Act1Theme.separator())
 
 	var txt := Label.new()
 	txt.text = v.get("text", "")
 	txt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	txt.add_theme_font_size_override("font_size", 16)
-	txt.add_theme_color_override("font_color", Color(0.82, 0.79, 0.74))
+	Act1Theme.apply_label(txt, Act1Theme.FONT_BODY, Act1Theme.INK)
 	vb.add_child(txt)
 
 	var hint := Label.new()
-	hint.text = "（按 E 继续）"
-	hint.add_theme_font_size_override("font_size", 13)
-	hint.add_theme_color_override("font_color", Color(0.55, 0.53, 0.5))
+	hint.text = "按 E 继续"
+	Act1Theme.apply_label(hint, Act1Theme.FONT_HINT, Act1Theme.INK_FAINT)
 	vb.add_child(hint)
 
-	# 超时自动关闭（兜底）
 	var t := Timer.new()
 	t.wait_time = 6.0
 	t.one_shot = true

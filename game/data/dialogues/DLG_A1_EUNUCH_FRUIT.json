@@ -1,0 +1,43 @@
+{
+    "id": "DLG_A1_EUNUCH_FRUIT",
+    "title": "中使借果",
+    "show_purse": true,
+    "lines": [
+        {"speaker": "", "text": "一个穿青衣的中使晃进了府门，说是奉司礼监之命来「借」些果品。", "emotion": ""},
+        {"speaker": "吴伯", "text": "这是来要银子的，果品不过是名目。上次信王府没给，禄米就迟了两个月。", "emotion": ""},
+        {"speaker": "", "text": "中使笑眯眯地看着你，手里捏着拂尘，指尖在尘尾上一下一下地搓。", "emotion": "narration"}
+    ],
+    "choices": [
+        {
+            "id": "comply",
+            "label": "顺从——给五兩银子打发了",
+            "min_purse": 5,
+            "insufficient_msg": "私囊不足五两，无力打发中使。",
+            "lines_after": [
+                {"speaker": "", "text": "中使掂了掂银子，哼了一声，转身走了。", "emotion": ""},
+                {"speaker": "吴伯", "text": "这些阉狗，贪得无厌！", "emotion": ""},
+                {"speaker": "", "text": "你摆摆手。这银子是从私囊里出的——可你知道，这只是个开始。", "emotion": "narration"}
+            ],
+            "deltas": {"purse": -5},
+            "flags_add": ["eunuch_complied"],
+            "memory": {
+                "id": "MF_A1_EUNUCH_FRUIT",
+                "weight": 7,
+                "text": "中使借果——你从私囊取银打发宫中太监的勒索",
+                "pillar": "Ⅲ"
+            }
+        },
+        {
+            "id": "refuse",
+            "label": "婉拒——府中无余财",
+            "lines_after": [
+                {"speaker": "中使", "text": "王爷好大的架子。", "emotion": ""},
+                {"speaker": "吴伯", "text": "王爷，这等人得罪不起，日后禄米……", "emotion": ""},
+                {"speaker": "信王", "text": "禄米是公账，他卡不了。", "emotion": ""},
+                {"speaker": "", "text": "——可你知道，他卡得了别的。", "emotion": "narration"}
+            ],
+            "flags_add": ["eunuch_refused"]
+        }
+    ],
+    "on_complete": {}
+}

@@ -1,0 +1,12 @@
+{
+    "id": "DLG_A1_BROTHER_ARRIVE",
+    "title": "御驾 · 至府",
+    "lines": [
+        {"speaker": "", "text": "仲夏午后，府门外忽然静了——不是没声音，是所有人都不敢出声。", "emotion": ""},
+        {"speaker": "", "text": "吴伯跪在阶下，沈戍把棍提得笔直，连畜栏里的鸡都不叫了。", "emotion": ""},
+        {"speaker": "内侍", "text": "信王，圣驾到了——皇上要亲自来看您的园子。", "emotion": ""},
+        {"speaker": "", "text": "你整理衣冠出迎时，远远看见黄绫在府门内一闪。这一回，是兄长本人踏进了信王府。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {}
+}

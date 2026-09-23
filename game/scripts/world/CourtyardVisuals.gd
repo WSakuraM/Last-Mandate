@@ -14,7 +14,7 @@ static func make_toon(albedo: Color, shadow: Color = Color(0.38, 0.32, 0.26), wi
 	mat.set_shader_parameter("wind_strength", wind)
 	return mat
 
-static func make_water(shallow: Color = Color(0.52, 0.78, 0.80, 0.82), deep: Color = Color(0.22, 0.46, 0.54, 0.88)) -> ShaderMaterial:
+static func make_water(shallow: Color = Color(0.48, 0.62, 0.58, 0.82), deep: Color = Color(0.22, 0.38, 0.42, 0.88)) -> ShaderMaterial:
 	var mat := ShaderMaterial.new()
 	mat.shader = WATER_SHADER
 	mat.set_shader_parameter("color_shallow", shallow)
@@ -45,7 +45,7 @@ static func build_ground(parent: Node3D) -> void:
 	# 主草地（暖绿，对齐 ref_C）
 	root.add_child(make_tiled_ground(
 		"GrassMain", Vector2(58, 58), Vector3(0, 0, 0),
-		Color(0.46, 0.66, 0.34), Color(0.38, 0.54, 0.28), 101, Vector2(14.0, 14.0)
+		Color(0.52, 0.58, 0.36), Color(0.44, 0.48, 0.30), 101, Vector2(14.0, 14.0)
 	))
 
 	# 中轴石土路：府门 → 井 → 菜畦 → 正堂
@@ -114,22 +114,24 @@ static func enable_wind(node: Node, strength: float = 0.12) -> void:
 		enable_wind(c, strength)
 
 static func apply_season(world: Node3D, env: Environment, season: int) -> void:
-	var grass_col := Color(0.46, 0.66, 0.34)
-	var grass_var := Color(0.38, 0.54, 0.28)
-	var sky_top := Color(0.42, 0.64, 0.94)
-	var sky_hz := Color(0.86, 0.90, 0.96)
-	var fog := Color(0.82, 0.86, 0.90)
-	var fog_d := 0.0022
+	var grass_col := Color(0.52, 0.58, 0.36)
+	var grass_var := Color(0.44, 0.48, 0.30)
+	var sky_top := Color(0.58, 0.62, 0.72)
+	var sky_hz := Color(0.88, 0.82, 0.68)
+	var fog := Color(0.82, 0.78, 0.70)
+	var fog_d := 0.0024
 	match season:
 		0:  # 春
-			grass_col = Color(0.50, 0.72, 0.38)
-			grass_var = Color(0.62, 0.78, 0.42)
-			sky_top = Color(0.48, 0.70, 0.96)
+			grass_col = Color(0.54, 0.62, 0.40)
+			grass_var = Color(0.62, 0.68, 0.44)
+			sky_top = Color(0.62, 0.68, 0.78)
+			sky_hz = Color(0.90, 0.84, 0.70)
 		1:  # 夏
-			grass_col = Color(0.32, 0.58, 0.28)
-			grass_var = Color(0.26, 0.46, 0.22)
-			sky_top = Color(0.28, 0.52, 0.90)
-			fog_d = 0.0016
+			grass_col = Color(0.46, 0.54, 0.34)
+			grass_var = Color(0.38, 0.44, 0.28)
+			sky_top = Color(0.52, 0.60, 0.74)
+			sky_hz = Color(0.86, 0.80, 0.62)
+			fog_d = 0.0018
 		2:  # 秋
 			grass_col = Color(0.58, 0.52, 0.28)
 			grass_var = Color(0.72, 0.48, 0.22)
@@ -195,10 +197,10 @@ static func setup_warm_sky(env: Environment) -> void:
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()
 	var proc := ProceduralSkyMaterial.new()
-	proc.sky_top_color = Color(0.42, 0.64, 0.94)
-	proc.sky_horizon_color = Color(0.86, 0.90, 0.96)
-	proc.ground_bottom_color = Color(0.40, 0.58, 0.32)
-	proc.ground_horizon_color = Color(0.70, 0.78, 0.62)
+	proc.sky_top_color = Color(0.58, 0.62, 0.72)
+	proc.sky_horizon_color = Color(0.88, 0.82, 0.68)
+	proc.ground_bottom_color = Color(0.44, 0.48, 0.36)
+	proc.ground_horizon_color = Color(0.68, 0.62, 0.48)
 	proc.sun_angle_max = 38.0
 	sky.sky_material = proc
 	env.sky = sky

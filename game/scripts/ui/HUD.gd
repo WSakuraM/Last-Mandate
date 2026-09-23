@@ -1,21 +1,23 @@
 extends CanvasLayer
-# 3D 俯视 HUD：木框资源条 + 季日 + 底部交互提示（对齐参考图角落布局）。
+# 3D 俯视 HUD：顶栏克制 + 右上日期 + 纸色分区匾额
 
 var bars := {}
+var bar_values := {}
+var bar_fills := {}
 var mandate_bar: ProgressBar
+var mandate_value: Label
 var mandate_fill: StyleBoxFlat
 var mandate_warning: Label
-var info_label: Label
+var date_label: Label
+var footer_label: Label
 var prompt_label: Label
-var memory_label: Label
-var farm_label: Label
-var season_hint: Label
+var objective_label: Label
+var objective_wrap: PanelContainer
+var zone_wrap: PanelContainer
 var zone_label: Label
 var _zone_t := 0.0
-
-const INK := Color(0.28, 0.18, 0.12)
-const CREAM := Color(0.96, 0.90, 0.78)
-const WOOD := Color(0.42, 0.28, 0.16)
+var _objective_text := ""
+var _prompt_text := ""
 
 func _ready():
 	layer = 20
@@ -24,258 +26,236 @@ func _ready():
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 
-	var panel := _wood_panel()
-	panel.position = Vector2(16, 16)
-	panel.custom_minimum_size = Vector2(320, 0)
-	root.add_child(panel)
+	# 左上：资源细条
+	var res_panel := PanelContainer.new()
+	res_panel.position = Vector2(12, 10)
+	res_panel.custom_minimum_size = Vector2(248, 0)
+	res_panel.add_theme_stylebox_override("panel", Act1Theme.paper_panel(0.91, 3))
+	root.add_child(res_panel)
 
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 6)
-	panel.add_child(vb)
-
-	info_label = Label.new()
-	info_label.add_theme_font_size_override("font_size", 16)
-	info_label.add_theme_color_override("font_color", CREAM)
-	vb.add_child(info_label)
+	var res_vb := VBoxContainer.new()
+	res_vb.add_theme_constant_override("separation", 3)
+	res_panel.add_child(res_vb)
 
 	var names := {
-		"treasury": "国库", "people": "民心", "border_army": "边军",
-		"court_order": "朝堂", "emperor_heart": "君心"
+		"treasury": "库", "people": "民", "border_army": "边",
+		"court_order": "朝", "emperor_heart": "心",
 	}
 	for key in names.keys():
-		var hb := HBoxContainer.new()
-		var lab := Label.new()
-		lab.text = String(names[key])
-		lab.custom_minimum_size = Vector2(52, 0)
-		lab.add_theme_font_size_override("font_size", 13)
-		lab.add_theme_color_override("font_color", CREAM)
-		var bar := ProgressBar.new()
-		bar.max_value = 100.0
-		bar.value = 50.0
-		bar.custom_minimum_size = Vector2(200, 16)
-		bar.show_percentage = false
-		_style_bar(bar, Color(0.72, 0.52, 0.28))
-		hb.add_child(lab)
-		hb.add_child(bar)
-		vb.add_child(hb)
-		bars[key] = bar
+		res_vb.add_child(_make_resource_row(String(names[key]), key))
 
+	res_vb.add_child(Act1Theme.separator())
+
+	var mandate_row := HBoxContainer.new()
+	mandate_row.add_theme_constant_override("separation", 6)
+	var mandate_name := Label.new()
+	mandate_name.text = "天命"
+	mandate_name.custom_minimum_size = Vector2(28, 0)
+	Act1Theme.apply_label(mandate_name, Act1Theme.FONT_HUD_LABEL, Act1Theme.VERMILLION_SOFT)
+	mandate_row.add_child(mandate_name)
 	mandate_bar = ProgressBar.new()
 	mandate_bar.max_value = 100.0
 	mandate_bar.value = 12.0
-	mandate_bar.custom_minimum_size = Vector2(200, 16)
+	mandate_bar.custom_minimum_size = Vector2(168, 6)
+	mandate_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mandate_bar.show_percentage = false
-	mandate_fill = StyleBoxFlat.new()
-	mandate_fill.bg_color = _mandate_color(12.0)
-	mandate_fill.corner_radius_top_left = 3
-	mandate_fill.corner_radius_top_right = 3
-	mandate_fill.corner_radius_bottom_left = 3
-	mandate_fill.corner_radius_bottom_right = 3
+	mandate_fill = Act1Theme.bar_fill(Act1Theme.mandate_fill(12.0))
 	mandate_bar.add_theme_stylebox_override("fill", mandate_fill)
-	var bg := StyleBoxFlat.new()
-	bg.bg_color = Color(0.18, 0.12, 0.08, 0.7)
-	mandate_bar.add_theme_stylebox_override("background", bg)
-	var mh := HBoxContainer.new()
-	var ml := Label.new()
-	ml.text = "天命"
-	ml.custom_minimum_size = Vector2(52, 0)
-	ml.add_theme_font_size_override("font_size", 13)
-	ml.add_theme_color_override("font_color", Color(0.95, 0.78, 0.42))
-	mh.add_child(ml)
-	mh.add_child(mandate_bar)
-	vb.add_child(mh)
-
-	var lock_label := Label.new()
-	lock_label.text = "锁底 4 · 不可清零"
-	lock_label.add_theme_font_size_override("font_size", 11)
-	lock_label.add_theme_color_override("font_color", Color(0.72, 0.62, 0.48))
-	vb.add_child(lock_label)
+	mandate_bar.add_theme_stylebox_override("background", Act1Theme.bar_background())
+	mandate_row.add_child(mandate_bar)
+	mandate_value = Label.new()
+	mandate_value.custom_minimum_size = Vector2(28, 0)
+	mandate_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	Act1Theme.apply_label(mandate_value, Act1Theme.FONT_HUD_VALUE, Act1Theme.VERMILLION)
+	mandate_row.add_child(mandate_value)
+	res_vb.add_child(mandate_row)
 
 	mandate_warning = Label.new()
 	mandate_warning.text = ""
-	mandate_warning.add_theme_color_override("font_color", Color(0.85, 0.32, 0.22))
-	mandate_warning.add_theme_font_size_override("font_size", 13)
-	vb.add_child(mandate_warning)
+	Act1Theme.apply_label(mandate_warning, Act1Theme.FONT_TINY, Act1Theme.VERMILLION)
+	res_vb.add_child(mandate_warning)
 
-	memory_label = Label.new()
-	memory_label.text = "回忆碎片 ×0"
-	memory_label.add_theme_color_override("font_color", Color(0.85, 0.72, 0.42))
-	memory_label.add_theme_font_size_override("font_size", 13)
-	vb.add_child(memory_label)
+	footer_label = Label.new()
+	footer_label.text = "回忆 ×0 · 菜圃 —"
+	Act1Theme.apply_label(footer_label, Act1Theme.FONT_TINY, Act1Theme.INK_FAINT)
+	res_vb.add_child(footer_label)
 
-	farm_label = Label.new()
-	farm_label.text = "菜圃 · 成熟 0 · 生长 0"
-	farm_label.add_theme_font_size_override("font_size", 12)
-	farm_label.add_theme_color_override("font_color", Color(0.78, 0.86, 0.62))
-	vb.add_child(farm_label)
+	# 右上：日期
+	var date_panel := PanelContainer.new()
+	date_panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	date_panel.offset_left = -168
+	date_panel.offset_top = 10
+	date_panel.offset_right = -12
+	date_panel.offset_bottom = 42
+	date_panel.add_theme_stylebox_override("panel", Act1Theme.slim_panel(0.88))
+	root.add_child(date_panel)
+	date_label = Label.new()
+	date_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	Act1Theme.apply_label(date_label, Act1Theme.FONT_SMALL, Act1Theme.INK_MUTED)
+	date_panel.add_child(date_label)
 
-	season_hint = Label.new()
-	season_hint.text = _season_yield_hint(0)
-	season_hint.add_theme_font_size_override("font_size", 11)
-	season_hint.add_theme_color_override("font_color", Color(0.68, 0.62, 0.52))
-	vb.add_child(season_hint)
+	# 常驻目标条（开场引导 / 主线提示）
+	objective_wrap = PanelContainer.new()
+	objective_wrap.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	objective_wrap.offset_left = -300
+	objective_wrap.offset_right = 300
+	objective_wrap.offset_top = -108
+	objective_wrap.offset_bottom = -72
+	objective_wrap.add_theme_stylebox_override("panel", Act1Theme.slim_panel(0.92))
+	root.add_child(objective_wrap)
+	objective_label = Label.new()
+	objective_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	Act1Theme.apply_label(objective_label, Act1Theme.FONT_SMALL, Act1Theme.VERMILLION)
+	objective_wrap.add_child(objective_label)
+	objective_wrap.visible = false
 
-	var hint := Label.new()
-	hint.text = "滚轮拉远/拉近 · R 回到默认机位 · Shift+←→ 转视角"
-	hint.add_theme_font_size_override("font_size", 11)
-	hint.add_theme_color_override("font_color", Color(0.62, 0.54, 0.42))
-	vb.add_child(hint)
-
+	# 底部交互提示
 	var prompt_wrap := PanelContainer.new()
 	prompt_wrap.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	prompt_wrap.offset_left = -240
-	prompt_wrap.offset_right = 240
-	prompt_wrap.offset_top = -72
-	prompt_wrap.offset_bottom = -24
-	prompt_wrap.add_theme_stylebox_override("panel", _wood_stylebox(0.92))
+	prompt_wrap.offset_left = -280
+	prompt_wrap.offset_right = 280
+	prompt_wrap.offset_top = -64
+	prompt_wrap.offset_bottom = -20
+	prompt_wrap.add_theme_stylebox_override("panel", Act1Theme.slim_panel(0.90))
 	root.add_child(prompt_wrap)
 	prompt_label = Label.new()
 	prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	prompt_label.add_theme_font_size_override("font_size", 18)
-	prompt_label.add_theme_color_override("font_color", CREAM)
+	Act1Theme.apply_label(prompt_label, Act1Theme.FONT_SMALL, Act1Theme.INK_MUTED)
 	prompt_wrap.add_child(prompt_label)
 	prompt_wrap.visible = false
 	prompt_label.set_meta("wrap", prompt_wrap)
-
+	# 顶中：分区匾额
+	zone_wrap = PanelContainer.new()
+	zone_wrap.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	zone_wrap.offset_left = -88
+	zone_wrap.offset_right = 88
+	zone_wrap.offset_top = 14
+	zone_wrap.offset_bottom = 46
+	zone_wrap.add_theme_stylebox_override("panel", Act1Theme.slim_panel(0.85))
+	zone_wrap.modulate.a = 0.0
+	root.add_child(zone_wrap)
 	zone_label = Label.new()
 	zone_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	zone_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	zone_label.offset_left = -160
-	zone_label.offset_right = 160
-	zone_label.offset_top = 28
-	zone_label.offset_bottom = 64
-	zone_label.add_theme_font_size_override("font_size", 22)
-	zone_label.add_theme_color_override("font_color", CREAM)
-	zone_label.add_theme_color_override("font_outline_color", Color(0.18, 0.12, 0.08, 0.85))
-	zone_label.add_theme_constant_override("outline_size", 6)
-	zone_label.modulate.a = 0.0
-	root.add_child(zone_label)
+	Act1Theme.apply_label(zone_label, Act1Theme.FONT_BODY, Act1Theme.INK)
+	zone_wrap.add_child(zone_label)
 
 	ResourceManager.resources_changed.connect(_on_res)
 	ResourceManager.mandate_changed.connect(_on_man)
 	EventBus.interact_prompt.connect(_on_prompt)
 	EventBus.interact_hide.connect(_on_hide)
+	EventBus.objective_changed.connect(_on_objective)
 	IssueManager.memory_added.connect(_on_memory)
 	EventBus.zone_entered.connect(_on_zone)
 	EventBus.farm_status.connect(_on_farm)
+	call_deferred("_refresh_hud")
+
+func _make_resource_row(display_name: String, key: String) -> HBoxContainer:
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 5)
+	var lab := Label.new()
+	lab.text = display_name
+	lab.custom_minimum_size = Vector2(20, 0)
+	Act1Theme.apply_label(lab, Act1Theme.FONT_HUD_LABEL, Act1Theme.INK_MUTED)
+	var bar := ProgressBar.new()
+	bar.max_value = 100.0
+	bar.value = 50.0
+	bar.custom_minimum_size = Vector2(168, 5)
+	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bar.show_percentage = false
+	var fill := Act1Theme.bar_fill(Act1Theme.resource_fill(50.0))
+	bar.add_theme_stylebox_override("fill", fill)
+	bar.add_theme_stylebox_override("background", Act1Theme.bar_background())
+	var val := Label.new()
+	val.custom_minimum_size = Vector2(28, 0)
+	val.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	Act1Theme.apply_label(val, Act1Theme.FONT_HUD_VALUE, Act1Theme.INK)
+	hb.add_child(lab)
+	hb.add_child(bar)
+	hb.add_child(val)
+	bars[key] = bar
+	bar_values[key] = val
+	bar_fills[key] = fill
+	return hb
+
+func _refresh_hud() -> void:
+	_on_res(ResourceManager.get_state())
+	_on_man(ResourceManager.mandate_decay)
+	_on_memory("", 0)
+	CourtPlot.broadcast_farm_status()
 
 func _process(delta: float) -> void:
 	if _zone_t > 0.0:
 		_zone_t = maxf(0.0, _zone_t - delta)
 		if _zone_t > 0.45:
-			zone_label.modulate.a = 1.0
+			zone_wrap.modulate.a = 1.0
 		else:
-			zone_label.modulate.a = _zone_t / 0.45
-	memory_label.modulate = memory_label.modulate.lerp(Color.WHITE, 1.0 - exp(-5.0 * delta))
-
-func _wood_panel() -> PanelContainer:
-	var p := PanelContainer.new()
-	p.add_theme_stylebox_override("panel", _wood_stylebox(0.88))
-	return p
-
-func _wood_stylebox(alpha: float) -> StyleBoxFlat:
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(WOOD.r, WOOD.g, WOOD.b, alpha)
-	sb.border_color = Color(0.72, 0.55, 0.32, 0.95)
-	sb.border_width_left = 3
-	sb.border_width_top = 3
-	sb.border_width_right = 3
-	sb.border_width_bottom = 3
-	sb.corner_radius_top_left = 8
-	sb.corner_radius_top_right = 8
-	sb.corner_radius_bottom_left = 8
-	sb.corner_radius_bottom_right = 8
-	sb.content_margin_left = 4
-	sb.content_margin_right = 4
-	sb.content_margin_top = 4
-	sb.content_margin_bottom = 4
-	return sb
-
-func _style_bar(bar: ProgressBar, fill: Color) -> void:
-	var f := StyleBoxFlat.new()
-	f.bg_color = fill
-	f.corner_radius_top_left = 3
-	f.corner_radius_top_right = 3
-	f.corner_radius_bottom_left = 3
-	f.corner_radius_bottom_right = 3
-	bar.add_theme_stylebox_override("fill", f)
-	var bg := StyleBoxFlat.new()
-	bg.bg_color = Color(0.18, 0.12, 0.08, 0.7)
-	bar.add_theme_stylebox_override("background", bg)
+			zone_wrap.modulate.a = _zone_t / 0.45
 
 func _on_res(s: Dictionary):
 	for k in bars:
-		bars[k].value = s[k]
+		var v: float = float(s[k])
+		bars[k].value = v
+		bar_values[k].text = str(int(round(v)))
+		bar_fills[k].bg_color = Act1Theme.resource_fill(v)
 	var seasons: Array = ["春", "夏", "秋", "冬"]
 	var si: int = int(s.season)
 	var season_name: String = String(seasons[si]) if si >= 0 and si < 4 else "?"
 	var purse_line := ""
 	if float(s.get("private_purse", 0.0)) > 0.01:
-		purse_line = " · 私囊 %.1f" % float(s.private_purse)
-	if bool(s.get("prince_tax_edict", false)):
-		purse_line += " · 纳赋%.0f%%" % (ResourceManager.PRINCE_TAX_RATE * 100.0)
-	info_label.text = "%s · 第 %d 日 · 年 %d%s" % [season_name, int(s.day), int(s.year), purse_line]
-	if season_hint:
-		season_hint.text = _season_yield_hint(si)
+		purse_line = "\n私囊 %.0f 兩" % float(s.private_purse)
+	var total: int = int(s.get("total_day", 0))
+	var span: int = ResourceManager.ACT1_SPAN_DAYS
+	date_label.text = "%s · 第 %d 日\n%d/%d · %d年%s" % [
+		season_name, int(s.day), total, span, int(s.year), purse_line]
 	var season_ink: Array[Color] = [
-		Color(0.72, 0.90, 0.62),
-		Color(0.95, 0.88, 0.55),
-		Color(0.95, 0.70, 0.42),
-		Color(0.82, 0.88, 0.95),
+		Color(0.38, 0.52, 0.30),
+		Color(0.62, 0.48, 0.22),
+		Color(0.68, 0.42, 0.20),
+		Color(0.36, 0.44, 0.58),
 	]
-	info_label.add_theme_color_override("font_color", season_ink[si] if si >= 0 and si < 4 else CREAM)
+	date_label.add_theme_color_override("font_color", season_ink[si] if si >= 0 and si < 4 else Act1Theme.INK_MUTED)
 
 func _on_man(v: float):
 	mandate_bar.value = v
-	mandate_fill.bg_color = _mandate_color(v)
-	if v >= 70.0:
-		mandate_warning.text = "你救不了这座江山"
-	else:
-		mandate_warning.text = ""
-
-func _mandate_color(v: float) -> Color:
-	if v < 30.0:
-		return Color(0.78, 0.62, 0.28)
-	elif v < 70.0:
-		return Color(0.82, 0.42, 0.18)
-	else:
-		return Color(0.62, 0.16, 0.12)
+	mandate_fill.bg_color = Act1Theme.mandate_fill(v)
+	mandate_value.text = str(int(round(v)))
+	mandate_warning.text = "你救不了这座江山" if v >= 70.0 else ""
 
 func _on_prompt(t: String):
+	_prompt_text = t
 	prompt_label.text = t
 	var wrap: CanvasItem = prompt_label.get_meta("wrap")
 	wrap.visible = not t.is_empty()
 
 func _on_hide():
+	_prompt_text = ""
 	prompt_label.text = ""
 	var wrap: CanvasItem = prompt_label.get_meta("wrap")
 	wrap.visible = false
 
+func _on_objective(t: String) -> void:
+	_objective_text = t
+	if objective_label:
+		objective_label.text = t if t != "" else ""
+	if objective_wrap:
+		objective_wrap.visible = t != ""
+
 func _on_memory(_id: String, _weight: int):
-	memory_label.text = "回忆碎片 ×%d" % IssueManager.memories.size()
-	memory_label.modulate = Color(1.0, 0.92, 0.55)
+	_update_footer()
 
 func _on_zone(zname: String) -> void:
 	zone_label.text = zname
-	_zone_t = 1.8
-	zone_label.modulate.a = 1.0
+	_zone_t = 1.6
+	zone_wrap.modulate.a = 1.0
 
-func _on_farm(ripe: int, growing: int, total: int) -> void:
-	if farm_label:
-		farm_label.text = "菜圃 · 成熟 %d · 生长 %d / %d" % [ripe, growing, total]
+func _on_farm(ripe: int, growing: int, _total: int) -> void:
+	_farm_ripe = ripe
+	_farm_growing = growing
+	_update_footer()
 
-func _season_yield_hint(season: int) -> String:
-	var base := ""
-	match season:
-		0: base = "春收 ×150% · 七成入私囊 · 生长 2 日"
-		1: base = "夏收 ×100% · 七成入私囊 · 生长 3 日"
-		2: base = "秋收 ×125% · 七成入私囊 · 生长 2 日"
-		3: base = "冬收 ×40% · 七成入私囊 · 生长 4 日"
-	var bonus := ""
-	if IssueManager.flags.get("farm_growth_boost", false):
-		bonus += " · 生长-1日"
-	if int(IssueManager.flags.get("farm_yield_boost_season", -1)) == season:
-		bonus += " · 本季菜收+10%"
-	if ResourceManager.is_prince_tax_active():
-		return base + bonus + " · 季初岁禄 · 所得纳赋 %.0f%%" % (ResourceManager.PRINCE_TAX_RATE * 100.0)
-	return base + bonus + " · 季初岁禄 · 每30日月例"
+var _farm_ripe := 0
+var _farm_growing := 0
+
+func _update_footer() -> void:
+	footer_label.text = "回忆 ×%d · 菜圃 熟%d 长%d" % [
+		IssueManager.memories.size(), _farm_ripe, _farm_growing]

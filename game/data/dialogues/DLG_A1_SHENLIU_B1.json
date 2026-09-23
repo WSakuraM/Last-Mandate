@@ -1,0 +1,14 @@
+{
+    "id": "DLG_A1_SHENLIU_B1",
+    "title": "门前 · 粥与刀",
+    "lines": [
+        {"speaker": "", "text": "府门外蹲着个老兵，怀里揣着一把旧刀，刀鞘磨得发白。", "emotion": ""},
+        {"speaker": "吴伯", "text": "这汉子姓沈，辽东退下来的，没粮票没路引，说是……想拿刀换碗粥。", "emotion": ""},
+        {"speaker": "沈戍", "text": "王爷，俺不是乞汉。这刀跟了俺十二年，斩过建奴。如今……换碗粥，给娃留口命。", "emotion": ""},
+        {"speaker": "", "text": "你让吴伯取粥来，刀没收。沈戍就这么留在了府上，做了个看门的闲差。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["shenliu_b1_done"]
+    }
+}

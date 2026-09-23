@@ -1,0 +1,15 @@
+{
+    "id": "DLG_A1_CALAMITY_FLOOD",
+    "title": "霖涝",
+    "lines": [
+        {"speaker": "", "text": "雨连下了七天七夜，院里积了水，没过脚面。", "emotion": ""},
+        {"speaker": "", "text": "菜畦泡在黄泥汤里，根都烂了。你穿了草鞋去捞，捞起来一把烂叶子，腥气冲鼻。", "emotion": ""},
+        {"speaker": "吴伯", "text": "涝了根，比旱还难救。旱是天不给你水，涝是天不给你地。", "emotion": ""},
+        {"speaker": "", "text": "枣树落了一地果，泡在水里，浮浮沉沉。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["calamity_triggered", "calamity_flood", "flood_damage"],
+        "memory": {"id": "MF_A1_LOCUST", "weight": 7, "text": "天灾降临菜畦——霖涝，你什么也做不了", "pillar": "Ⅲ"}
+    }
+}

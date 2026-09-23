@@ -1,0 +1,21 @@
+{
+    "id": "DLG_A1_SHENLIU_B3",
+    "title": "夜召 · 留府",
+    "lines": [
+        {"speaker": "", "text": "今夜又该入夜召堂。你走到廊下，见沈戍提着根棍立在府门内侧。", "emotion": ""},
+        {"speaker": "沈戍", "text": "王爷，外头不太平，街上有人窜。俺不走，给您看着门。", "emotion": ""},
+        {"speaker": "", "text": "柳筝从灶房探出半个头，又缩了回去。沈戍没回头，只低声说了句：", "emotion": ""},
+        {"speaker": "沈戍", "text": "王爷，俺这条命，是您一碗粥换回来的。今夜……俺替您守着。成亲的话，仍留到太平。", "emotion": ""},
+        {"speaker": "", "text": "你点了点头，进了夜召堂。身后那根棍敲在门框上，笃、笃，一声一声。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["shenliu_b3_done"],
+        "memory": {
+            "id": "MF_A1_SHEN_GUARD",
+            "weight": 5,
+            "text": "夜召留府——沈戍提棍守门，一碗粥换来的忠义",
+            "pillar": "Ⅰ"
+        }
+    }
+}

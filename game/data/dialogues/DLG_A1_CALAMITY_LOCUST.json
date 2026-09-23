@@ -1,0 +1,15 @@
+{
+    "id": "DLG_A1_CALAMITY_LOCUST",
+    "title": "蝗过境",
+    "lines": [
+        {"speaker": "", "text": "天边涌来一片乌云——不是云，是蝗。", "emotion": ""},
+        {"speaker": "", "text": "遮天蔽日的虫群落在菜畦上，咀嚼声像下雨。你站在廊下看着，什么也做不了。", "emotion": ""},
+        {"speaker": "吴伯", "text": "沈戍，提棍来帮忙！", "emotion": ""},
+        {"speaker": "", "text": "半炷香后，蝗群走了。六畦菜，只剩光杆。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["calamity_triggered", "calamity_locust"],
+        "memory": {"id": "MF_A1_LOCUST", "weight": 7, "text": "天灾降临菜畦——蝗过境，你什么也做不了", "pillar": "Ⅲ"}
+    }
+}

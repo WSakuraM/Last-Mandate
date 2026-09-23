@@ -1,0 +1,15 @@
+{
+    "id": "DLG_A1_CALAMITY_DROUGHT",
+    "title": "大旱",
+    "lines": [
+        {"speaker": "", "text": "连着二十天没落一滴雨。井水浅了半尺，菜畦裂出细缝。", "emotion": ""},
+        {"speaker": "吴伯", "text": "城外河也快断流了，已有村子开始逃荒。", "emotion": ""},
+        {"speaker": "", "text": "你提了桶去浇，一桶水泼下去，转眼就干。地像渴坏了的嘴，张着口等。", "emotion": ""},
+        {"speaker": "", "text": "天白花花的，没有一片云。", "emotion": "narration"}
+    ],
+    "choices": [],
+    "on_complete": {
+        "flags_add": ["calamity_triggered", "calamity_drought", "drought"],
+        "memory": {"id": "MF_A1_LOCUST", "weight": 7, "text": "天灾降临菜畦——大旱，你什么也做不了", "pillar": "Ⅲ"}
+    }
+}

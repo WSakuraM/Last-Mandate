@@ -19,13 +19,16 @@ const POND := Vector3(17, 0, 6)
 const PEN := Vector3(-16, 0, 12)
 const STALL := Vector3(12.5, 0, 12.5)
 const WEST_WING := Vector3(-15.5, 0, -10)
-const PLAYER_SPAWN := Vector3(0, 1, 13.5)
+const PLAYER_SPAWN := Vector3(0, 1, 20.2)  # 府门内侧，面朝正堂（-Z），勿落院心
 const WUBO := Vector3(-12.8, 0, -10.2)
 const QIUSHUI := Vector3(11.2, 0, 15.0)
 const CHENGEN := Vector3(13.8, 0, -15.8)
 const REFUGEE := Vector3(6.5, 0, 21.2)
 const SERVANT_KITCHEN := Vector3(-11.2, 0, -10.5)
 const SERVANT_PEN := Vector3(-15.8, 0, 11.8)
+const SHEN_GUARD := Vector3(-5.2, 0, -0.8)    # 沈戍 · 月洞门侧
+const LIU_ZHENG := Vector3(5.0, 0, -1.0)     # 柳筝 · 菜畦东侧
+const ZHOU_SHI := Vector3(-3.8, 0, 9.5)       # 周氏 · 井台南
 const BROTHER_VISIT := Vector3(0.5, 0, 7.8)   # 御驾亲访停步处（井台与菜畦之间）
 
 ## 菜畦 3×2 网格（列距/行距/锚点）

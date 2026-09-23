@@ -11,3 +11,4 @@ signal narration(text: String)   # 区块二：收获旁白浮字（旱象减产
 signal dialogue_request(id: String)   # 请求播放对话（由 DialogueManager 监听）
 signal zone_entered(name: String)   # 走过院落分区（HUD 轻报）
 signal farm_status(ripe: int, growing: int, total: int)   # 菜圃经营概览
+signal objective_changed(text: String)   # 常驻目标条；空字符串清除

@@ -1,0 +1,14 @@
+{
+    "id": "DLG_A1_STIPEND_EDICT",
+    "title": "圣旨 · 岁禄更制",
+    "lines": [
+        {"speaker": "", "text": "辽事未宁，税赋不继，又值天灾，户部告匮。", "emotion": ""},
+        {"speaker": "", "text": "皇帝下旨：诸藩岁禄减半；自今各藩所得，悉按一成八分纳赋，不得隐匿。", "emotion": ""},
+        {"speaker": "吴伯", "text": "王爷，往后挣得多，交得也多。", "emotion": ""}
+    ],
+    "choices": [],
+    "on_complete": {
+        "memory": {"id": "MF_A1_STIPEND_EDICT", "weight": 6, "text": "天灾之后，圣旨减藩王岁禄，并令诸藩纳赋", "pillar": "Ⅱ"},
+        "narration": "季初岁禄将折减 · 菜圃收获亦纳赋"
+    }
+}

@@ -11,6 +11,17 @@ func _ready():
 func _on_first_sow():
 	if _triggered:
 		return
+	_fire()
+
+func try_failsafe() -> bool:
+	if _triggered or IssueManager.flags.get("aen_seed_given", false):
+		return false
+	if IssueManager.flags.get("first_sow_done", false):
+		return false
+	_fire()
+	EventBus.narration.emit("你尚未播种——承恩把谷种送到菜圃边。")
+	return true
+
+func _fire() -> void:
 	_triggered = true
-	# 通过对话系统播放（DialogueManager 自动锁世界输入 + 写入回忆碎片 + 设旗标）
 	EventBus.dialogue_request.emit("DLG_A1_AEN_SEED")

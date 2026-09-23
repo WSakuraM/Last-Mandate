@@ -19,12 +19,28 @@ func _ready():
 
 # 通过对话 ID 请求播放（从 data/dialogues/ 加载 JSON）
 func play(dialogue_id: String):
-	var data := _load_dialogue(dialogue_id)
+	var resolved := _resolve_dialogue_id(dialogue_id)
+	var data := _load_dialogue(resolved)
 	if data.is_empty():
-		push_warning("DialogueManager: 找不到对话 %s" % dialogue_id)
+		push_warning("DialogueManager: 找不到对话 %s" % resolved)
 		return
 	_queue.append(data)
 	_try_next()
+
+func _resolve_dialogue_id(dialogue_id: String) -> String:
+	match dialogue_id:
+		"DLG_A1_QIUSHUI_IDLE":
+			if IssueManager.flags.get("kind_likely", false):
+				return "DLG_A1_QIUSHUI_IDLE_AFTER"
+			if IssueManager.flags.get("qiushui_letter_done", false):
+				return "DLG_A1_QIUSHUI_IDLE_AFTER"
+		"DLG_A1_WUBO_IDLE":
+			if ResourceManager.is_prince_tax_active():
+				return "DLG_A1_WUBO_IDLE_TAX"
+		"DLG_A1_CHENGEN_IDLE":
+			if IssueManager.flags.get("aen_seed_given", false):
+				return "DLG_A1_CHENGEN_IDLE_SEED"
+	return dialogue_id
 
 # 直接传入 dict 播放（用于硬编码的快速对话或动态生成内容）
 func play_data(data: Dictionary):
@@ -35,6 +51,14 @@ func play_data(data: Dictionary):
 
 func is_active() -> bool:
 	return _playing
+
+func reset_for_new_act1() -> void:
+	_queue.clear()
+	_playing = false
+	if _box and is_instance_valid(_box):
+		_box.queue_free()
+		_box = null
+	IssueManager.night_council_active = false
 
 # ── 内部调度 ──
 
@@ -70,21 +94,20 @@ func _apply_callbacks(result: Dictionary):
 	var oc: Dictionary = result.get("on_complete", {})
 	if oc.is_empty():
 		return
-	# 资源结算
 	var deltas: Dictionary = oc.get("resource_deltas", {})
 	for k in deltas.keys():
 		var val: float = float(deltas[k])
-		if k == "purse":
+		if k == "purse" or k == "private_purse":
 			ResourceManager.add_private_purse(val)
 		elif k == "mandate_decay":
 			ResourceManager.add_mandate(val)
-		else:
+		elif IssueManager.RES_MAP.has(k):
+			ResourceManager.add(IssueManager.RES_MAP[k], val)
+		elif ResourceManager.r.has(k):
 			ResourceManager.add(k, val)
-	# 旗标
 	var adds: Array = oc.get("flags_add", [])
 	for fl in adds:
 		IssueManager.flags[fl] = true
-	# 回忆碎片
 	var mem: Dictionary = oc.get("memory", {})
 	if mem.has("id") and mem["id"] != "":
 		IssueManager.add_memory(
@@ -93,6 +116,9 @@ func _apply_callbacks(result: Dictionary):
 			mem.get("text", ""),
 			mem.get("pillar", "Ⅰ")
 		)
+	var narr: String = str(oc.get("narration", ""))
+	if narr != "":
+		EventBus.narration.emit(narr)
 
 # ── 数据加载 ──
 

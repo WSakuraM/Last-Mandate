@@ -9,7 +9,7 @@ func _ready():
 	add_child(ring)
 	ring.visible = true
 	(ring.material_override as StandardMaterial3D).albedo_color.a = 0.22
-	var mark := InteractMark.bind(self, "DLG_A1_WELL", 2.55, true, 1.15)
+	var mark := InteractMark.bind(self, "DLG_A1_WELL", 2.55, true, 1.15, "near", false)
 	mark.activated.connect(_on_talked)
 
 
